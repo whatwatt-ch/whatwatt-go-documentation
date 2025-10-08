@@ -42,7 +42,7 @@ openapi/api-bundled.yaml
 openapi/clients/
 
 # Vale
-styles/
+styles/config/
 
 # Ignore gateway/prov_tool unless needed
 whatwatt-gateway/

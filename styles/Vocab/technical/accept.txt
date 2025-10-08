@@ -1,0 +1,6 @@
+# Technical terms and product names that should be accepted
+# One term per line
+Loxone
+Miniserver
+Grafana
+OpenHAB
