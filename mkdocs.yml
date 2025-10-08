@@ -179,6 +179,9 @@ nav:
       - Definition: 50-settings/actions/index.md
       - Execution: 50-settings/actions/execution.md
       - Status: 50-settings/actions/status.md
+  - Integrations:
+    - Overview: 60-integrations/index.md
+    - Loxone: 60-integrations/loxone.md
   - Appendix:
     - HTTP basics: 90-appendix/http-basics.md
     - curl options: 90-appendix/curl-options.md
