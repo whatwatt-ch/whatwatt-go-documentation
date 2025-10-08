@@ -1,0 +1,15 @@
+# This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
+# See https://redocly.com/docs/cli/ for more information.
+openapi/api.yaml:
+  no-unused-components:
+    - '#/components/schemas/Error'
+    - '#/components/schemas/SystemInfo'
+    - '#/components/schemas/ReportEnvelope'
+    - '#/components/schemas/Settings'
+    - '#/components/schemas/WiFiNetwork'
+    - '#/components/schemas/WiFiStaSettings'
+    - '#/components/schemas/EthernetSettings'
+    - '#/components/schemas/ActionsDefinition'
+    - '#/components/schemas/ActionStatus'
+    - '#/components/schemas/DirectoryEntry'
+    - '#/components/schemas/DirectoryListing'

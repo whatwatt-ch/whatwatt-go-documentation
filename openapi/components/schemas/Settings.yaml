@@ -1,0 +1,78 @@
+type: object
+properties:
+  system:
+    type: object
+    properties:
+      name:
+        type: string
+        maxLength: 31
+      host_name:
+        type: string
+        maxLength: 31
+      protection:
+        type: boolean
+      password:
+        type: string
+        writeOnly: true
+        maxLength: 31
+      power_save:
+        type: boolean
+  services:
+    type: object
+    properties:
+      cloud:
+        type: object
+        properties:
+          what_watt:
+            type: boolean
+          solar_manager:
+            type: boolean
+          mystrom:
+            type: boolean
+          stromkonto:
+            type: boolean
+      local:
+        type: object
+        properties:
+          solar_manager:
+            type: boolean
+      broadcast:
+        type: boolean
+      other_energy_provider:
+        type: boolean
+      report_interval:
+        type: integer
+        minimum: 1
+        maximum: 3600
+      log:
+        type: boolean
+      meter_proxy:
+        type: boolean
+      sd:
+        type: object
+        properties:
+          enable:
+            type: boolean
+          frequency:
+            type: integer
+            minimum: 1
+            maximum: 1440
+      modbus:
+        type: object
+        properties:
+          enable:
+            type: boolean
+          port:
+            type: integer
+            minimum: 1
+            maximum: 65535
+      berry:
+        type: object
+        properties:
+          auto_run:
+            type: boolean
+          run_delay:
+            type: integer
+            minimum: 60
+            maximum: 86400
+additionalProperties: true

@@ -1,0 +1,14 @@
+type: object
+properties:
+  enable:
+    type: boolean
+  static_ip:
+    type: boolean
+  ip:
+    type: string
+  netmask:
+    type: string
+  gateway:
+    type: string
+  dns:
+    type: string

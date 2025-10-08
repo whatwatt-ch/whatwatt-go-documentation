@@ -1,0 +1,12 @@
+type: object
+properties:
+  error:
+    type: string
+    description: Short machine-readable error key
+  message:
+    type: string
+    description: Human-readable description
+  details:
+    type: object
+    additionalProperties: true
+additionalProperties: true

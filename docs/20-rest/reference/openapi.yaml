@@ -1,0 +1,3000 @@
+openapi: 3.0.3
+info:
+  title: WhatWatt Go REST API
+  version: 1.0.0
+  description: 'Public HTTP API of the WhatWatt Go device. Authentication may be required
+    depending on device settings; when enabled, the device supports HTTP Basic or
+    Digest authentication. All endpoints are local to the device and typically served
+    at http://whatwatt-XXXXXX.local.
+
+    '
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: http://whatwatt-XXXXXX.local
+  description: Default local mDNS address
+- url: http://{deviceIp}
+  description: Direct IP access
+  variables:
+    deviceIp:
+      default: 192.168.1.100
+tags:
+- name: General
+  description: General system information and status
+- name: Measurements
+  description: Energy measurement and consumption data
+- name: Streaming
+  description: Real-time data streaming
+- name: Settings
+  description: Device configuration and settings
+- name: Maintenance
+  description: System maintenance and administrative functions
+- name: Wi-Fi
+  description: Wireless network configuration
+- name: Ethernet
+  description: Ethernet network configuration
+- name: Actions
+  description: Device actions and automation
+- name: SD Card
+  description: SD card file management
+security:
+- basicAuth: []
+- digestAuth: []
+- {}
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication; only enforced if device protection
+        is enabled.
+
+        '
+    digestAuth:
+      type: http
+      scheme: digest
+      description: 'HTTP Digest authentication; only enforced if device protection
+        is enabled. More secure than Basic auth.
+
+        '
+paths:
+  /api/v1/system:
+    get:
+      tags:
+      - General
+      summary: Read general system information
+      description: Returns device identity, firmware, network state, meter status
+        and more.
+      operationId: getSystemInfo
+      responses:
+        '200':
+          description: System information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  device:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      id:
+                        type: string
+                        description: Unique device ID
+                      model:
+                        type: string
+                      firmware:
+                        type: string
+                        description: Device firmware version
+                  meter:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        description: Current meter status
+                      interface:
+                        type: string
+                        description: Communication interface type
+                      protocol:
+                        type: string
+                        description: Communication protocol used
+                  wifi:
+                    type: object
+                    properties:
+                      ssid:
+                        type: string
+                        description: Connected WiFi network name
+                      ip:
+                        type: string
+                        description: Assigned IP address
+              examples:
+                ok:
+                  summary: Example response
+                  value:
+                    device:
+                      id: ECC9FF5C7F14
+                      firmware: 1.10.0
+                    meter:
+                      status: OK
+                      interface: MBUS
+                      protocol: DLMS
+                    wifi:
+                      ssid: sjj
+                      ip: 192.168.99.114
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/report:
+    get:
+      tags:
+      - Measurements
+      summary: Read last measurement report
+      description: Returns the latest measurement envelope including instantaneous
+        and aggregated values.
+      operationId: getReport
+      responses:
+        '200':
+          description: Measurement report envelope
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      interval:
+                        type: number
+                      tariff:
+                        type: integer
+                      date_time:
+                        type: string
+                        format: date-time
+                      date_time_local:
+                        type: string
+                      date_time_utc:
+                        type: string
+                      instantaneous_power:
+                        type: object
+                        additionalProperties: true
+                      voltage:
+                        type: object
+                        additionalProperties:
+                          type: number
+                      current:
+                        type: object
+                        additionalProperties:
+                          type: number
+                      energy:
+                        type: object
+                        additionalProperties: true
+                      conv_factor:
+                        type: number
+                      volume:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            bus:
+                              type: integer
+                            meter_id:
+                              type: string
+                            date_time:
+                              type: string
+                            cumulative:
+                              type: number
+                  meter:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      interface:
+                        type: string
+                      protocol:
+                        type: string
+                      logical_name:
+                        type: string
+                      vendor:
+                        type: string
+                  system:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      date_time:
+                        type: string
+                      date_time_local:
+                        type: string
+                      date_time_utc:
+                        type: string
+                      boot_id:
+                        type: string
+                      time_since_boot:
+                        type: number
+                additionalProperties: true
+              examples:
+                ok:
+                  value:
+                    report:
+                      id: 7892
+                      interval: 6.749
+                      tariff: 1
+                    meter:
+                      status: OK
+                      interface: MBUS
+                      protocol: DLMS
+                    system:
+                      id: ECC9FF5C7F14
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/live:
+    get:
+      tags:
+      - Streaming
+      summary: Stream live measurements (SSE)
+      description: Server-Sent Events stream with events named `live` that carry JSON
+        payloads.
+      operationId: streamLive
+      responses:
+        '200':
+          description: Server-Sent Events stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: SSE stream with events named `live` containing JSON payloads
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/settings:
+    get:
+      tags:
+      - Settings
+      summary: Read current settings
+      description: Reads the current configuration. Most settings apply dynamically
+        without reboot.
+      operationId: getSettings
+      responses:
+        '200':
+          description: Current settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  system:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 31
+                      host_name:
+                        type: string
+                        maxLength: 31
+                      protection:
+                        type: boolean
+                      password:
+                        type: string
+                        writeOnly: true
+                        maxLength: 31
+                      power_save:
+                        type: boolean
+                  services:
+                    type: object
+                    properties:
+                      cloud:
+                        type: object
+                        properties:
+                          what_watt:
+                            type: boolean
+                          solar_manager:
+                            type: boolean
+                          mystrom:
+                            type: boolean
+                          stromkonto:
+                            type: boolean
+                      local:
+                        type: object
+                        properties:
+                          solar_manager:
+                            type: boolean
+                      broadcast:
+                        type: boolean
+                      other_energy_provider:
+                        type: boolean
+                      report_interval:
+                        type: integer
+                        minimum: 1
+                        maximum: 3600
+                      log:
+                        type: boolean
+                      meter_proxy:
+                        type: boolean
+                      sd:
+                        type: object
+                        properties:
+                          enable:
+                            type: boolean
+                          frequency:
+                            type: integer
+                            minimum: 1
+                            maximum: 1440
+                      modbus:
+                        type: object
+                        properties:
+                          enable:
+                            type: boolean
+                          port:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                      berry:
+                        type: object
+                        properties:
+                          auto_run:
+                            type: boolean
+                          run_delay:
+                            type: integer
+                            minimum: 60
+                            maximum: 86400
+                additionalProperties: true
+              examples:
+                ok:
+                  value:
+                    system:
+                      name: ''
+                      host_name: whatwatt_9F8124
+                      protection: false
+                    services:
+                      report_interval: 30
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    put:
+      tags:
+      - Settings
+      summary: Update settings (partial)
+      description: Partially updates the configuration object. Values apply dynamically.
+      operationId: updateSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                system:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 31
+                    host_name:
+                      type: string
+                      maxLength: 31
+                    protection:
+                      type: boolean
+                    password:
+                      type: string
+                      writeOnly: true
+                      maxLength: 31
+                    power_save:
+                      type: boolean
+                services:
+                  type: object
+                  properties:
+                    cloud:
+                      type: object
+                      properties:
+                        what_watt:
+                          type: boolean
+                        solar_manager:
+                          type: boolean
+                        mystrom:
+                          type: boolean
+                        stromkonto:
+                          type: boolean
+                    local:
+                      type: object
+                      properties:
+                        solar_manager:
+                          type: boolean
+                    broadcast:
+                      type: boolean
+                    other_energy_provider:
+                      type: boolean
+                    report_interval:
+                      type: integer
+                      minimum: 1
+                      maximum: 3600
+                    log:
+                      type: boolean
+                    meter_proxy:
+                      type: boolean
+                    sd:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                        frequency:
+                          type: integer
+                          minimum: 1
+                          maximum: 1440
+                    modbus:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                        port:
+                          type: integer
+                          minimum: 1
+                          maximum: 65535
+                    berry:
+                      type: object
+                      properties:
+                        auto_run:
+                          type: boolean
+                        run_delay:
+                          type: integer
+                          minimum: 60
+                          maximum: 86400
+              additionalProperties: true
+            examples:
+              partial:
+                value:
+                  system:
+                    host_name: whatwatt_9F8124
+                    protection: true
+                  services:
+                    report_interval: 15
+      responses:
+        '200':
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  system:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 31
+                      host_name:
+                        type: string
+                        maxLength: 31
+                      protection:
+                        type: boolean
+                      password:
+                        type: string
+                        writeOnly: true
+                        maxLength: 31
+                      power_save:
+                        type: boolean
+                  services:
+                    type: object
+                    properties:
+                      cloud:
+                        type: object
+                        properties:
+                          what_watt:
+                            type: boolean
+                          solar_manager:
+                            type: boolean
+                          mystrom:
+                            type: boolean
+                          stromkonto:
+                            type: boolean
+                      local:
+                        type: object
+                        properties:
+                          solar_manager:
+                            type: boolean
+                      broadcast:
+                        type: boolean
+                      other_energy_provider:
+                        type: boolean
+                      report_interval:
+                        type: integer
+                        minimum: 1
+                        maximum: 3600
+                      log:
+                        type: boolean
+                      meter_proxy:
+                        type: boolean
+                      sd:
+                        type: object
+                        properties:
+                          enable:
+                            type: boolean
+                          frequency:
+                            type: integer
+                            minimum: 1
+                            maximum: 1440
+                      modbus:
+                        type: object
+                        properties:
+                          enable:
+                            type: boolean
+                          port:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                      berry:
+                        type: object
+                        properties:
+                          auto_run:
+                            type: boolean
+                          run_delay:
+                            type: integer
+                            minimum: 60
+                            maximum: 86400
+                additionalProperties: true
+              examples:
+                ok:
+                  value:
+                    system:
+                      name: ''
+                      host_name: whatwatt_9F8124
+                      protection: true
+                    services:
+                      report_interval: 15
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    post:
+      tags:
+      - Settings
+      summary: Replace settings (full)
+      description: Replaces the entire configuration object. Values apply dynamically.
+      operationId: replaceSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                system:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 31
+                    host_name:
+                      type: string
+                      maxLength: 31
+                    protection:
+                      type: boolean
+                    password:
+                      type: string
+                      writeOnly: true
+                      maxLength: 31
+                    power_save:
+                      type: boolean
+                services:
+                  type: object
+                  properties:
+                    cloud:
+                      type: object
+                      properties:
+                        what_watt:
+                          type: boolean
+                        solar_manager:
+                          type: boolean
+                        mystrom:
+                          type: boolean
+                        stromkonto:
+                          type: boolean
+                    local:
+                      type: object
+                      properties:
+                        solar_manager:
+                          type: boolean
+                    broadcast:
+                      type: boolean
+                    other_energy_provider:
+                      type: boolean
+                    report_interval:
+                      type: integer
+                      minimum: 1
+                      maximum: 3600
+                    log:
+                      type: boolean
+                    meter_proxy:
+                      type: boolean
+                    sd:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                        frequency:
+                          type: integer
+                          minimum: 1
+                          maximum: 1440
+                    modbus:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                        port:
+                          type: integer
+                          minimum: 1
+                          maximum: 65535
+                    berry:
+                      type: object
+                      properties:
+                        auto_run:
+                          type: boolean
+                        run_delay:
+                          type: integer
+                          minimum: 60
+                          maximum: 86400
+              additionalProperties: true
+            examples:
+              full:
+                value:
+                  system:
+                    name: Plant A
+                    host_name: whatwatt_9F8124
+                    protection: false
+                  services:
+                    report_interval: 30
+                    log: true
+      responses:
+        '200':
+          description: Replaced settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  system:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 31
+                      host_name:
+                        type: string
+                        maxLength: 31
+                      protection:
+                        type: boolean
+                      password:
+                        type: string
+                        writeOnly: true
+                        maxLength: 31
+                      power_save:
+                        type: boolean
+                  services:
+                    type: object
+                    properties:
+                      cloud:
+                        type: object
+                        properties:
+                          what_watt:
+                            type: boolean
+                          solar_manager:
+                            type: boolean
+                          mystrom:
+                            type: boolean
+                          stromkonto:
+                            type: boolean
+                      local:
+                        type: object
+                        properties:
+                          solar_manager:
+                            type: boolean
+                      broadcast:
+                        type: boolean
+                      other_energy_provider:
+                        type: boolean
+                      report_interval:
+                        type: integer
+                        minimum: 1
+                        maximum: 3600
+                      log:
+                        type: boolean
+                      meter_proxy:
+                        type: boolean
+                      sd:
+                        type: object
+                        properties:
+                          enable:
+                            type: boolean
+                          frequency:
+                            type: integer
+                            minimum: 1
+                            maximum: 1440
+                      modbus:
+                        type: object
+                        properties:
+                          enable:
+                            type: boolean
+                          port:
+                            type: integer
+                            minimum: 1
+                            maximum: 65535
+                      berry:
+                        type: object
+                        properties:
+                          auto_run:
+                            type: boolean
+                          run_delay:
+                            type: integer
+                            minimum: 60
+                            maximum: 86400
+                additionalProperties: true
+              examples:
+                ok:
+                  value:
+                    system:
+                      name: Plant A
+                      host_name: whatwatt_9F8124
+                      protection: false
+                    services:
+                      report_interval: 30
+                      log: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/reboot:
+    post:
+      tags:
+      - Maintenance
+      summary: Reboot device
+      description: Triggers a manual device reboot. Most configuration changes do
+        not require a reboot.
+      operationId: rebootDevice
+      responses:
+        '204':
+          description: No content – reboot initiated
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /load:
+    post:
+      tags:
+      - Maintenance
+      summary: Upload firmware (multipart/form-data)
+      description: Upload a firmware .bin file. After successful verification, the
+        device will reboot automatically.
+      operationId: uploadFirmware
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Firmware file (.bin)
+              required:
+              - file
+      responses:
+        '200':
+          description: Upload accepted; device will reboot after successful update
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '413':
+          description: Firmware too large
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+              examples:
+                tooLarge:
+                  value:
+                    error: payload_too_large
+                    message: Firmware image exceeds available space
+        '415':
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/restore:
+    post:
+      tags:
+      - Maintenance
+      summary: Factory reset
+      description: Restores factory defaults. This operation may take a moment and
+        the device will reboot.
+      operationId: factoryReset
+      responses:
+        '204':
+          description: No content – reset initiated
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/wifi/scan:
+    get:
+      tags:
+      - Wi-Fi
+      summary: Scan nearby Wi‑Fi networks
+      description: 'Performs a scan and returns visible access points with RSSI and
+        channel information. '
+      operationId: scanWifi
+      responses:
+        '200':
+          description: Array of detected networks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ssid:
+                      type: string
+                      maxLength: 32
+                    bssid:
+                      type: string
+                      description: MAC address of AP
+                    channel:
+                      type: integer
+                      minimum: 1
+                      maximum: 13
+                    ht:
+                      type: string
+                      description: 20, 40+, 40-
+                    rssi:
+                      type: integer
+                      minimum: -127
+                      maximum: 0
+                    signal:
+                      type: integer
+                      minimum: 0
+                      maximum: 100
+                    auth_mode:
+                      type: string
+                    pairwise_cipher:
+                      type: string
+                    group_cipher:
+                      type: string
+                    phy:
+                      type: string
+                    wps:
+                      type: string
+                    country:
+                      type: string
+                      maxLength: 2
+              examples:
+                ok:
+                  value:
+                  - ssid: home
+                    rssi: -51
+                    signal: 86
+                    channel: 1
+                    auth_mode: WPA2
+                  - ssid: guest
+                    rssi: -71
+                    signal: 56
+                    channel: 11
+                    auth_mode: open
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/wifi/sta/settings:
+    get:
+      tags:
+      - Wi-Fi
+      summary: Read Wi‑Fi station settings
+      description: Reads the STA (client) configuration. Changes apply without reboot.
+      operationId: getWifiStaSettings
+      responses:
+        '200':
+          description: Current station settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enable:
+                    type: boolean
+                  name:
+                    type: string
+                    maxLength: 32
+                    description: SSID
+                  password:
+                    type: string
+                    maxLength: 64
+                    writeOnly: true
+                    description: Wi‑Fi password (empty for open networks)
+                  static_ip:
+                    type: boolean
+                  ip:
+                    type: string
+                  netmask:
+                    type: string
+                  gateway:
+                    type: string
+                  dns:
+                    type: string
+                  max_power:
+                    type: number
+                    minimum: 0
+                    maximum: 21
+                    description: dBm; resolution 0.5
+                  max_tx_power:
+                    type: number
+                    readOnly: true
+                    description: Alias used in responses on some firmware versions
+              examples:
+                ok:
+                  value:
+                    enable: true
+                    name: home
+                    static_ip: false
+                    max_tx_power: 21
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    put:
+      tags:
+      - Wi-Fi
+      summary: Update Wi‑Fi station settings (partial)
+      description: Partially updates the STA (client) configuration.
+      operationId: updateWifiStaSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                name:
+                  type: string
+                  maxLength: 32
+                  description: SSID
+                password:
+                  type: string
+                  maxLength: 64
+                  writeOnly: true
+                  description: Wi‑Fi password (empty for open networks)
+                static_ip:
+                  type: boolean
+                ip:
+                  type: string
+                netmask:
+                  type: string
+                gateway:
+                  type: string
+                dns:
+                  type: string
+                max_power:
+                  type: number
+                  minimum: 0
+                  maximum: 21
+                  description: dBm; resolution 0.5
+                max_tx_power:
+                  type: number
+                  readOnly: true
+                  description: Alias used in responses on some firmware versions
+      responses:
+        '200':
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enable:
+                    type: boolean
+                  name:
+                    type: string
+                    maxLength: 32
+                    description: SSID
+                  password:
+                    type: string
+                    maxLength: 64
+                    writeOnly: true
+                    description: Wi‑Fi password (empty for open networks)
+                  static_ip:
+                    type: boolean
+                  ip:
+                    type: string
+                  netmask:
+                    type: string
+                  gateway:
+                    type: string
+                  dns:
+                    type: string
+                  max_power:
+                    type: number
+                    minimum: 0
+                    maximum: 21
+                    description: dBm; resolution 0.5
+                  max_tx_power:
+                    type: number
+                    readOnly: true
+                    description: Alias used in responses on some firmware versions
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    post:
+      tags:
+      - Wi-Fi
+      summary: Replace Wi‑Fi station settings (full)
+      description: Replaces the STA (client) configuration.
+      operationId: replaceWifiStaSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                name:
+                  type: string
+                  maxLength: 32
+                  description: SSID
+                password:
+                  type: string
+                  maxLength: 64
+                  writeOnly: true
+                  description: Wi‑Fi password (empty for open networks)
+                static_ip:
+                  type: boolean
+                ip:
+                  type: string
+                netmask:
+                  type: string
+                gateway:
+                  type: string
+                dns:
+                  type: string
+                max_power:
+                  type: number
+                  minimum: 0
+                  maximum: 21
+                  description: dBm; resolution 0.5
+                max_tx_power:
+                  type: number
+                  readOnly: true
+                  description: Alias used in responses on some firmware versions
+      responses:
+        '200':
+          description: Replaced settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enable:
+                    type: boolean
+                  name:
+                    type: string
+                    maxLength: 32
+                    description: SSID
+                  password:
+                    type: string
+                    maxLength: 64
+                    writeOnly: true
+                    description: Wi‑Fi password (empty for open networks)
+                  static_ip:
+                    type: boolean
+                  ip:
+                    type: string
+                  netmask:
+                    type: string
+                  gateway:
+                    type: string
+                  dns:
+                    type: string
+                  max_power:
+                    type: number
+                    minimum: 0
+                    maximum: 21
+                    description: dBm; resolution 0.5
+                  max_tx_power:
+                    type: number
+                    readOnly: true
+                    description: Alias used in responses on some firmware versions
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    delete:
+      tags:
+      - Wi-Fi
+      summary: Delete Wi‑Fi station settings
+      description: Clears the STA (client) configuration and disables the client.
+      operationId: deleteWifiStaSettings
+      responses:
+        '204':
+          description: Deleted; client disabled
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/eth/settings:
+    get:
+      tags:
+      - Ethernet
+      summary: Read Ethernet settings
+      description: Reads Ethernet configuration. Changes usually apply dynamically.
+      operationId: getEthernetSettings
+      responses:
+        '200':
+          description: Current Ethernet settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enable:
+                    type: boolean
+                  static_ip:
+                    type: boolean
+                  ip:
+                    type: string
+                  netmask:
+                    type: string
+                  gateway:
+                    type: string
+                  dns:
+                    type: string
+              examples:
+                ok:
+                  value:
+                    enable: true
+                    static_ip: false
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    put:
+      tags:
+      - Ethernet
+      summary: Update Ethernet settings (partial)
+      description: Partially updates Ethernet configuration.
+      operationId: updateEthernetSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                static_ip:
+                  type: boolean
+                ip:
+                  type: string
+                netmask:
+                  type: string
+                gateway:
+                  type: string
+                dns:
+                  type: string
+      responses:
+        '200':
+          description: Updated Ethernet settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enable:
+                    type: boolean
+                  static_ip:
+                    type: boolean
+                  ip:
+                    type: string
+                  netmask:
+                    type: string
+                  gateway:
+                    type: string
+                  dns:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    post:
+      tags:
+      - Ethernet
+      summary: Replace Ethernet settings (full)
+      description: Replaces Ethernet configuration.
+      operationId: replaceEthernetSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                static_ip:
+                  type: boolean
+                ip:
+                  type: string
+                netmask:
+                  type: string
+                gateway:
+                  type: string
+                dns:
+                  type: string
+      responses:
+        '200':
+          description: Replaced Ethernet settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enable:
+                    type: boolean
+                  static_ip:
+                    type: boolean
+                  ip:
+                    type: string
+                  netmask:
+                    type: string
+                  gateway:
+                    type: string
+                  dns:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/actions:
+    get:
+      tags:
+      - Actions
+      summary: Read actions definition
+      description: Returns the current actions definition used by the device to trigger
+        HTTP or Modbus requests.
+      operationId: getActions
+      responses:
+        '200':
+          description: Current actions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  const:
+                    type: object
+                    additionalProperties:
+                      oneOf:
+                      - type: string
+                      - type: number
+                      - type: boolean
+                    description: Constants for substitution; nulls may be ignored
+                      by firmware
+                  actions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          maxLength: 15
+                        enable:
+                          type: boolean
+                        requests:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              http:
+                                type: object
+                                properties:
+                                  url:
+                                    type: string
+                                  method:
+                                    type: string
+                                    enum:
+                                    - GET
+                                    - POST
+                                    - PUT
+                                    - DELETE
+                                  payload:
+                                    type: string
+                                  headers:
+                                    type: object
+                                    additionalProperties:
+                                      type: string
+                                  timeout:
+                                    type: number
+                              modbus:
+                                type: object
+                                properties:
+                                  host:
+                                    type: string
+                                  port:
+                                    type: integer
+                                    minimum: 1
+                                    maximum: 65535
+                                  unit_id:
+                                    type: integer
+                                    minimum: 0
+                                    maximum: 255
+                                  func:
+                                    type: integer
+                                    enum:
+                                    - 5
+                                    - 6
+                                    - 15
+                                    - 16
+                                  address:
+                                    type: integer
+                                    minimum: 0
+                                    maximum: 65535
+                                  type:
+                                    type: string
+                                    enum:
+                                    - hex
+                                    - short
+                                    - int
+                                    - long
+                                    - float
+                                    - double
+                                  value:
+                                    type: string
+                                  timeout:
+                                    type: number
+              examples:
+                ok:
+                  value:
+                    const:
+                      url: http://example
+                    actions:
+                    - id: '1'
+                      enable: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    post:
+      tags:
+      - Actions
+      summary: Set actions definition
+      description: Replaces the actions definition. Large definitions may be rejected.
+      operationId: setActions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                const:
+                  type: object
+                  additionalProperties:
+                    oneOf:
+                    - type: string
+                    - type: number
+                    - type: boolean
+                  description: Constants for substitution; nulls may be ignored by
+                    firmware
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        maxLength: 15
+                      enable:
+                        type: boolean
+                      requests:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            http:
+                              type: object
+                              properties:
+                                url:
+                                  type: string
+                                method:
+                                  type: string
+                                  enum:
+                                  - GET
+                                  - POST
+                                  - PUT
+                                  - DELETE
+                                payload:
+                                  type: string
+                                headers:
+                                  type: object
+                                  additionalProperties:
+                                    type: string
+                                timeout:
+                                  type: number
+                            modbus:
+                              type: object
+                              properties:
+                                host:
+                                  type: string
+                                port:
+                                  type: integer
+                                  minimum: 1
+                                  maximum: 65535
+                                unit_id:
+                                  type: integer
+                                  minimum: 0
+                                  maximum: 255
+                                func:
+                                  type: integer
+                                  enum:
+                                  - 5
+                                  - 6
+                                  - 15
+                                  - 16
+                                address:
+                                  type: integer
+                                  minimum: 0
+                                  maximum: 65535
+                                type:
+                                  type: string
+                                  enum:
+                                  - hex
+                                  - short
+                                  - int
+                                  - long
+                                  - float
+                                  - double
+                                value:
+                                  type: string
+                                timeout:
+                                  type: number
+      responses:
+        '200':
+          description: Actions saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  const:
+                    type: object
+                    additionalProperties:
+                      oneOf:
+                      - type: string
+                      - type: number
+                      - type: boolean
+                    description: Constants for substitution; nulls may be ignored
+                      by firmware
+                  actions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          maxLength: 15
+                        enable:
+                          type: boolean
+                        requests:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              http:
+                                type: object
+                                properties:
+                                  url:
+                                    type: string
+                                  method:
+                                    type: string
+                                    enum:
+                                    - GET
+                                    - POST
+                                    - PUT
+                                    - DELETE
+                                  payload:
+                                    type: string
+                                  headers:
+                                    type: object
+                                    additionalProperties:
+                                      type: string
+                                  timeout:
+                                    type: number
+                              modbus:
+                                type: object
+                                properties:
+                                  host:
+                                    type: string
+                                  port:
+                                    type: integer
+                                    minimum: 1
+                                    maximum: 65535
+                                  unit_id:
+                                    type: integer
+                                    minimum: 0
+                                    maximum: 255
+                                  func:
+                                    type: integer
+                                    enum:
+                                    - 5
+                                    - 6
+                                    - 15
+                                    - 16
+                                  address:
+                                    type: integer
+                                    minimum: 0
+                                    maximum: 65535
+                                  type:
+                                    type: string
+                                    enum:
+                                    - hex
+                                    - short
+                                    - int
+                                    - long
+                                    - float
+                                    - double
+                                  value:
+                                    type: string
+                                  timeout:
+                                    type: number
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '413':
+          description: Definition too large
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    delete:
+      tags:
+      - Actions
+      summary: Delete actions definition
+      description: Deletes the current actions definition.
+      operationId: deleteActions
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/actions/call:
+    post:
+      tags:
+      - Actions
+      summary: Execute an action asynchronously
+      description: Queues execution of an action by ID. Returns status IDs to poll.
+      operationId: callAction
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+        required: true
+        description: Action ID to execute
+      responses:
+        '202':
+          description: Queued for execution
+          headers:
+            Location:
+              description: Optional status URL '/api/v1/actions/status?id=...'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_ids:
+                    type: array
+                    items:
+                      type: integer
+              examples:
+                accepted:
+                  value:
+                    status_ids:
+                    - 139
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /api/v1/actions/status:
+    get:
+      tags:
+      - Actions
+      summary: Query status by ID(s)
+      description: Retrieves execution status by status IDs. Code is HTTP status for
+        HTTP actions
+      operationId: getActionStatus
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+        required: true
+        description: Comma-separated list of status IDs
+      responses:
+        '200':
+          description: Array of status records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    action_id:
+                      type: string
+                    id:
+                      type: integer
+                    code:
+                      type: integer
+                      description: HTTP status or negative codes for Modbus/connection;
+                        -1 while running
+                    exe_time:
+                      type: number
+                      description: Seconds
+              examples:
+                ok:
+                  value:
+                  - action_id: '1'
+                    id: 139
+                    code: 200
+                    exe_time: 0.133
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /sdcard:
+    get:
+      tags:
+      - SD Card
+      summary: List SD card root directory
+      description: Lists files and directories on the SD card root.
+      operationId: listSdRoot
+      responses:
+        '200':
+          description: Directory listing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  files:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        size:
+                          type: integer
+                        type:
+                          type: string
+                          enum:
+                          - file
+                          - dir
+              examples:
+                ok:
+                  value:
+                    path: /
+                    files:
+                    - name: log.csv
+                      size: 1234
+                      type: file
+                    - name: data/
+                      size: 0
+                      type: dir
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+  /sdcard/{path}:
+    parameters:
+    - in: path
+      name: path
+      required: true
+      schema:
+        type: string
+      description: File or directory path relative to /sdcard. If ends with '/', a
+        JSON directory listing is returned.
+    get:
+      tags:
+      - SD Card
+      summary: Get file contents or list a subdirectory
+      description: Download a file (raw) or list a subdirectory (JSON) when the path
+        ends with '/'.
+      operationId: getSdPath
+      responses:
+        '200':
+          description: File download or directory listing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  files:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        size:
+                          type: integer
+                        type:
+                          type: string
+                          enum:
+                          - file
+                          - dir
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+    delete:
+      tags:
+      - SD Card
+      summary: Delete file or directory (recursive for directories)
+      description: Deletes a file or recursively deletes a directory.
+      operationId: deleteSdPath
+      responses:
+        '204':
+          description: No content – deleted
+        '401':
+          description: Unauthorized - missing or invalid credentials
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true

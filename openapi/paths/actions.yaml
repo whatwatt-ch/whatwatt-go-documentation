@@ -1,0 +1,156 @@
+/api/v1/actions:
+  get:
+    tags:
+    - Actions
+    summary: Read actions definition
+    description: 'Returns the current actions definition used by the device to trigger HTTP or Modbus requests.'
+    operationId: getActions
+    responses:
+      '200':
+        description: Current actions
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/ActionsDefinition.yaml'
+            examples:
+              ok:
+                value:
+                  const:
+                    url: http://example
+                  actions:
+                  - id: '1'
+                    enable: true
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '404':
+        $ref: '../components/responses/NotFound.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  post:
+    tags:
+    - Actions
+    summary: Set actions definition
+    description: 'Replaces the actions definition. Large definitions may be rejected.'
+    operationId: setActions
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/ActionsDefinition.yaml'
+    responses:
+      '200':
+        description: Actions saved
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/ActionsDefinition.yaml'
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '413':
+        description: Definition too large
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/Error.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  delete:
+    tags:
+    - Actions
+    summary: Delete actions definition
+    description: 'Deletes the current actions definition.'
+    operationId: deleteActions
+    responses:
+      '204':
+        description: Deleted
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+/api/v1/actions/call:
+  post:
+    tags:
+    - Actions
+    summary: Execute an action asynchronously
+    description: 'Queues execution of an action by ID. Returns status IDs to poll.'
+    operationId: callAction
+    parameters:
+    - in: query
+      name: id
+      schema:
+        type: string
+      required: true
+      description: Action ID to execute
+    responses:
+      '202':
+        description: Queued for execution
+        headers:
+          Location:
+            description: Optional status URL '/api/v1/actions/status?id=...'
+            schema:
+              type: string
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status_ids:
+                  type: array
+                  items:
+                    type: integer
+            examples:
+              accepted:
+                value:
+                  status_ids:
+                  - 139
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '404':
+        $ref: '../components/responses/NotFound.yaml'
+      '409':
+        $ref: '../components/responses/Conflict.yaml'
+      '429':
+        $ref: '../components/responses/TooManyRequests.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+/api/v1/actions/status:
+  get:
+    tags:
+    - Actions
+    summary: Query status by ID(s)
+    description: 'Retrieves execution status by status IDs. Code is HTTP status for HTTP actions'
+    operationId: getActionStatus
+    parameters:
+    - in: query
+      name: id
+      schema:
+        type: string
+      required: true
+      description: Comma-separated list of status IDs
+    responses:
+      '200':
+        description: Array of status records
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/ActionStatus.yaml'
+            examples:
+              ok:
+                value:
+                - action_id: '1'
+                  id: 139
+                  code: 200
+                  exe_time: 0.133
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '404':
+        $ref: '../components/responses/NotFound.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

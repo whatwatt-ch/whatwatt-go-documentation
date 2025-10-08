@@ -1,0 +1,10 @@
+description: Unauthorized - missing or invalid credentials
+headers:
+  WWW-Authenticate:
+    schema:
+      type: string
+      description: 'Authentication challenge; may include stale=true for Digest auth'
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/Error.yaml

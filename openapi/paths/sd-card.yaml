@@ -1,0 +1,78 @@
+/sdcard:
+  get:
+    tags:
+    - SD Card
+    summary: List SD card root directory
+    description: 'Lists files and directories on the SD card root.'
+    operationId: listSdRoot
+    responses:
+      '200':
+        description: Directory listing
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/DirectoryListing.yaml'
+            examples:
+              ok:
+                value:
+                  path: /
+                  files:
+                  - name: log.csv
+                    size: 1234
+                    type: file
+                  - name: data/
+                    size: 0
+                    type: dir
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+/sdcard/{path}:
+  parameters:
+    - in: path
+      name: path
+      required: true
+      schema: {type: string}
+      description: File or directory path relative to /sdcard. If ends with '/', a JSON directory listing is returned.
+  get:
+    tags:
+    - SD Card
+    summary: Get file contents or list a subdirectory
+    description: 'Download a file (raw) or list a subdirectory (JSON) when the path ends with ''/''.'
+    operationId: getSdPath
+    responses:
+      '200':
+        description: File download or directory listing
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/DirectoryListing.yaml'
+          text/csv:
+            schema:
+              type: string
+              format: binary
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '404':
+        $ref: '../components/responses/NotFound.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  delete:
+    tags:
+    - SD Card
+    summary: Delete file or directory (recursive for directories)
+    description: 'Deletes a file or recursively deletes a directory.'
+    operationId: deleteSdPath
+    responses:
+      '204':
+        description: No content – deleted
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '404':
+        $ref: '../components/responses/NotFound.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

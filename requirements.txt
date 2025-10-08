@@ -1,0 +1,18 @@
+# MkDocs and documentation generation
+mkdocs>=1.6
+mkdocs-material>=9.5
+mkdocs-macros-plugin>=1.0
+pymdown-extensions>=10.0
+
+# OpenAPI validation and processing
+prance>=25.4.0
+requests>=2.32.0
+
+# Development and validation tools
+# Note: The following tools should be installed separately:
+# - markdownlint-cli2 (npm install -g markdownlint-cli2)
+# - broken-link-checker (npm install -g broken-link-checker)
+# - Vale (https://vale.sh/docs/vale-cli/installation/)
+
+# Git hooks
+pre-commit>=3.8.0

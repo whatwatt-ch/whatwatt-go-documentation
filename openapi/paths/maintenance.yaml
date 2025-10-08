@@ -1,0 +1,82 @@
+/api/v1/reboot:
+  post:
+    tags:
+    - Maintenance
+    summary: Reboot device
+    description: 'Triggers a manual device reboot. Most configuration changes do not require a reboot.'
+    operationId: rebootDevice
+    responses:
+      '204':
+        description: No content – reboot initiated
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '429':
+        $ref: '../components/responses/TooManyRequests.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+/load:
+  post:
+    tags:
+    - Maintenance
+    summary: Upload firmware (multipart/form-data)
+    description: 'Upload a firmware .bin file. After successful verification, the device will reboot automatically.'
+    operationId: uploadFirmware
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              file:
+                type: string
+                format: binary
+                description: Firmware file (.bin)
+            required:
+            - file
+    responses:
+      '200':
+        description: Upload accepted; device will reboot after successful update
+        content:
+          text/plain:
+            schema:
+              type: string
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '413':
+        description: Firmware too large
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/Error.yaml'
+            examples:
+              tooLarge:
+                value:
+                  error: payload_too_large
+                  message: Firmware image exceeds available space
+      '415':
+        description: Unsupported media type
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/Error.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+/api/v1/restore:
+  post:
+    tags:
+    - Maintenance
+    summary: Factory reset
+    description: 'Restores factory defaults. This operation may take a moment and the device will reboot.'
+    operationId: factoryReset
+    responses:
+      '204':
+        description: No content – reset initiated
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '429':
+        $ref: '../components/responses/TooManyRequests.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

@@ -1,0 +1,32 @@
+type: object
+properties:
+  enable:
+    type: boolean
+  name:
+    type: string
+    maxLength: 32
+    description: SSID
+  password:
+    type: string
+    maxLength: 64
+    writeOnly: true
+    description: Wi‑Fi password (empty for open networks)
+  static_ip:
+    type: boolean
+  ip:
+    type: string
+  netmask:
+    type: string
+  gateway:
+    type: string
+  dns:
+    type: string
+  max_power:
+    type: number
+    minimum: 0
+    maximum: 21
+    description: dBm; resolution 0.5
+  max_tx_power:
+    type: number
+    readOnly: true
+    description: Alias used in responses on some firmware versions

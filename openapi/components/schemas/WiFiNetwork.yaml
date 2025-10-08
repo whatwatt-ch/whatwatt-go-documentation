@@ -1,0 +1,36 @@
+type: object
+properties:
+  ssid:
+    type: string
+    maxLength: 32
+  bssid:
+    type: string
+    description: MAC address of AP
+  channel:
+    type: integer
+    minimum: 1
+    maximum: 13
+  ht:
+    type: string
+    description: 20, 40+, 40-
+  rssi:
+    type: integer
+    minimum: -127
+    maximum: 0
+  signal:
+    type: integer
+    minimum: 0
+    maximum: 100
+  auth_mode:
+    type: string
+  pairwise_cipher:
+    type: string
+  group_cipher:
+    type: string
+  phy:
+    type: string
+  wps:
+    type: string
+  country:
+    type: string
+    maxLength: 2

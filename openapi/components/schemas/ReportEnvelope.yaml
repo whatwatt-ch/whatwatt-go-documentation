@@ -1,0 +1,76 @@
+type: object
+properties:
+  report:
+    type: object
+    properties:
+      id:
+        type: integer
+      interval:
+        type: number
+      tariff:
+        type: integer
+      date_time:
+        type: string
+        format: date-time
+      date_time_local:
+        type: string
+      date_time_utc:
+        type: string
+      instantaneous_power:
+        type: object
+        additionalProperties: true
+      voltage:
+        type: object
+        additionalProperties:
+          type: number
+      current:
+        type: object
+        additionalProperties:
+          type: number
+      energy:
+        type: object
+        additionalProperties: true
+      conv_factor:
+        type: number
+      volume:
+        type: array
+        items:
+          type: object
+          properties:
+            bus:
+              type: integer
+            meter_id:
+              type: string
+            date_time:
+              type: string
+            cumulative:
+              type: number
+  meter:
+    type: object
+    properties:
+      status:
+        type: string
+      interface:
+        type: string
+      protocol:
+        type: string
+      logical_name:
+        type: string
+      vendor:
+        type: string
+  system:
+    type: object
+    properties:
+      id:
+        type: string
+      date_time:
+        type: string
+      date_time_local:
+        type: string
+      date_time_utc:
+        type: string
+      boot_id:
+        type: string
+      time_since_boot:
+        type: number
+additionalProperties: true

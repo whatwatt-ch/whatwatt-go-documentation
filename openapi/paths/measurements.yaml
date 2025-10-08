@@ -1,0 +1,31 @@
+/api/v1/report:
+  get:
+    tags:
+    - Measurements
+    summary: Read last measurement report
+    description: 'Returns the latest measurement envelope including instantaneous and aggregated values.'
+    operationId: getReport
+    responses:
+      '200':
+        description: Measurement report envelope
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/ReportEnvelope.yaml'
+            examples:
+              ok:
+                value:
+                  report:
+                    id: 7892
+                    interval: 6.749
+                    tariff: 1
+                  meter:
+                    status: OK
+                    interface: MBUS
+                    protocol: DLMS
+                  system:
+                    id: ECC9FF5C7F14
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

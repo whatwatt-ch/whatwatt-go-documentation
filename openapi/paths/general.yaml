@@ -1,0 +1,32 @@
+/api/v1/system:
+  get:
+    tags:
+    - General
+    summary: Read general system information
+    description: 'Returns device identity, firmware, network state, meter status and more.'
+    operationId: getSystemInfo
+    responses:
+      '200':
+        description: System information
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/SystemInfo.yaml
+            examples:
+              ok:
+                summary: Example response
+                value:
+                  device:
+                    id: ECC9FF5C7F14
+                    firmware: 1.10.0
+                  meter:
+                    status: OK
+                    interface: MBUS
+                    protocol: DLMS
+                  wifi:
+                    ssid: sjj
+                    ip: 192.168.99.114
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

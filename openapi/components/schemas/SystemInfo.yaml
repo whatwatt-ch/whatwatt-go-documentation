@@ -1,0 +1,36 @@
+type: object
+properties:
+  device:
+    type: object
+    properties:
+      name:
+        type: string
+      id:
+        type: string
+        description: Unique device ID
+      model:
+        type: string
+      firmware:
+        type: string
+        description: Device firmware version
+  meter:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Current meter status
+      interface:
+        type: string
+        description: Communication interface type
+      protocol:
+        type: string
+        description: Communication protocol used
+  wifi:
+    type: object
+    properties:
+      ssid:
+        type: string
+        description: Connected WiFi network name
+      ip:
+        type: string
+        description: Assigned IP address

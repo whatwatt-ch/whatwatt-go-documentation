@@ -1,0 +1,197 @@
+/* WhatWatt Docs: align styles with whatwatt.ch brand
+   - Font: Inter (configured via mkdocs.yml)
+   - Colors: Yellow #F8ED5A, Black #000000, supporting neutrals
+   - Keep overrides minimal and theme-friendly (Material for MkDocs)
+*/
+
+/* Brand variables */
+:root {
+  --ww-yellow: #F8ED5A;
+  --ww-black: #000000;
+  --ww-white: #ffffff;
+  --ww-offwhite: #f8f8f8;
+  --ww-gray-2: #e5e7eb; /* table borders, dividers */
+  --ww-gray-4: #9ca3af; /* placeholders */
+}
+
+/* Light theme palette: yellow primary, black accents */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: var(--ww-yellow);
+  --md-accent-fg-color: var(--ww-yellow);
+}
+
+/* Dark theme palette: keep yellow accents */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: var(--ww-yellow);
+  --md-accent-fg-color: var(--ww-yellow);
+  /* Improve code legibility in dark */
+  --md-code-bg-color: #0b1220; /* match Material dark code bg */
+}
+
+/* Header: yellow background in both schemes; content color scoped */
+.md-header { background-color: var(--ww-yellow); }
+[data-md-color-scheme="default"] .md-header, [data-md-color-scheme="default"] .md-header * { color: var(--ww-black); }
+[data-md-color-scheme="slate"] .md-header, [data-md-color-scheme="slate"] .md-header * { color: #111827; }
+
+/* Logo size similar to website */
+.md-logo img { height: 32px; width: auto; }
+
+/* Search input: scope to light mode only */
+[data-md-color-scheme="default"] .md-search__form,
+[data-md-color-scheme="default"] .md-search__input {
+  background-color: var(--ww-white);
+  color: var(--ww-black);
+}
+[data-md-color-scheme="default"] .md-search__input::placeholder { color: var(--ww-gray-4); }
+
+/* Search dialog: dark mode readability fixes */
+[data-md-color-scheme="slate"] .md-search__overlay {
+  /* darker scrim for contrast behind dialog */
+  background-color: rgba(2, 6, 23, 0.6);
+}
+[data-md-color-scheme="slate"] .md-search__inner {
+  /* main panel background and text */
+  background-color: #0f172a; /* slate-900 */
+  color: #e2e8f0;           /* slate-200 */
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+}
+[data-md-color-scheme="slate"] .md-search__form {
+  background-color: #111827; /* gray-900 */
+  border: 1px solid #334155; /* slate-700 */
+}
+[data-md-color-scheme="slate"] .md-search__input {
+  background: transparent;
+  color: #e2e8f0;
+}
+[data-md-color-scheme="slate"] .md-search__input::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+[data-md-color-scheme="slate"] .md-search__output {
+  background-color: #0f172a; /* match panel */
+  border: 1px solid #334155; /* subtle border */
+}
+[data-md-color-scheme="slate"] .md-search-result {
+  color: #e2e8f0;
+}
+[data-md-color-scheme="slate"] .md-search-result__meta {
+  background: #0b1220;      /* code bg tone */
+  color: #a1a1aa;           /* neutral meta text */
+  border-bottom: 1px solid #334155;
+}
+[data-md-color-scheme="slate"] .md-search-result__list {
+  background: transparent;
+}
+[data-md-color-scheme="slate"] .md-search-result__link {
+  color: #e2e8f0;
+}
+[data-md-color-scheme="slate"] .md-search-result__link:hover {
+  background-color: rgba(255,255,255,0.04);
+}
+[data-md-color-scheme="slate"] .md-search-result__teaser {
+  color: #cbd5e1; /* slate-300 */
+}
+[data-md-color-scheme="slate"] .md-search-result mark {
+  background-color: rgba(248, 237, 90, 0.30); /* brand yellow highlight */
+  color: inherit;
+}
+[data-md-color-scheme="slate"] .md-search-result__list .md-tag {
+  background-color: rgba(148, 163, 184, 0.20); /* slate-400 @ 20% */
+  color: #e2e8f0;
+}
+
+/* Links: scheme-aware colors */
+[data-md-color-scheme="default"] .md-typeset a {
+  color: #111827; /* near-black */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+[data-md-color-scheme="default"] .md-typeset a:hover {
+  color: #111827;
+  text-decoration-thickness: 2px;
+}
+[data-md-color-scheme="slate"] .md-typeset a {
+  color: #e5e7eb; /* light gray on dark */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+[data-md-color-scheme="slate"] .md-typeset a:hover {
+  color: #f3f4f6;
+  text-decoration-thickness: 2px;
+}
+
+/* Buttons: use brand color only for primary, keep secondary as theme default */
+.md-button--primary {
+  background-color: var(--ww-yellow);
+  color: var(--ww-black);
+  border: none;
+  font-weight: 700;
+}
+.md-button--primary:hover,
+.md-button--primary:focus {
+  filter: brightness(0.95);
+}
+/* Ensure secondary buttons are not overridden by previous rules */
+.md-button:not(.md-button--primary) {
+  background-color: transparent;
+  font-weight: 600;
+}
+
+/* Code: keep theme defaults for readability in light/dark; avoid yellow accents */
+.md-typeset code {
+  background-color: var(--md-code-bg-color);
+  color: inherit;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.highlight pre {
+  background-color: var(--md-code-bg-color);
+  border-left: none;
+  border-radius: 8px;
+}
+/* Admonitions: neutral background with subtle border; no bright yellow bar */
+.md-typeset .admonition {
+  background-color: var(--md-code-bg-color, var(--ww-offwhite));
+  border-left: 4px solid var(--ww-gray-2);
+  border-radius: 8px;
+}
+
+/* Tables: scheme-aware header and hover colors */
+[data-md-color-scheme="default"] .md-typeset table thead tr {
+  background-color: var(--ww-offwhite);
+  color: #111827; /* near-black for readability */
+}
+[data-md-color-scheme="slate"] .md-typeset table thead tr {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb; /* light gray text */
+}
+[data-md-color-scheme="default"] .md-typeset table tbody tr:hover {
+  background-color: var(--ww-offwhite);
+}
+[data-md-color-scheme="slate"] .md-typeset table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* Footer: dark like website footer */
+.md-footer { background-color: var(--ww-black); color: #f3f4f6; }
+.md-footer a { color: #f3f4f6; }
+.md-footer a:hover { color: var(--ww-yellow); }
+
+/* Navigation: readable active/hover states */
+.md-nav__link--active { font-weight: 700; }
+[data-md-color-scheme="default"] .md-nav__link--active {
+  background-color: transparent; /* no gray background */
+  color: #111827;                /* near-black text */
+  border-left: 3px solid #d1d5db; /* neutral left indicator */
+}
+[data-md-color-scheme="default"] .md-nav__link:hover,
+[data-md-color-scheme="default"] .md-nav__link:focus {
+  color: #111827; /* prevent yellow hover text in light mode */
+}
+[data-md-color-scheme="slate"] .md-nav__link--active {
+  background-color: rgba(255,255,255,0.06); /* subtle highlight on dark */
+  color: #e5e7eb;
+  border-left: 3px solid rgba(255,255,255,0.2);
+}
+
+/* Dividers */
+hr, .md-typeset hr { border-color: var(--ww-gray-2); }

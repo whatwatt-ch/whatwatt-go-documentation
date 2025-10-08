@@ -1,0 +1,12 @@
+type: object
+properties:
+  action_id:
+    type: string
+  id:
+    type: integer
+  code:
+    type: integer
+    description: HTTP status or negative codes for Modbus/connection; -1 while running
+  exe_time:
+    type: number
+    description: Seconds

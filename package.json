@@ -1,0 +1,27 @@
+{
+  "name": "whatwatt-docs",
+  "version": "1.0.0",
+  "description": "WhatWatt documentation with comprehensive validation",
+  "scripts": {
+    "validate": "python validate_docs.py",
+    "validate:fast": "python validate_docs.py --fast",
+    "validate:markdown": "markdownlint-cli2 **/*.md --ignore node_modules --ignore dist",
+    "validate:mkdocs": "mkdocs build --clean --strict",
+    "validate:links": "blc site --recursive --requests 5",
+    "validate:style": "vale docs/ *.md",
+    "validate:openapi": "python validate_openapi_prance.py",
+    "build": "mkdocs build --clean",
+    "build:prod": "python build_production.py",
+    "serve": "mkdocs serve -a 127.0.0.1:8000",
+    "lint:fix": "markdownlint-cli2-fix **/*.md --ignore node_modules --ignore dist",
+    "vale:sync": "vale sync",
+    "deploy:prep": "mkdocs build --strict --clean --site-dir dist && echo 'Ready for deployment: ./dist/'"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "^0.18.1",
+    "broken-link-checker": "^0.7.8"
+  },
+  "keywords": ["documentation", "mkdocs", "validation", "markdown", "vale"],
+  "author": "WhatWatt Team",
+  "license": "MIT"
+}

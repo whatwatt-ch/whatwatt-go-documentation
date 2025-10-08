@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: WhatWatt Go REST API
+  version: 1.0.0
+  description: 'Public HTTP API of the WhatWatt Go device. Authentication may be required
+    depending on device settings; when enabled, the device supports HTTP authentication
+    (method depends on firmware version). All endpoints are local to the device and typically served at
+    http://whatwatt-XXXXXX.local.
+
+    '
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: http://whatwatt-XXXXXX.local
+  description: Default local mDNS address
+- url: http://{deviceIp}
+  description: Direct IP access
+  variables:
+    deviceIp:
+      default: 192.168.1.100
+tags:
+- name: General
+  description: General system information and status
+- name: Measurements
+  description: Energy measurement and consumption data
+- name: Streaming
+  description: Real-time data streaming
+- name: Settings
+  description: Device configuration and settings
+- name: Maintenance
+  description: System maintenance and administrative functions
+- name: Wi-Fi
+  description: Wireless network configuration
+- name: Ethernet
+  description: Ethernet network configuration
+- name: Actions
+  description: Device actions and automation
+- name: SD Card
+  description: SD card file management
+security:
+- basicAuth: []
+- digestAuth: []
+- {} # Allow unauthenticated access
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication (firmware before 1.10.X); only enforced if device protection
+        is enabled.
+
+        '
+    digestAuth:
+      type: http
+      scheme: digest
+      description: 'HTTP Digest authentication (firmware 1.10.X and later); only enforced if device protection
+        is enabled. More secure than Basic auth.
+
+        '
+  schemas:
+    Error:
+      $ref: ./components/schemas/Error.yaml
+    SystemInfo:
+      $ref: ./components/schemas/SystemInfo.yaml
+    ReportEnvelope:
+      $ref: ./components/schemas/ReportEnvelope.yaml
+    Settings:
+      $ref: ./components/schemas/Settings.yaml
+    WiFiNetwork:
+      $ref: ./components/schemas/WiFiNetwork.yaml
+    WiFiStaSettings:
+      $ref: ./components/schemas/WiFiStaSettings.yaml
+    EthernetSettings:
+      $ref: ./components/schemas/EthernetSettings.yaml
+    ActionsDefinition:
+      $ref: ./components/schemas/ActionsDefinition.yaml
+    ActionStatus:
+      $ref: ./components/schemas/ActionStatus.yaml
+    DirectoryEntry:
+      $ref: ./components/schemas/DirectoryEntry.yaml
+    DirectoryListing:
+      $ref: ./components/schemas/DirectoryListing.yaml
+paths:
+  /api/v1/system:
+    $ref: ./paths/general.yaml#/~1api~1v1~1system
+  /api/v1/report:
+    $ref: ./paths/measurements.yaml#/~1api~1v1~1report
+  /api/v1/live:
+    $ref: ./paths/streaming.yaml#/~1api~1v1~1live
+  /api/v1/settings:
+    $ref: ./paths/settings.yaml#/~1api~1v1~1settings
+  /api/v1/reboot:
+    $ref: ./paths/maintenance.yaml#/~1api~1v1~1reboot
+  /load:
+    $ref: ./paths/maintenance.yaml#/~1load
+  /api/v1/restore:
+    $ref: ./paths/maintenance.yaml#/~1api~1v1~1restore
+  /api/v1/wifi/scan:
+    $ref: ./paths/wi-fi.yaml#/~1api~1v1~1wifi~1scan
+  /api/v1/wifi/sta/settings:
+    $ref: ./paths/wi-fi.yaml#/~1api~1v1~1wifi~1sta~1settings
+  /api/v1/eth/settings:
+    $ref: ./paths/ethernet.yaml#/~1api~1v1~1eth~1settings
+  /api/v1/actions:
+    $ref: ./paths/actions.yaml#/~1api~1v1~1actions
+  /api/v1/actions/call:
+    $ref: ./paths/actions.yaml#/~1api~1v1~1actions~1call
+  /api/v1/actions/status:
+    $ref: ./paths/actions.yaml#/~1api~1v1~1actions~1status
+  /sdcard:
+    $ref: ./paths/sd-card.yaml#/~1sdcard
+  /sdcard/{path}:
+    $ref: ./paths/sd-card.yaml#/~1sdcard~1{path}

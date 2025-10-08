@@ -1,0 +1,19 @@
+/api/v1/live:
+  get:
+    tags:
+    - Streaming
+    summary: Stream live measurements (SSE)
+    description: 'Server-Sent Events stream with events named `live` that carry JSON payloads.'
+    operationId: streamLive
+    responses:
+      '200':
+        description: Server-Sent Events stream
+        content:
+          text/event-stream:
+            schema:
+              type: string
+              description: SSE stream with events named `live` containing JSON payloads
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '503':
+        $ref: '../components/responses/ServiceUnavailable.yaml'

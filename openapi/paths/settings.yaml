@@ -1,0 +1,114 @@
+/api/v1/settings:
+  get:
+    tags:
+    - Settings
+    summary: Read current settings
+    description: 'Reads the current configuration. Most settings apply dynamically without reboot.'
+    operationId: getSettings
+    responses:
+      '200':
+        description: Current settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/Settings.yaml'
+            examples:
+              ok:
+                value:
+                  system:
+                    name: ''
+                    host_name: whatwatt_9F8124
+                    protection: false
+                  services:
+                    report_interval: 30
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  put:
+    tags:
+    - Settings
+    summary: Update settings (partial)
+    description: 'Partially updates the configuration object. Values apply dynamically.'
+    operationId: updateSettings
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Settings.yaml'
+          examples:
+            partial:
+              value:
+                system:
+                  host_name: whatwatt_9F8124
+                  protection: true
+                services:
+                  report_interval: 15
+    responses:
+      '200':
+        description: Updated settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/Settings.yaml'
+            examples:
+              ok:
+                value:
+                  system:
+                    name: ''
+                    host_name: whatwatt_9F8124
+                    protection: true
+                  services:
+                    report_interval: 15
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  post:
+    tags:
+    - Settings
+    summary: Replace settings (full)
+    description: 'Replaces the entire configuration object. Values apply dynamically.'
+    operationId: replaceSettings
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Settings.yaml'
+          examples:
+            full:
+              value:
+                system:
+                  name: Plant A
+                  host_name: whatwatt_9F8124
+                  protection: false
+                services:
+                  report_interval: 30
+                  log: true
+    responses:
+      '200':
+        description: Replaced settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/Settings.yaml'
+            examples:
+              ok:
+                value:
+                  system:
+                    name: Plant A
+                    host_name: whatwatt_9F8124
+                    protection: false
+                  services:
+                    report_interval: 30
+                    log: true
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

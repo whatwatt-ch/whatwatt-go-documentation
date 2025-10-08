@@ -1,0 +1,20 @@
+openapi: 3.0.3
+info:
+  title: WhatWatt Go REST API
+  version: 1.0.0
+paths:
+  /api/v1/system: {}
+  /api/v1/report: {}
+  /api/v1/live: {}
+  /api/v1/settings: {}
+  /api/v1/reboot: {}
+  /load: {}
+  /api/v1/restore: {}
+  /api/v1/wifi/scan: {}
+  /api/v1/wifi/sta/settings: {}
+  /api/v1/eth/settings: {}
+  /api/v1/actions: {}
+  /api/v1/actions/call: {}
+  /api/v1/actions/status: {}
+  /sdcard: {}
+  /sdcard/{path}: {}

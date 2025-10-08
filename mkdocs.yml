@@ -1,0 +1,187 @@
+site_name: WhatWatt Go · REST & MQTT API Documentation
+site_url: https://whatwatt.ch
+site_description: Complete API documentation for WhatWatt Go device integration via REST API and MQTT
+site_author: WhatWatt
+repo_url: https://github.com/whatwatt-ch
+edit_uri: ""
+
+# Strict mode for rigorous validation
+strict: true
+
+theme:
+  name: material
+  custom_dir: overrides
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  favicon: assets/favicon.svg
+  logo: assets/logo.svg
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - content.tabs.link
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - search.highlight
+    - search.suggest
+    - search.share
+    - toc.follow
+    - toc.integrate
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - macros
+  - htmlproofer:
+      enabled: !ENV [CI, false]
+      raise_error: !ENV [CI, false]
+      validate_external_urls: true
+      validate_rendered_template: true
+      ignore_urls:
+        - "javascript:void(0)"
+        - "https://github.com/whatwatt-ch"
+
+extra:
+  homepage: https://whatwatt.ch
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/whatwatt-ch
+      name: WhatWatt on GitHub
+    - icon: fontawesome/solid/globe
+      link: https://whatwatt.ch
+      name: WhatWatt Website
+  generator: false
+
+extra_css:
+  - assets/extra.css
+
+copyright: >
+  Copyright &copy; 2025 WhatWatt –
+  <a href="https://whatwatt.ch/en/privacy-policy">Privacy Policy</a> –
+  <a href="https://whatwatt.ch/en/imprint">Imprint</a>
+
+not_in_nav: |
+  _partials/
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      base_path:
+        - docs
+        - docs/_partials
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: true
+      toc_depth: 3
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: 00-intro/overview.md
+    - REST vs MQTT: 00-intro/rest-vs-mqtt.md
+    - Discovery (mDNS): 10-general/discovery.md
+    - System Info: 10-general/system-info.md
+    - First request: 00-intro/first-request.md
+    - License & editions: 00-intro/licensing.md
+  - Setup:
+    - Power & Wi‑Fi: 10-general/power-and-wifi.md
+    - Wi‑Fi setup: 50-settings/wifi-setup.md
+    - Scan Wi‑Fi: 50-settings/wifi-scan.md
+    - WPS: 50-settings/wps.md
+    - Ethernet: 50-settings/ethernet.md
+    - Restart: 50-settings/restart.md
+    - Factory reset: 50-settings/factory-reset.md
+    - Firmware update: 50-settings/firmware-update.md
+  - Data Access:
+    - REST:
+      - Conventions: 50-settings/rest-conventions.md
+      - Polling: 20-rest/polling.md
+      - Streaming: 20-rest/streaming.md
+      - Report objects (COSEM): 20-rest/report-objects.md
+      - Reference (OpenAPI): 20-rest/reference/index.md
+    - MQTT:
+      - Overview: 30-mqtt/index.md
+      - Template: 30-mqtt/template.md
+      - Local variables: 30-mqtt/local-reading.md
+    - SD card:
+      - Overview: 50-settings/sdcard/index.md
+      - Listing: 50-settings/sdcard/listing.md
+      - Download: 50-settings/sdcard/download.md
+      - Delete: 50-settings/sdcard/delete.md
+      - CSV format: 50-settings/sdcard/csv-format.md
+      - Configuration: 50-settings/sdcard/configuration.md
+      - Troubleshooting: 50-settings/sdcard/troubleshooting.md
+      - Usage examples: 50-settings/sdcard/usage-examples.md
+    - Secure MQTT:
+      - Scope & Prereqs: 40-secure-mqtt/index.md
+      - Install Mosquitto: 40-secure-mqtt/install-mosquitto.md
+      - ECDSA-P256 chain: 40-secure-mqtt/tls-ca-ecc.md
+      - Deploy certs: 40-secure-mqtt/deploy-certs.md
+      - mosquitto TLS conf: 40-secure-mqtt/tls-conf.md
+      - Quick subscribe (CLI): 40-secure-mqtt/quick-subscribe.md
+      - Provision payload: 40-secure-mqtt/provision-payload.md
+      - setup_mqtt.py: 40-secure-mqtt/setup-script.md
+      - Hardening: 40-secure-mqtt/hardening.md
+  - Device Settings:
+    - Settings: 50-settings/settings.md
+    - Meter comm: 50-settings/meter-comm.md
+    - Scalers (current): 50-settings/scalers-current.md
+    - Scalers (custom): 50-settings/scalers-custom.md
+    - Actions:
+      - Definition: 50-settings/actions/index.md
+      - Execution: 50-settings/actions/execution.md
+      - Status: 50-settings/actions/status.md
+  - Appendix:
+    - HTTP basics: 90-appendix/http-basics.md
+    - curl options: 90-appendix/curl-options.md
+    - Digest cheatsheet: 90-appendix/digest-cheatsheet.md
+    - JSON formatting script: 90-appendix/appendix-c.md
+    - OBIS codes reference: 90-appendix/appendix-d.md

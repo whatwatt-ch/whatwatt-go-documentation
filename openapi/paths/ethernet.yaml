@@ -1,0 +1,73 @@
+/api/v1/eth/settings:
+  get:
+    tags:
+    - Ethernet
+    summary: Read Ethernet settings
+    description: 'Reads Ethernet configuration. Changes usually apply dynamically.'
+    operationId: getEthernetSettings
+    responses:
+      '200':
+        description: Current Ethernet settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/EthernetSettings.yaml'
+            examples:
+              ok:
+                value:
+                  enable: true
+                  static_ip: false
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  put:
+    tags:
+    - Ethernet
+    summary: Update Ethernet settings (partial)
+    description: 'Partially updates Ethernet configuration.'
+    operationId: updateEthernetSettings
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/EthernetSettings.yaml'
+    responses:
+      '200':
+        description: Updated Ethernet settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/EthernetSettings.yaml'
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  post:
+    tags:
+    - Ethernet
+    summary: Replace Ethernet settings (full)
+    description: 'Replaces Ethernet configuration.'
+    operationId: replaceEthernetSettings
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/EthernetSettings.yaml'
+    responses:
+      '200':
+        description: Replaced Ethernet settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/EthernetSettings.yaml'
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

@@ -1,0 +1,121 @@
+/api/v1/wifi/scan:
+  get:
+    tags:
+    - Wi-Fi
+    summary: Scan nearby Wi‑Fi networks
+    description: 'Performs a scan and returns visible access points with RSSI and channel information. '
+    operationId: scanWifi
+    responses:
+      '200':
+        description: Array of detected networks
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/WiFiNetwork.yaml'
+            examples:
+              ok:
+                value:
+                - ssid: home
+                  rssi: -51
+                  signal: 86
+                  channel: 1
+                  auth_mode: WPA2
+                - ssid: guest
+                  rssi: -71
+                  signal: 56
+                  channel: 11
+                  auth_mode: open
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+/api/v1/wifi/sta/settings:
+  get:
+    tags:
+    - Wi-Fi
+    summary: Read Wi‑Fi station settings
+    description: 'Reads the STA (client) configuration. Changes apply without reboot.'
+    operationId: getWifiStaSettings
+    responses:
+      '200':
+        description: Current station settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/WiFiStaSettings.yaml'
+            examples:
+              ok:
+                value:
+                  enable: true
+                  name: home
+                  static_ip: false
+                  max_tx_power: 21
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  put:
+    tags:
+    - Wi-Fi
+    summary: Update Wi‑Fi station settings (partial)
+    description: 'Partially updates the STA (client) configuration.'
+    operationId: updateWifiStaSettings
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/WiFiStaSettings.yaml'
+    responses:
+      '200':
+        description: Updated settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/WiFiStaSettings.yaml'
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  post:
+    tags:
+    - Wi-Fi
+    summary: Replace Wi‑Fi station settings (full)
+    description: 'Replaces the STA (client) configuration.'
+    operationId: replaceWifiStaSettings
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/WiFiStaSettings.yaml'
+    responses:
+      '200':
+        description: Replaced settings
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/WiFiStaSettings.yaml'
+      '400':
+        $ref: '../components/responses/BadRequest.yaml'
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'
+  delete:
+    tags:
+    - Wi-Fi
+    summary: Delete Wi‑Fi station settings
+    description: 'Clears the STA (client) configuration and disables the client.'
+    operationId: deleteWifiStaSettings
+    responses:
+      '204':
+        description: Deleted; client disabled
+      '401':
+        $ref: '../components/responses/Unauthorized.yaml'
+      '500':
+        $ref: '../components/responses/InternalError.yaml'

@@ -1,0 +1,60 @@
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.ruff_cache/
+.pytest_cache/
+
+# MkDocs build
+site/
+_site/
+dist/
+
+# Node.js
+node_modules/
+
+# Editor/OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# VSCode
+.vscode/
+.idea/
+
+# Test/coverage
+.coverage
+htmlcov/
+*.log
+
+# OpenAPI generated/bundled
+openapi/api-bundled.yaml
+openapi/clients/
+
+# Vale
+styles/
+
+# Ignore gateway/prov_tool unless needed
+whatwatt-gateway/
+
+# Ignore backup/assets
+assets/extra_backup.css
+
+# Ignore search index
+search/
+
+# Ignore markdownlint cache
+.markdownlintcache
+
+# Large PDF documentation (can be re-downloaded)
+*.pdf

@@ -1,0 +1,29 @@
+{
+  "excludeExternalLinks": false,
+  "excludeInternalLinks": false,
+  "excludeLinksToSameFile": false,
+  "filterLevel": 2,
+  "honorRobotExclusions": false,
+  "maxSocketsPerHost": 1,
+  "rateLimit": 100,
+  "requestMethod": "get",
+  "retry405Head": true,
+  "userAgent": "broken-link-checker/0.7.8 (documentation check)",
+  "excludedKeywords": [
+    "javascript:void(0)",
+    "mailto:",
+    "tel:",
+    "ftp:"
+  ],
+  "excludedSchemes": [
+    "data",
+    "geo",
+    "javascript",
+    "mailto",
+    "sms",
+    "tel"
+  ],
+  "cacheExpiryTime": 3600000,
+  "maxRetries": 2,
+  "retryDelay": 1000
+}

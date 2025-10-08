@@ -1,0 +1,5 @@
+[codespell]
+skip = .git,site,*.svg,*.ico,*.pdf
+ignore-words-list = crate,te,aks,fo,ser,ist
+; booleans are passed via CLI args in pre-commit to avoid parser quirks on Windows
+; check-filenames and check-hidden enabled via pre-commit hook args
