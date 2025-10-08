@@ -89,21 +89,58 @@ Expected response format:
 
 ```json
 {
-  "timestamp": "2025-10-08T15:30:45Z",
-  "power": {
-    "total": 2456.7,
-    "l1": 823.4,
-    "l2": 891.2,
-    "l3": 742.1
+  "report": {
+    "id": 7892,
+    "interval": 6.749,
+    "tariff": 1,
+    "date_time": "2025-10-07T14:26:10Z",
+    "date_time_local": "2025-10-07T14:26:10+02:00",
+    "instantaneous_power": {
+      "active": {
+        "positive": {
+          "total": 2456,
+          "l1": 823,
+          "l2": 891,
+          "l3": 742
+        },
+        "negative": {
+          "total": 0,
+          "l1": 0,
+          "l2": 0,
+          "l3": 0
+        }
+      }
+    },
+    "voltage": {
+      "l1": 231.2,
+      "l2": 230.8,
+      "l3": 232.1
+    },
+    "current": {
+      "l1": 3.6,
+      "l2": 3.9,
+      "l3": 3.2
+    },
+    "energy": {
+      "active": {
+        "positive": {
+          "total": 1234567.8
+        },
+        "negative": {
+          "total": 98765.4
+        }
+      }
+    }
   },
-  "energy": {
-    "import": 1234567.8,
-    "export": 98765.4
+  "meter": {
+    "status": "OK",
+    "interface": "MBUS",
+    "protocol": "DLMS",
+    "logical_name": "LGZ1030784855204"
   },
-  "voltage": {
-    "l1": 231.2,
-    "l2": 230.8,
-    "l3": 232.1
+  "system": {
+    "id": "ECC9FF5C7F14",
+    "date_time": "2025-10-07T14:26:24Z"
   }
 }
 ```
@@ -135,13 +172,20 @@ Add multiple Virtual HTTP Input Commands to extract data:
 
 | Command Name | JSON Path | Description |
 |--------------|-----------|-------------|
-| `Power_Total` | `power.total` | Total power consumption (W) |
-| `Power_L1` | `power.l1` | Phase L1 power (W) |
-| `Power_L2` | `power.l2` | Phase L2 power (W) |
-| `Power_L3` | `power.l3` | Phase L3 power (W) |
-| `Energy_Import` | `energy.import` | Imported energy (Wh) |
-| `Energy_Export` | `energy.export` | Exported energy (Wh) |
-| `Voltage_L1` | `voltage.l1` | Phase L1 voltage (V) |
+| `Power_Total` | `report.instantaneous_power.active.positive.total` | Total active power consumption (W) |
+| `Power_L1` | `report.instantaneous_power.active.positive.l1` | Phase L1 active power (W) |
+| `Power_L2` | `report.instantaneous_power.active.positive.l2` | Phase L2 active power (W) |
+| `Power_L3` | `report.instantaneous_power.active.positive.l3` | Phase L3 active power (W) |
+| `Energy_Import` | `report.energy.active.positive.total` | Total imported energy (Wh) |
+| `Energy_Export` | `report.energy.active.negative.total` | Total exported energy (Wh) |
+| `Voltage_L1` | `report.voltage.l1` | Phase L1 voltage (V) |
+| `Voltage_L2` | `report.voltage.l2` | Phase L2 voltage (V) |
+| `Voltage_L3` | `report.voltage.l3` | Phase L3 voltage (V) |
+| `Current_L1` | `report.current.l1` | Phase L1 current (A) |
+| `Current_L2` | `report.current.l2` | Phase L2 current (A) |
+| `Current_L3` | `report.current.l3` | Phase L3 current (A) |
+| `Meter_Status` | `meter.status` | Meter communication status |
+| `Device_ID` | `system.id` | Device unique identifier |
 
 ## Step 3: Create Energy Monitoring Logic
 
