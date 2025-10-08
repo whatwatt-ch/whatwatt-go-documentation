@@ -2,6 +2,7 @@
 mkdocs>=1.6
 mkdocs-material>=9.5
 mkdocs-macros-plugin>=1.0
+mkdocs-htmlproofer-plugin>=1.0
 pymdown-extensions>=10.0
 
 # OpenAPI validation and processing
