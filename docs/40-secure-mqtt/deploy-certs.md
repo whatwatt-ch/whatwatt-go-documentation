@@ -89,4 +89,4 @@ drwxr-xr-x 4 root root      4096 Oct  7 10:00 ..
 | `/etc/mosquitto/certs/server.key` | Broker's private key for TLS encryption   |
 
 !!! note "Client Certificates"
-    The client certificates (`whatwatt.crt` and `whatwatt.key`) will be uploaded directly to the WhatWatt Go device via REST API, so they don't need to be placed on the broker.
+    The client certificates (`whatwatt.crt` and `whatwatt.key`) will be uploaded directly to the whatwatt Go device via REST API, so they don't need to be placed on the broker.

@@ -38,7 +38,7 @@ real_device_tested: true
 - **When to use**: Testing API endpoints, scripting automation, troubleshooting HTTP requests, learning command-line API interaction
 - **Prerequisites**: Command-line familiarity, basic HTTP knowledge, cURL installation, understanding of HTTP methods
 - **Related to**: HTTP basics (http-basics.md), REST conventions (rest-conventions.md), authentication methods
-- **Validates against**: Real WhatWatt Go device API endpoints, cross-platform compatibility (Linux/Windows/PowerShell)
+- **Validates against**: Real whatwatt Go device API endpoints, cross-platform compatibility (Linux/Windows/PowerShell)
 
 ## Key Facts
 
@@ -46,7 +46,7 @@ real_device_tested: true
 - **Data formats**: JSON payloads, form data, request bodies - Support for various content types
 - **HTTP methods**: GET, POST, PUT, DELETE - Complete REST API interaction capability
 - **Platform support**: Bash and PowerShell examples - Cross-platform command-line usage
-- **Practical examples**: WhatWatt Go API calls, authentication, streaming - Real-world usage patterns
+- **Practical examples**: whatwatt Go API calls, authentication, streaming - Real-world usage patterns
 
 The `curl` command-line tool is invaluable for interacting with web APIs. It allows for the execution of HTTP requests directly from the terminal, providing a versatile and powerful means of engaging with endpoints. Here are the most commonly used options:
 
@@ -92,9 +92,9 @@ By combining these options, you can craft precise and powerful HTTP requests tai
 curl -i -X POST -d '{"setting": "new value"}' [URL]
 ```
 
-## Examples with WhatWatt Go
+## Examples with whatwatt Go
 
-Here are some practical examples for interacting with WhatWatt Go API:
+Here are some practical examples for interacting with whatwatt Go API:
 
 ```bash
 # Get device information with headers

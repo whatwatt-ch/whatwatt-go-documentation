@@ -37,7 +37,7 @@ CSV files are generated when the SD service is enabled. They are named `YYYYMMDD
 
 ## Document Context
 
-- **Purpose**: Understand the structure and format of CSV files logged to SD cards by WhatWatt Go devices
+- **Purpose**: Understand the structure and format of CSV files logged to SD cards by whatwatt Go devices
 - **When to use**: When you need to process historical energy data, perform offline analysis, or understand the data export format
 - **Prerequisites**: Basic understanding of energy monitoring concepts; familiarity with OBIS codes helpful but not required
 - **Related to**: REST API data endpoints, DLMS/COSEM protocol, energy measurement standards

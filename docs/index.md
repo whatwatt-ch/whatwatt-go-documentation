@@ -1,5 +1,5 @@
 ---
-title: WhatWatt Go API Documentation
+title: whatwatt Go API Documentation
 category: concepts
 tags:
 - index
@@ -10,11 +10,11 @@ device_compatibility:
 last_verified: '2025-10-07'
 ---
 
-# WhatWatt Go API Documentation
+# whatwatt Go API Documentation
 
 ## Document Context
 
-- **Purpose**: Comprehensive introduction and navigation hub for WhatWatt Go API documentation and integration guides
+- **Purpose**: Comprehensive introduction and navigation hub for whatwatt Go API documentation and integration guides
 - **When to use**: Starting point for new users, overview of all available integration methods, reference for documentation structure
 - **Prerequisites**: Basic understanding of energy monitoring concepts; familiarity with REST APIs or MQTT helpful but not required
 - **Related to**: All documentation sections - serves as central navigation point to specific integration guides
@@ -31,11 +31,11 @@ last_verified: '2025-10-07'
 - **Data Ownership**: Local device - your data stays under your control
 - **Real-time Capability**: Instant energy consumption monitoring and streaming
 
-Welcome to the comprehensive API documentation for **WhatWatt Go** - the Swiss Smart Meter integration device.
+Welcome to the comprehensive API documentation for **whatwatt Go** - the Swiss Smart Meter integration device.
 
-## What is WhatWatt Go?
+## What is whatwatt Go?
 
-WhatWatt Go is a cutting-edge device that connects to any Swiss Smart Meter, enabling real-time energy consumption monitoring and data access through REST API and MQTT protocols. Made for Switzerland and Europe, it empowers users to optimize their energy consumption through instant, real-time data access.
+whatwatt Go is a cutting-edge device that connects to any Swiss Smart Meter, enabling real-time energy consumption monitoring and data access through REST API and MQTT protocols. Made for Switzerland and Europe, it empowers users to optimize their energy consumption through instant, real-time data access.
 
 ## Key Features
 
@@ -94,11 +94,11 @@ Choose your integration method:
 
 ## Documentation Structure
 
-This documentation covers everything you need to integrate with WhatWatt Go:
+This documentation covers everything you need to integrate with whatwatt Go:
 
 ### 🚀 Getting Started
 
-- **[Overview](00-intro/overview.md)** - Introduction to WhatWatt Go
+- **[Overview](00-intro/overview.md)** - Introduction to whatwatt Go
 - **[REST vs MQTT](00-intro/rest-vs-mqtt.md)** - Choose the right integration method
 
 ### 🔧 Device Information
@@ -129,11 +129,11 @@ This documentation covers everything you need to integrate with WhatWatt Go:
 
 > The Energy Transition will only succeed if we can optimize our own energy consumption. This is only possible if we know our consumption in real time and can react accordingly.
 
-The Swiss Federal Regulation concerning electricity supply stipulates that Smart Meters must be equipped with an interface that allows retrieving measured data in real time. **WhatWatt Go uses this interface to give you control over your energy data.**
+The Swiss Federal Regulation concerning electricity supply stipulates that Smart Meters must be equipped with an interface that allows retrieving measured data in real time. **whatwatt Go uses this interface to give you control over your energy data.**
 
 ## Data Ownership
 
-**Who owns your energy consumption data?** The consumption data collected from your household belongs to **you**. You decide with whom you would like to share this data. WhatWatt Go ensures your data stays local and under your control.
+**Who owns your energy consumption data?** The consumption data collected from your household belongs to **you**. You decide with whom you would like to share this data. whatwatt Go ensures your data stays local and under your control.
 
 ---
 

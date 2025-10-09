@@ -1,6 +1,6 @@
 # OpenAPI Documentation Structure
 
-This directory contains the OpenAPI 3.0 specification for the WhatWatt Go device REST API.
+This directory contains the OpenAPI 3.0 specification for the whatwatt Go device REST API.
 
 ## Files Overview
 

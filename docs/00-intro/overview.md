@@ -34,11 +34,11 @@ real_device_tested: false
 
 ## Document Context
 
-- **Purpose**: Provides comprehensive overview of WhatWatt Go device integration capabilities and API methods for energy monitoring applications
-- **When to use**: Starting point for developers planning WhatWatt Go integration, choosing between REST API and MQTT protocols
+- **Purpose**: Provides comprehensive overview of whatwatt Go device integration capabilities and API methods for energy monitoring applications
+- **When to use**: Starting point for developers planning whatwatt Go integration, choosing between REST API and MQTT protocols
 - **Prerequisites**: Basic understanding of HTTP APIs and MQTT messaging protocols, familiarity with energy monitoring concepts
 - **Related to**: REST API polling, MQTT streaming, device discovery, authentication methods
-- **Validates against**: WhatWatt Go device capabilities across firmware versions 1.2+
+- **Validates against**: whatwatt Go device capabilities across firmware versions 1.2+
 
 ## Key Facts
 
@@ -49,9 +49,9 @@ real_device_tested: false
 - **Network requirements**: Local network access (mDNS discovery supported)
 - **Real-time capability**: Sub-second updates via SSE streaming and MQTT
 - **Energy data types**: Instantaneous power, cumulative energy, voltage, current, tariff information
-- **Device compatibility**: All WhatWatt Go hardware revisions with firmware 1.2+
+- **Device compatibility**: All whatwatt Go hardware revisions with firmware 1.2+
 
-The WhatWatt Go device can be integrated into systems using two primary methods: the MQTT client connection and local REST API over HTTP. Each method offers unique advantages and is suited for different scenarios, particularly concerning network reliability, bandwidth usage, and ease of integration.
+The whatwatt Go device can be integrated into systems using two primary methods: the MQTT client connection and local REST API over HTTP. Each method offers unique advantages and is suited for different scenarios, particularly concerning network reliability, bandwidth usage, and ease of integration.
 
 This site documents both integration methods with detailed guides, examples, and reference materials.
 

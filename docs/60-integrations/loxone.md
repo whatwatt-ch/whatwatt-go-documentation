@@ -17,11 +17,11 @@ last_verified: '2025-10-08'
 
 ## Document Context
 
-- **Purpose**: Complete integration guide for connecting WhatWatt Go devices with Loxone home automation system for energy monitoring and control
+- **Purpose**: Complete integration guide for connecting whatwatt Go devices with Loxone home automation system for energy monitoring and control
 - **When to use**: Smart home setups with Loxone Miniserver, energy management automation, consumption monitoring, load balancing scenarios
-- **Prerequisites**: Loxone Miniserver Gen 1/2, Loxone Config software, WhatWatt Go device on network, basic Loxone programming knowledge
+- **Prerequisites**: Loxone Miniserver Gen 1/2, Loxone Config software, whatwatt Go device on network, basic Loxone programming knowledge
 - **Related to**: HTTP virtual inputs, energy monitoring blocks, data visualization, automation triggers based on energy consumption
-- **Validates against**: Live energy data from WhatWatt Go REST API integrated into Loxone monitoring and automation logic
+- **Validates against**: Live energy data from whatwatt Go REST API integrated into Loxone monitoring and automation logic
 
 ## Key Facts
 
@@ -34,18 +34,18 @@ last_verified: '2025-10-08'
 - **Visualization**: Built-in Loxone energy monitoring widgets
 - **Error handling**: Connection monitoring and fallback logic
 
-This guide shows how to integrate WhatWatt Go energy monitoring into Loxone for comprehensive smart home energy management.
+This guide shows how to integrate whatwatt Go energy monitoring into Loxone for comprehensive smart home energy management.
 
 ## Overview
 
-The WhatWatt Go device integrates seamlessly with Loxone home automation systems through the REST API. This enables real-time energy monitoring, automated load control, and intelligent energy management within your Loxone smart home.
+The whatwatt Go device integrates seamlessly with Loxone home automation systems through the REST API. This enables real-time energy monitoring, automated load control, and intelligent energy management within your Loxone smart home.
 
 ## Prerequisites
 
 ### Hardware
 
 - Loxone Miniserver (Gen 1 or Gen 2)
-- WhatWatt Go device (firmware 1.2+)
+- whatwatt Go device (firmware 1.2+)
 - Stable network connection for both devices
 
 ### Software
@@ -56,14 +56,14 @@ The WhatWatt Go device integrates seamlessly with Loxone home automation systems
 ### Network Setup
 
 - Both devices on same network or accessible via routing
-- HTTP connectivity from Miniserver to WhatWatt Go
-- Optional: Static IP for WhatWatt Go device
+- HTTP connectivity from Miniserver to whatwatt Go
+- Optional: Static IP for whatwatt Go device
 
-## Step 1: Prepare WhatWatt Go Device
+## Step 1: Prepare whatwatt Go Device
 
 ### 1.1 Find Device IP Address
 
-Use device discovery to find your WhatWatt Go:
+Use device discovery to find your whatwatt Go:
 
 ```bash
 # Method 1: mDNS hostname
@@ -152,7 +152,7 @@ Expected response format:
 1. **Open Loxone Config**
 2. **Navigate to Periphery → Virtual Inputs**
 3. **Add new Virtual HTTP Input**:
-   - **Name**: `WhatWatt_Energy`
+   - **Name**: `whatwatt_Energy`
    - **Address**: `http://DEVICE_IP/api/v1/report`
    - **Update Cycle**: `60` seconds (adjust as needed)
    - **Format**: `JSON`
@@ -313,7 +313,7 @@ THEN
 
 ### Network Optimization
 
-- Use static IP for WhatWatt Go
+- Use static IP for whatwatt Go
 - Consider QoS settings for reliable communication
 - Monitor network latency
 
@@ -357,7 +357,7 @@ THEN
 
 ## Next Steps
 
-- **Expand monitoring**: Add more WhatWatt Go devices for detailed monitoring
+- **Expand monitoring**: Add more whatwatt Go devices for detailed monitoring
 - **Energy optimization**: Implement advanced load balancing algorithms
 - **Cost tracking**: Integrate with utility billing data
 - **Predictive control**: Use weather forecasts for heating/cooling optimization

@@ -1,7 +1,7 @@
-site_name: WhatWatt Go · REST & MQTT API Documentation
+site_name: whatwatt Go · REST & MQTT API Documentation
 site_url: https://whatwatt.ch
-site_description: Complete API documentation for WhatWatt Go device integration via REST API and MQTT
-site_author: WhatWatt
+site_description: Complete API documentation for whatwatt Go device integration via REST API and MQTT
+site_author: whatwatt
 repo_url: https://github.com/whatwatt-ch
 edit_uri: ""
 
@@ -70,17 +70,17 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/whatwatt-ch
-      name: WhatWatt on GitHub
+      name: whatwatt on GitHub
     - icon: fontawesome/solid/globe
       link: https://whatwatt.ch
-      name: WhatWatt Website
+      name: whatwatt Website
   generator: false
 
 extra_css:
   - assets/extra.css
 
 copyright: >
-  Copyright &copy; 2025 WhatWatt –
+  Copyright &copy; 2025 whatwatt –
   <a href="https://whatwatt.ch/en/privacy-policy">Privacy Policy</a> –
   <a href="https://whatwatt.ch/en/imprint">Imprint</a>
 

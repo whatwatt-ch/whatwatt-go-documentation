@@ -15,11 +15,11 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Explains mDNS/DNS-SD device discovery for locating WhatWatt Go devices on local networks without knowing IP addresses
+- **Purpose**: Explains mDNS/DNS-SD device discovery for locating whatwatt Go devices on local networks without knowing IP addresses
 - **When to use**: Network setup, device commissioning, troubleshooting connectivity, automated device detection
 - **Prerequisites**: Understanding of local networks, familiarity with mDNS/Bonjour/Avahi concepts
 - **Related to**: Network configuration, device setup, HTTP service access, Modbus TCP setup
-- **Validates against**: Live mDNS broadcasts from WhatWatt Go devices with firmware 1.2+
+- **Validates against**: Live mDNS broadcasts from whatwatt Go devices with firmware 1.2+
 
 ## Key Facts
 

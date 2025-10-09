@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Production Build Script for WhatWatt Documentation
+Production Build Script for whatwatt Documentation
 Builds optimized, production-ready documentation with full validation
 """
 
@@ -25,7 +25,7 @@ def run_command(cmd, description):
 
 
 def main():
-    print("🚀 WhatWatt Documentation - Production Build")
+    print("🚀 whatwatt Documentation - Production Build")
     print("=" * 50)
 
     start_time = time.time()

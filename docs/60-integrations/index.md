@@ -16,7 +16,7 @@ last_verified: '2025-10-08'
 
 ## Overview
 
-WhatWatt Go devices can be integrated with various home automation and energy management systems through REST API and MQTT protocols.
+whatwatt Go devices can be integrated with various home automation and energy management systems through REST API and MQTT protocols.
 
 ## Available Integrations
 

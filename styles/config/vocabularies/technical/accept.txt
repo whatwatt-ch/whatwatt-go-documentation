@@ -55,7 +55,7 @@ ACLs
 ECC
 
 # Product names and companies
-WhatWatt
+whatwatt
 Iskraemeco
 Kamstrup
 Sagemcom

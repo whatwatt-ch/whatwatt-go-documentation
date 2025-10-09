@@ -14,11 +14,11 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Complete guide for implementing secure MQTT integration with WhatWatt Go using TLS encryption, mutual authentication, and certificate-based security
+- **Purpose**: Complete guide for implementing secure MQTT integration with whatwatt Go using TLS encryption, mutual authentication, and certificate-based security
 - **When to use**: Production deployments requiring encrypted communication, enterprise security requirements, regulated environments, sensitive data protection
 - **Prerequisites**: Linux system administration, certificate management, MQTT broker configuration, network security concepts, OpenSSL command usage
 - **Related to**: Certificate generation, Mosquitto broker setup, TLS configuration, device provisioning, production security hardening
-- **Validates against**: Complete secure MQTT workflow with real WhatWatt Go device and Mosquitto 2.0.21+ broker setup
+- **Validates against**: Complete secure MQTT workflow with real whatwatt Go device and Mosquitto 2.0.21+ broker setup
 
 ## Key Facts
 
@@ -33,7 +33,7 @@ last_verified: '2025-10-07'
 
 ## Scope
 
-This chapter shows how to connect a WhatWatt Go device to a local Mosquitto 2.0.21 broker using ECDSA certificates, mutual-TLS, and IP addresses (no hostname validation). All certificates are stored in `/etc/mosquitto/certs/`. Optional production-grade notes are included at the end.
+This chapter shows how to connect a whatwatt Go device to a local Mosquitto 2.0.21 broker using ECDSA certificates, mutual-TLS, and IP addresses (no hostname validation). All certificates are stored in `/etc/mosquitto/certs/`. Optional production-grade notes are included at the end.
 
 ## Prerequisites
 
@@ -42,7 +42,7 @@ This chapter shows how to connect a WhatWatt Go device to a local Mosquitto 2.0.
 | Ubuntu/Debian | fresh install, sudo user            |
 | Mosquitto     | 2.0.21+ (apt repo)                  |
 | OpenSSL       | 3.x (included)                      |
-| WhatWatt Go   | firmware ≥ 1.7.6, REST API enabled |
+| whatwatt Go   | firmware ≥ 1.7.6, REST API enabled |
 | Python        | ≥ 3.8 (for provisioning script)     |
 
 ## Overview
@@ -54,7 +54,7 @@ The secure MQTT setup involves:
 3. **Deploy certificates** - Install certificates with proper permissions
 4. **Configure Mosquitto** - Enable TLS listener with mutual authentication
 5. **Test connection** - Verify setup with command line tools
-6. **Provision device** - Configure WhatWatt Go via REST API
+6. **Provision device** - Configure whatwatt Go via REST API
 7. **Hardening** - Production security recommendations
 
 !!! warning "Security Note"

@@ -17,11 +17,11 @@ This page clarifies how commercial editions relate to the device firmware behavi
 
 ## Document Context
 
-- **Purpose**: Clarifies licensing model and edition differences for WhatWatt Go device, explaining how commercial editions relate to device firmware functionality
+- **Purpose**: Clarifies licensing model and edition differences for whatwatt Go device, explaining how commercial editions relate to device firmware functionality
 - **When to use**: Before purchasing decisions, compliance reviews, procurement processes, or when planning commercial deployments
-- **Prerequisites**: Basic understanding of software licensing models, familiarity with WhatWatt Go device capabilities
+- **Prerequisites**: Basic understanding of software licensing models, familiarity with whatwatt Go device capabilities
 - **Related to**: Device pricing, commercial terms, technical specifications, firmware features
-- **Validates against**: Current WhatWatt Go firmware behavior across all commercial editions
+- **Validates against**: Current whatwatt Go firmware behavior across all commercial editions
 
 ## Key Facts
 

@@ -1,4 +1,4 @@
-# RAG Optimization TODO - WhatWatt Go Documentation
+# RAG Optimization TODO - whatwatt Go Documentation
 
 ## Overview
 
@@ -245,7 +245,7 @@ concepts:
 **Template**:
 
 ```markdown
-> **✅ Device Tested**: This documentation was verified against real WhatWatt Go device (192.168.99.114) on 2025-10-07
+> **✅ Device Tested**: This documentation was verified against real whatwatt Go device (192.168.99.114) on 2025-10-07
 >
 > **Device Info**: Landis+Gyr LGZ1030784855204, MBUS interface, DLMS protocol, Firmware 1.10.0
 ```
@@ -304,7 +304,7 @@ meter_types:
 
 ```html
 <!-- FACT_BLOCK -->
-The WhatWatt Go device uses HTTP Digest authentication when a Web UI password is configured.
+The whatwatt Go device uses HTTP Digest authentication when a Web UI password is configured.
 <!-- /FACT_BLOCK -->
 
 <!-- CODE_EXAMPLE -->

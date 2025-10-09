@@ -14,7 +14,7 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Provides quick-start guide with minimal curl commands to verify WhatWatt Go device connectivity and demonstrate basic data retrieval
+- **Purpose**: Provides quick-start guide with minimal curl commands to verify whatwatt Go device connectivity and demonstrate basic data retrieval
 - **When to use**: First-time device setup, connectivity testing, API proof-of-concept, new developer onboarding
 - **Prerequisites**: Device on local network, curl installed, basic command line knowledge
 - **Related to**: Device discovery, authentication setup, REST API polling, system information

@@ -15,7 +15,7 @@ last_verified: '2025-10-07'
 ## Document Context
 
 - **Purpose**: Step-by-step installation guide for Mosquitto MQTT broker with TLS support and client tools for secure MQTT communication testing
-- **When to use**: Initial setup of secure MQTT infrastructure, preparing broker environment for WhatWatt Go integration, development environment setup
+- **When to use**: Initial setup of secure MQTT infrastructure, preparing broker environment for whatwatt Go integration, development environment setup
 - **Prerequisites**: Ubuntu/Debian Linux system with sudo privileges, basic Linux package management knowledge, systemd service management
 - **Related to**: TLS certificate generation, broker configuration, secure MQTT client testing, service verification
 - **Validates against**: Mosquitto 2.0.21+ installation with verified service status and client tool availability

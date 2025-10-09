@@ -156,7 +156,7 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | `meter.protocol_ver`| string|          | Meter protocol version                                      |
 | `meter.status`     | string |          | Connection status (NOT CONNECTED, NO DATA, OK, etc.)      |
 | `sys.name`         | string |          | Name of device (settable via WebUI)                       |
-| `sys.id`           | string |          | WhatWatt Go system identifier                              |
+| `sys.id`           | string |          | whatwatt Go system identifier                              |
 | `sys.firmware`     | string |          | Firmware version                                            |
 | `sys.date_time`    | string | ISO8601  | System local time                                           |
 

@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: WhatWatt Go REST API
+  title: whatwatt Go REST API
   version: 1.0.0
-  description: 'Public HTTP API of the WhatWatt Go device. Authentication may be required
+  description: 'Public HTTP API of the whatwatt Go device. Authentication may be required
     depending on device settings; when enabled, the device supports HTTP Basic or
     Digest authentication. All endpoints are local to the device and typically served
     at http://whatwatt-XXXXXX.local.

@@ -39,7 +39,7 @@ authentication: required when device password is set
 - **When to use**: For device discovery, health monitoring, troubleshooting, or inventory management
 - **Prerequisites**: Network connectivity to device; no special knowledge required
 - **Related to**: Device configuration, network setup, meter communication status
-- **Validates against**: Real device data from WhatWatt Go hardware
+- **Validates against**: Real device data from whatwatt Go hardware
 
 ## Key Facts
 

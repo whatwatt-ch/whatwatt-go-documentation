@@ -14,7 +14,7 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: REST API conventions and best practices for WhatWatt Go device configuration including HTTP methods, status codes, and security
+- **Purpose**: REST API conventions and best practices for whatwatt Go device configuration including HTTP methods, status codes, and security
 - **When to use**: Before implementing REST API integrations, troubleshooting API calls, understanding authentication requirements
 - **Prerequisites**: HTTP/REST API knowledge, JSON format understanding, basic web development concepts
 - **Related to**: Authentication (digest-cheatsheet.md), HTTP basics (http-basics.md), device settings endpoints
@@ -30,7 +30,7 @@ last_verified: '2025-10-07'
 
 --8<-- "../../_partials/auth-note.md"
 
-General conventions for using the local REST API to configure WhatWatt Go device settings.
+General conventions for using the local REST API to configure whatwatt Go device settings.
 
 ## HTTP Methods
 

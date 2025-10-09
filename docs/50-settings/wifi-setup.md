@@ -45,7 +45,7 @@ methods:
 - **When to use**: For wireless deployment, network connectivity setup, or changing wireless networks
 - **Prerequisites**: Knowledge of target network credentials; understanding of static vs DHCP IP assignment
 - **Related to**: Network connectivity, device deployment, remote access setup
-- **Validates against**: Real Wi-Fi configuration on WhatWatt Go devices
+- **Validates against**: Real Wi-Fi configuration on whatwatt Go devices
 
 ## Key Facts
 

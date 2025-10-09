@@ -14,9 +14,9 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Guides through remote firmware update procedures for WhatWatt Go device via HTTP upload interface
+- **Purpose**: Guides through remote firmware update procedures for whatwatt Go device via HTTP upload interface
 - **When to use**: When planning or executing firmware upgrades without physical device access
-- **Prerequisites**: Administrative access rights, firmware binary file from WhatWatt support
+- **Prerequisites**: Administrative access rights, firmware binary file from whatwatt support
 - **Related to**: Factory reset procedures, system information endpoints, device restart methods
 - **Validates against**: Real firmware upgrade sequences with update verification steps
 

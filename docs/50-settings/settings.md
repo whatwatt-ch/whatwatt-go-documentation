@@ -42,7 +42,7 @@ methods:
 - **When to use**: For initial device setup, service configuration, security setup, or system administration
 - **Prerequisites**: Network access to device; understanding of intended services and security requirements
 - **Related to**: Device initialization, service management, Web UI protection, cloud integrations
-- **Validates against**: Real device settings from WhatWatt Go hardware
+- **Validates against**: Real device settings from whatwatt Go hardware
 
 ## Key Facts
 
@@ -92,7 +92,7 @@ Constraints
 
 | JSON path                                 | Type     | Default             | Range/Rules                     | Notes |
 | ----------------------------------------- | -------- | ------------------- | ------------------------------- | ----- |
-| `services.cloud.what_watt`                | boolean  | true                |                                 | WhatWatt Cloud integration |
+| `services.cloud.what_watt`                | boolean  | true                |                                 | whatwatt Cloud integration |
 | `services.cloud.solar_manager`            | boolean  | false or true*      |                                 | Solar Manager cloud (see note*) |
 | `services.cloud.mystrom`                  | boolean  | false or true*      |                                 | myStrom cloud (see note*) |
 | `services.cloud.stromkonto`               | boolean  | false               |                                 | Stromkonto toggle (exposed in GET; applied if present in body) |

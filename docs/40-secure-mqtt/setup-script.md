@@ -14,11 +14,11 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Automated Python script for configuring WhatWatt Go devices with MQTT TLS settings via REST API with parameterized options
+- **Purpose**: Automated Python script for configuring whatwatt Go devices with MQTT TLS settings via REST API with parameterized options
 - **When to use**: Bulk device provisioning, automated deployment workflows, consistent configuration across multiple devices
-- **Prerequisites**: Python 3 with requests library, generated certificates available, WhatWatt Go devices accessible via network
+- **Prerequisites**: Python 3 with requests library, generated certificates available, whatwatt Go devices accessible via network
 - **Related to**: Manual provisioning (provision-payload.md), certificate generation (tls-ca-ecc.md), MQTT setup verification
-- **Validates against**: WhatWatt Go REST API /api/v1/mqtt/settings endpoint, certificate file format requirements
+- **Validates against**: whatwatt Go REST API /api/v1/mqtt/settings endpoint, certificate file format requirements
 
 ## Key Facts
 
@@ -28,7 +28,7 @@ last_verified: '2025-10-07'
 - **Error handling**: Network timeouts, HTTP errors, missing files, JSON validation
 - **Certificate loading**: Automatic file reading and embedding in JSON payload
 
-Automated Python script to configure WhatWatt Go devices with MQTT TLS settings.
+Automated Python script to configure whatwatt Go devices with MQTT TLS settings.
 
 ## Script Code
 
@@ -36,7 +36,7 @@ Save as `setup_mqtt.py`:
 
 ```python
 #!/usr/bin/env python3
-"""Configure a WhatWatt Go device over REST.
+"""Configure a whatwatt Go device over REST.
 
 Example:
 python setup_mqtt.py --device 192.168.99.176 --broker 192.168.99.186 \
@@ -47,7 +47,7 @@ import argparse, pathlib, requests, json, sys
 def args():
     p = argparse.ArgumentParser()
     p.add_argument("--device", default="192.168.99.176",
-                   help="WhatWatt Go device IP")
+                   help="whatwatt Go device IP")
     p.add_argument("--broker", default="192.168.99.186",
                    help="MQTT broker IP")
     p.add_argument("--port", type=int, default=8883,
@@ -135,7 +135,7 @@ python setup_mqtt.py \
 
 | Option       | Default                           | Description                    |
 |--------------|-----------------------------------|--------------------------------|
-| `--device`   | `192.168.99.176`                | WhatWatt Go device IP address |
+| `--device`   | `192.168.99.176`                | whatwatt Go device IP address |
 | `--broker`   | `192.168.99.186`                | MQTT broker IP address        |
 | `--port`     | `8883`                           | MQTT broker port              |
 | `--id`       | `whatwatt-001`                   | MQTT client ID                |

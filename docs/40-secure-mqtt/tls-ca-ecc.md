@@ -72,7 +72,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key \
   -CAcreateserial -sha256 -days 365 -out server.crt
 ```
 
-## 3. Generate Client Certificate for WhatWatt Go
+## 3. Generate Client Certificate for whatwatt Go
 
 Create the client certificate for device authentication:
 

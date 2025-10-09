@@ -38,7 +38,7 @@ real_device_tested: false
 - **When to use**: Architecture planning phase, integration design decisions, protocol selection for smart meter projects, technical evaluation
 - **Prerequisites**: Basic understanding of HTTP/REST concepts, MQTT publish-subscribe messaging, integration patterns, network protocols
 - **Related to**: First request (first-request.md), MQTT overview (30-mqtt/index.md), REST polling (20-rest/polling.md), streaming (20-rest/streaming.md)
-- **Validates against**: WhatWatt Go dual-protocol support, real-world integration patterns, performance characteristics
+- **Validates against**: whatwatt Go dual-protocol support, real-world integration patterns, performance characteristics
 
 ## Key Facts
 
@@ -50,14 +50,14 @@ real_device_tested: false
 
 ## Local REST API over HTTP
 
-The REST API provides a straightforward method for integrating the WhatWatt Go device through standard web protocols. Key advantages include:
+The REST API provides a straightforward method for integrating the whatwatt Go device through standard web protocols. Key advantages include:
 
 - Ease of integration with various systems due to its simplicity and compatibility with many development environments
 - Allows for direct implementation of CRUD operations (Create, Read, Update, Delete) on the data provided by the device
 
 ## MQTT Client Connection
 
-MQTT (Message Queuing Telemetry Transport) is a lightweight, publish-subscribe messaging protocol. It is particularly beneficial for scenarios where bandwidth usage and network reliability are significant concerns. By connecting as an MQTT client, the WhatWatt Go device can:
+MQTT (Message Queuing Telemetry Transport) is a lightweight, publish-subscribe messaging protocol. It is particularly beneficial for scenarios where bandwidth usage and network reliability are significant concerns. By connecting as an MQTT client, the whatwatt Go device can:
 
 - Efficiently handle high volumes of data transmission with minimal overhead
 - Ensure low latency, making it ideal for real-time monitoring and control applications

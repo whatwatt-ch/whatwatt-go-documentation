@@ -35,7 +35,7 @@ real_device_tested: false
 
 ## Document Context
 
-- **Purpose**: Comprehensive guide for configuring WhatWatt Go MQTT client to publish energy data to MQTT brokers
+- **Purpose**: Comprehensive guide for configuring whatwatt Go MQTT client to publish energy data to MQTT brokers
 - **When to use**: Setting up home automation, IoT platforms, real-time messaging systems, local data integration without cloud dependencies
 - **Prerequisites**: Basic MQTT concepts (pub/sub, brokers, topics), MQTT broker setup (Mosquitto, etc.), network connectivity knowledge
 - **Related to**: MQTT payload templates, reading variables, secure MQTT with TLS, message queuing systems
@@ -55,7 +55,7 @@ real_device_tested: false
 The device can be connected to an MQTT broker using the built-in MQTT client. The MQTT client supports both unencrypted and encrypted connections.
 
 !!! note
-    WhatWatt Go will only publish values if a meter is connected.
+    whatwatt Go will only publish values if a meter is connected.
 
 ## Configuration via REST API
 

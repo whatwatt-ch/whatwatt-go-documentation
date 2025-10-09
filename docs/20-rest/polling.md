@@ -315,7 +315,7 @@ The API returns an object containing three main sub-objects: **report**, **meter
 | `.meter.logical_name`                                  | string  |                                                              | Meter logical name                                           |
 | `.meter.vendor`                                        | string  |                                                              | Meter supplier name, if identifiable                         |
 | `.meter.prefix`                                        | string  |                                                              | 3 letter vendor prefixes                                     |
-| `.system.id`                                           | string  |                                                              | WhatWatt Go unique identifier                                |
+| `.system.id`                                           | string  |                                                              | whatwatt Go unique identifier                                |
 | `.system.date_time`                                    | ISO8601 |                                                              | Local date time for time zone                                |
 | `.system.date_time_local`                              | ISO8601 |                                                              | System timestamp in local time zone with timezone offset    |
 | `.system.date_time_utc`                                | ISO8601 |                                                              | System timestamp in UTC time zone                           |
@@ -659,7 +659,7 @@ Understanding the JSON response structure for RAG and data processing:
 
 ### System Metadata Group
 
-- `system.id` → **semantic_name**: "device_unique_identifier" → **meaning**: "Unique hardware identifier of WhatWatt Go device" → **unit**: "hex_string" → **type**: "device_metadata"
+- `system.id` → **semantic_name**: "device_unique_identifier" → **meaning**: "Unique hardware identifier of whatwatt Go device" → **unit**: "hex_string" → **type**: "device_metadata"
 - `system.time_since_boot` → **semantic_name**: "device_uptime_seconds" → **meaning**: "Seconds since device last restarted" → **unit**: "seconds" → **type**: "system_metadata"
 - `meter.logical_name` → **semantic_name**: "meter_serial_number" → **meaning**: "Unique identifier of the energy meter" → **unit**: "string" → **type**: "device_metadata"
 

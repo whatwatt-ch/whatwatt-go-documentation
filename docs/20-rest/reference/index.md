@@ -14,7 +14,7 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Provides comprehensive OpenAPI/Swagger specification for all WhatWatt Go REST API endpoints with interactive documentation
+- **Purpose**: Provides comprehensive OpenAPI/Swagger specification for all whatwatt Go REST API endpoints with interactive documentation
 - **When to use**: API development, integration planning, endpoint discovery, parameter validation, response schema reference
 - **Prerequisites**: Understanding of REST APIs, HTTP methods, JSON schema, OpenAPI/Swagger specification format
 - **Related to**: All REST endpoints, HTTP authentication, API polling, streaming, device configuration

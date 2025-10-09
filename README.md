@@ -1,6 +1,6 @@
-# WhatWatt Go Documentation
+# whatwatt Go Documentation
 
-Modern, comprehensive documentation for WhatWatt Go devices built with **MkDocs Material**.
+Modern, comprehensive documentation for whatwatt Go devices built with **MkDocs Material**.
 
 ## 🚀 Quick Start
 

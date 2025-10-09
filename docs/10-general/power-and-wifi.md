@@ -15,7 +15,7 @@ last_verified: '2025-10-07'
 
 ## Document Context
 
-- **Purpose**: Explains power management considerations when using WhatWatt Go with Wi-Fi connectivity and meter-supplied power (M-Bus)
+- **Purpose**: Explains power management considerations when using whatwatt Go with Wi-Fi connectivity and meter-supplied power (M-Bus)
 - **When to use**: Device installation planning, power troubleshooting, Wi-Fi connectivity issues, system optimization
 - **Prerequisites**: Basic understanding of M-Bus power supply, Wi-Fi networking concepts, device power requirements
 - **Related to**: Meter communication settings, Wi-Fi configuration, API polling frequency, service management

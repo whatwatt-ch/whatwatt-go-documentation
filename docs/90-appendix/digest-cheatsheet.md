@@ -34,11 +34,11 @@ real_device_tested: true
 
 ## Document Context
 
-- **Purpose**: HTTP Digest authentication reference for WhatWatt Go device API access including field definitions and practical examples
+- **Purpose**: HTTP Digest authentication reference for whatwatt Go device API access including field definitions and practical examples
 - **When to use**: Implementing device authentication, troubleshooting auth issues, understanding Digest auth mechanics, scripting API calls
 - **Prerequisites**: HTTP authentication knowledge, command-line tools, understanding of nonce-based security, password-protected devices
 - **Related to**: REST conventions (rest-conventions.md), cURL usage (curl-options.md), HTTP basics (http-basics.md)
-- **Validates against**: RFC 2617 Digest authentication, MD5-sess algorithm, WhatWatt Go device auth implementation
+- **Validates against**: RFC 2617 Digest authentication, MD5-sess algorithm, whatwatt Go device auth implementation
 
 ## Key Facts
 

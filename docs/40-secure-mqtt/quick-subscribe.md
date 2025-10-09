@@ -67,7 +67,7 @@ Client whatwatt-001 sending SUBSCRIBE (Mid: 1, Topic: lab/energy/#, QoS: 0)
 Client whatwatt-001 received SUBACK
 ```
 
-When the WhatWatt Go device publishes data, you'll see messages like:
+When the whatwatt Go device publishes data, you'll see messages like:
 
 ```txt
 lab/energy/whatwatt-001 {"P_In": 1.234, "P_Out": 0.000}
@@ -113,4 +113,4 @@ Connection Refused: not authorised.
 - Ensure `require_certificate true` is set in Mosquitto config
 
 !!! tip "Testing Without Device"
-    Use this method to verify your MQTT broker setup before configuring the WhatWatt Go device.
+    Use this method to verify your MQTT broker setup before configuring the whatwatt Go device.
