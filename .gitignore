@@ -41,12 +41,6 @@ htmlcov/
 openapi/api-bundled.yaml
 openapi/clients/
 
-# Vale
-styles/config/
-
-# Ignore gateway/prov_tool unless needed
-whatwatt-gateway/
-
 # Ignore backup/assets
 assets/extra_backup.css
 
