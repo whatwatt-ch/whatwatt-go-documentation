@@ -74,6 +74,8 @@ scalers
 baudrate
 ethernet
 wifi
+wifi_power_save
+power_save
 cnonce
 qop
 config

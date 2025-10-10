@@ -81,12 +81,69 @@ This endpoint manages the device's basic system settings and enables/disables bu
 | `system.host_name`     | string  | `whatwatt_XXXXXX`       | length 0..31; must be a valid hostname  | Used on network and for realm; write rejected if invalid |
 | `system.protection`    | boolean | false                   |                                         | When true and `password` set, HTTP auth is enforced |
 | `system.password`      | string  | ""                      | length 0..31                            | Write-only; hidden in GET responses |
-| `system.power_save`    | boolean | false                   |                                         | Lowers power consumption; see constraint below |
+| `system.power_save`    | boolean | false                   |                                         | Global power save mode; see constraint below |
+| `system.wifi_power_save` | boolean | false                 |                                         | Wi-Fi specific power save mode; see diagrams below |
 
 Constraints
 
 - Enabling `system.power_save` is rejected while the Ethernet link is UP (request returns 400).
 - `system.host_name` must be valid; invalid value causes 400.
+
+### Power Management Decision Trees
+
+The device implements intelligent power management based on connection type and configuration settings.
+
+#### Wi-Fi Power Save Logic
+
+```mermaid
+flowchart TD
+    A[Wi-Fi Power Management] --> B{power_save enabled?}
+    B -->|Yes| C[Wi-Fi Power Save: ON]
+    B -->|No| D{wifi_power_save enabled?}
+    D -->|Yes| E{USB connected?}
+    D -->|No| F{USB connected OR P1 connected?}
+    E -->|Yes| G[Wi-Fi Power Save: OFF<br/>Faster performance]
+    E -->|No| H[Wi-Fi Power Save: ON<br/>Lower power]
+    F -->|Yes| I[Wi-Fi Power Save: OFF<br/>Faster performance]
+    F -->|No| J[Wi-Fi Power Save: ON<br/>Lower power]
+
+    style C fill:#ffcccc
+    style H fill:#ffcccc
+    style J fill:#ffcccc
+    style G fill:#ccffcc
+    style I fill:#ccffcc
+```
+
+#### Ethernet Enable Logic
+
+```mermaid
+flowchart TD
+    A[Ethernet Management] --> B{power_save enabled?}
+    B -->|Yes| C[Ethernet: DISABLED]
+    B -->|No| D{USB connected?}
+    D -->|Yes| E{ethernet.enable setting?}
+    D -->|No| F[Ethernet: DISABLED]
+    E -->|Enabled| G[Ethernet: ENABLED]
+    E -->|Disabled| H[Ethernet: DISABLED]
+
+    style C fill:#ffcccc
+    style F fill:#ffcccc
+    style H fill:#ffcccc
+    style G fill:#ccffcc
+```
+
+**Legend:**
+
+- 🟢 **Green**: Interface enabled/faster performance
+- 🔴 **Red**: Interface disabled/power saving mode
+
+**Key Points:**
+
+- **Global power_save**: Overrides all other settings (Wi-Fi power save ON, Ethernet OFF)
+- **wifi_power_save**: Fine-grained Wi-Fi control when global power save is off
+- **USB connection**: Indicates external power, enabling faster performance
+- **P1 connection**: P1 port usage suggests active monitoring, disables Wi-Fi power save
+- **Ethernet**: Requires both USB power AND ethernet.enable setting
 
 ### Fields: services
 
@@ -135,7 +192,8 @@ Example response (abridged):
     "name": "",
     "host_name": "whatwatt_9F8124",
     "protection": false,
-    "power_save": false
+    "power_save": false,
+    "wifi_power_save": false
   },
   "services": {
     "cloud": {
