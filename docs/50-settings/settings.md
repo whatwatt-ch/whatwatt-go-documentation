@@ -133,11 +133,6 @@ flowchart TD
   class G good;
 ```
 
-**Legend:**
-
-- 🟢 **Green**: Interface enabled/faster performance
-- 🔴 **Red**: Interface disabled/power saving mode
-
 **Key Points:**
 
 - **Global power_save**: Overrides all other settings (Wi-Fi power save ON, Ethernet OFF)
