@@ -82,7 +82,7 @@ This endpoint manages the device's basic system settings and enables/disables bu
 | `system.protection`    | boolean | false                   |                                         | When true and `password` set, HTTP auth is enforced |
 | `system.password`      | string  | ""                      | length 0..31                            | Write-only; hidden in GET responses |
 | `system.power_save`    | boolean | false                   |                                         | Global power save mode; see constraint below |
-| `system.wifi_power_save` | boolean | false                 |                                         | Wi-Fi specific power save mode; see diagrams below |
+| `system.p1_wifi_boost` | boolean | true                  |                                         | When true and P1 is connected, disables Wi‑Fi power save to boost throughput |
 
 Constraints
 
@@ -97,39 +97,40 @@ The device implements intelligent power management based on connection type and 
 
 ```mermaid
 flowchart TD
-    A[Wi-Fi Power Management] --> B{power_save enabled?}
-    B -->|Yes| C[Wi-Fi Power Save: ON]
-    B -->|No| D{wifi_power_save enabled?}
-    D -->|Yes| E{USB connected?}
-    D -->|No| F{USB connected OR P1 connected?}
-    E -->|Yes| G[Wi-Fi Power Save: OFF<br/>Faster performance]
-    E -->|No| H[Wi-Fi Power Save: ON<br/>Lower power]
-    F -->|Yes| I[Wi-Fi Power Save: OFF<br/>Faster performance]
-    F -->|No| J[Wi-Fi Power Save: ON<br/>Lower power]
+  %% Colors controlled via CSS (see assets/extra.css)
 
-    style C fill:#ffcccc
-    style H fill:#ffcccc
-    style J fill:#ffcccc
-    style G fill:#ccffcc
-    style I fill:#ccffcc
+  A[Wi‑Fi Power Management] --> B{power_save enabled?}
+  B -->|Yes| C[Wi‑Fi Power Save: ON]
+  B -->|No| D{USB connected?}
+  D -->|Yes| G[Wi‑Fi Power Save: OFF<br/>Faster performance]
+  D -->|No| E{P1 connected AND p1_wifi_boost?}
+  E -->|Yes| G[Wi‑Fi Power Save: OFF<br/>Faster performance]
+  E -->|No| H[Wi‑Fi Power Save: ON<br/>Lower power]
+
+  class A title;
+  class B,E,D decision;
+  class C,H bad;
+  class G good;
 ```
 
 #### Ethernet Enable Logic
 
 ```mermaid
 flowchart TD
-    A[Ethernet Management] --> B{power_save enabled?}
-    B -->|Yes| C[Ethernet: DISABLED]
-    B -->|No| D{USB connected?}
-    D -->|Yes| E{ethernet.enable setting?}
-    D -->|No| F[Ethernet: DISABLED]
-    E -->|Enabled| G[Ethernet: ENABLED]
-    E -->|Disabled| H[Ethernet: DISABLED]
+  %% Colors controlled via CSS (see assets/extra.css)
 
-    style C fill:#ffcccc
-    style F fill:#ffcccc
-    style H fill:#ffcccc
-    style G fill:#ccffcc
+  A[Ethernet Management] --> B{power_save enabled?}
+  B -->|Yes| C[Ethernet: DISABLED]
+  B -->|No| D{USB connected?}
+  D -->|Yes| E{ethernet.enable?}
+  D -->|No| F[Ethernet: DISABLED]
+  E -->|Yes| G[Ethernet: ENABLED]
+  E -->|No| F
+
+  class A title;
+  class B,D,E decision;
+  class C,F bad;
+  class G good;
 ```
 
 **Legend:**
@@ -140,20 +141,20 @@ flowchart TD
 **Key Points:**
 
 - **Global power_save**: Overrides all other settings (Wi-Fi power save ON, Ethernet OFF)
-- **wifi_power_save**: Fine-grained Wi-Fi control when global power save is off
+- **p1_wifi_boost**: When enabled and P1 is connected, Wi‑Fi power save is disabled (higher throughput)
 - **USB connection**: Indicates external power, enabling faster performance
-- **P1 connection**: P1 port usage suggests active monitoring, disables Wi-Fi power save
-- **Ethernet**: Requires both USB power AND ethernet.enable setting
+- **P1 connection**: With boost enabled, active P1 link disables Wi‑Fi power save
+- **Ethernet**: Enabled when USB power is present AND `ethernet.enable` is set; disabled when `power_save` is true
 
 ### Fields: services
 
 | JSON path                                 | Type     | Default             | Range/Rules                     | Notes |
 | ----------------------------------------- | -------- | ------------------- | ------------------------------- | ----- |
 | `services.cloud.what_watt`                | boolean  | true                |                                 | whatwatt Cloud integration |
-| `services.cloud.solar_manager`            | boolean  | false or true*      |                                 | Solar Manager cloud (see note*) |
-| `services.cloud.mystrom`                  | boolean  | false or true*      |                                 | myStrom cloud (see note*) |
-| `services.cloud.stromkonto`               | boolean  | false               |                                 | Stromkonto toggle (exposed in GET; applied if present in body) |
-| `services.local.solar_manager`            | boolean  | false or true*      |                                 | Local Solar Manager API |
+| `services.cloud.solar_manager`            | boolean  | false               |                                 | Solar Manager cloud |
+| `services.cloud.mystrom`                  | boolean  | true                |                                 | myStrom cloud |
+| `services.cloud.stromkonto`               | boolean  | false               |                                 | Stromkonto cloud |
+| `services.local.solar_manager`            | boolean  | false               |                                 | Local Solar Manager API |
 | `services.broadcast`                      | boolean  | true                |                                 | mDNS broadcast (discovery) |
 | `services.other_energy_provider`          | boolean  | false               |                                 | Enable other energy provider features |
 | `services.report_interval`                | uint     | 30                  | 1..3600 (seconds)               | Cloud/custom reporting interval |
@@ -165,10 +166,6 @@ flowchart TD
 | `services.modbus.port`                    | uint     | 502                 | 1..65535                        | Modbus TCP port |
 | `services.berry.auto_run`                 | boolean  | false               |                                 | Auto-run Berry script on boot |
 | `services.berry.run_delay`                | uint     | 300                 | 60..86400 (seconds)             | Delay before auto-run |
-
-!!! note "Notes"
-    - "false or true*" defaults become true on devices with sufficient RAM (PSRAM); otherwise false.
-    - `services.cloud.stromkonto` appears in GET; if included in POST/PUT it's applied separately to Stromkonto config.
 
 ## Examples
 
@@ -193,7 +190,7 @@ Example response (abridged):
     "host_name": "whatwatt_9F8124",
     "protection": false,
     "power_save": false,
-    "wifi_power_save": false
+    "p1_wifi_boost": true
   },
   "services": {
     "cloud": {
@@ -246,18 +243,6 @@ Example response (abridged):
     "modbus": { "enable": true, "port": 502 }
   }
 }
-```
-
-### Adjust cloud reporting cadence
-
-```json
-{ "services": { "report_interval": 15 } }
-```
-
-### Toggle Stromkonto cloud
-
-```json
-{ "services": { "cloud": { "stromkonto": true } } }
 ```
 
 ## Method semantics

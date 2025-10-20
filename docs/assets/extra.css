@@ -195,3 +195,167 @@
 
 /* Dividers */
 hr, .md-typeset hr { border-color: var(--ww-gray-2); }
+
+/* Mermaid diagrams: scheme-aware colors for node classes used in docs */
+/* Classes: title, decision, good, bad assigned via Mermaid class statements */
+
+/* Light mode overrides */
+[data-md-color-scheme="default"] .mermaid g.title.node rect,
+[data-md-color-scheme="default"] .mermaid g.title.node polygon,
+[data-md-color-scheme="default"] .mermaid g.title.node path,
+[data-md-color-scheme="default"] .mermaid .node.title rect,
+[data-md-color-scheme="default"] .mermaid .node.title polygon,
+[data-md-color-scheme="default"] .mermaid .node.title path { fill: #f3f4f6 !important; stroke: #94a3b8 !important; }
+[data-md-color-scheme="default"] .mermaid .node.title .label,
+[data-md-color-scheme="default"] .mermaid .node.title text { fill: #111827 !important; }
+
+[data-md-color-scheme="default"] .mermaid g.decision.node rect,
+[data-md-color-scheme="default"] .mermaid g.decision.node polygon,
+[data-md-color-scheme="default"] .mermaid g.decision.node path,
+[data-md-color-scheme="default"] .mermaid .node.decision rect,
+[data-md-color-scheme="default"] .mermaid .node.decision polygon,
+[data-md-color-scheme="default"] .mermaid .node.decision path { fill: #e5e7eb !important; stroke: #6b7280 !important; }
+[data-md-color-scheme="default"] .mermaid .node.decision .label,
+[data-md-color-scheme="default"] .mermaid .node.decision text { fill: #111827 !important; }
+
+[data-md-color-scheme="default"] .mermaid g.good.node rect,
+[data-md-color-scheme="default"] .mermaid g.good.node polygon,
+[data-md-color-scheme="default"] .mermaid g.good.node path,
+[data-md-color-scheme="default"] .mermaid .node.good rect,
+[data-md-color-scheme="default"] .mermaid .node.good polygon,
+[data-md-color-scheme="default"] .mermaid .node.good path { fill: #10b981 !important; stroke: #065f46 !important; }
+[data-md-color-scheme="default"] .mermaid .node.good .label,
+[data-md-color-scheme="default"] .mermaid .node.good text { fill: #ffffff !important; }
+
+[data-md-color-scheme="default"] .mermaid g.bad.node rect,
+[data-md-color-scheme="default"] .mermaid g.bad.node polygon,
+[data-md-color-scheme="default"] .mermaid g.bad.node path,
+[data-md-color-scheme="default"] .mermaid .node.bad rect,
+[data-md-color-scheme="default"] .mermaid .node.bad polygon,
+[data-md-color-scheme="default"] .mermaid .node.bad path { fill: #ef4444 !important; stroke: #7f1d1d !important; }
+[data-md-color-scheme="default"] .mermaid .node.bad .label,
+[data-md-color-scheme="default"] .mermaid .node.bad text { fill: #ffffff !important; }
+
+/* Dark mode overrides */
+[data-md-color-scheme="slate"] .mermaid g.title.node rect,
+[data-md-color-scheme="slate"] .mermaid g.title.node polygon,
+[data-md-color-scheme="slate"] .mermaid g.title.node path,
+[data-md-color-scheme="slate"] .mermaid .node.title rect,
+[data-md-color-scheme="slate"] .mermaid .node.title polygon,
+[data-md-color-scheme="slate"] .mermaid .node.title path { fill: #334155 !important; stroke: #94a3b8 !important; }
+[data-md-color-scheme="slate"] .mermaid .node.title .label,
+[data-md-color-scheme="slate"] .mermaid .node.title text { fill: #e5e7eb !important; }
+
+[data-md-color-scheme="slate"] .mermaid g.decision.node rect,
+[data-md-color-scheme="slate"] .mermaid g.decision.node polygon,
+[data-md-color-scheme="slate"] .mermaid g.decision.node path,
+[data-md-color-scheme="slate"] .mermaid .node.decision rect,
+[data-md-color-scheme="slate"] .mermaid .node.decision polygon,
+[data-md-color-scheme="slate"] .mermaid .node.decision path { fill: #374151 !important; stroke: #9ca3af !important; }
+[data-md-color-scheme="slate"] .mermaid .node.decision .label,
+[data-md-color-scheme="slate"] .mermaid .node.decision text { fill: #e5e7eb !important; }
+
+[data-md-color-scheme="slate"] .mermaid g.good.node rect,
+[data-md-color-scheme="slate"] .mermaid g.good.node polygon,
+[data-md-color-scheme="slate"] .mermaid g.good.node path,
+[data-md-color-scheme="slate"] .mermaid .node.good rect,
+[data-md-color-scheme="slate"] .mermaid .node.good polygon,
+[data-md-color-scheme="slate"] .mermaid .node.good path { fill: #065f46 !important; stroke: #10b981 !important; }
+[data-md-color-scheme="slate"] .mermaid .node.good .label,
+[data-md-color-scheme="slate"] .mermaid .node.good text { fill: #e5fff4 !important; }
+
+[data-md-color-scheme="slate"] .mermaid g.bad.node rect,
+[data-md-color-scheme="slate"] .mermaid g.bad.node polygon,
+[data-md-color-scheme="slate"] .mermaid g.bad.node path,
+[data-md-color-scheme="slate"] .mermaid .node.bad rect,
+[data-md-color-scheme="slate"] .mermaid .node.bad polygon,
+[data-md-color-scheme="slate"] .mermaid .node.bad path { fill: #7f1d1d !important; stroke: #f43f5e !important; }
+[data-md-color-scheme="slate"] .mermaid .node.bad .label,
+[data-md-color-scheme="slate"] .mermaid .node.bad text { fill: #ffecec !important; }
+
+/* Edge label color improvements for dark mode */
+[data-md-color-scheme="slate"] .mermaid .edgeLabel,
+[data-md-color-scheme="slate"] .mermaid .edgeLabel text { fill: #e5e7eb !important; }
+
+/* Edge visibility improvements for light mode */
+[data-md-color-scheme="default"] .mermaid .edgePath path { stroke: #111827 !important; }
+[data-md-color-scheme="default"] .mermaid .arrowheadPath { fill: #111827 !important; }
+[data-md-color-scheme="default"] .mermaid .edgeLabel,
+[data-md-color-scheme="default"] .mermaid .edgeLabel text { fill: #111827 !important; }
+
+/* General: ensure full opacity and adequate stroke width */
+.mermaid .node rect,
+.mermaid .node polygon,
+.mermaid .node path { fill-opacity: 1 !important; stroke-opacity: 1 !important; stroke-width: 1.5px !important; }
+.mermaid .edgePath path { stroke-opacity: 1 !important; stroke-width: 1.5px !important; }
+.mermaid .arrowheadPath { fill-opacity: 1 !important; }
+
+/* Labels: support both SVG text and HTML labels inside foreignObject */
+[data-md-color-scheme="default"] .mermaid .label,
+[data-md-color-scheme="default"] .mermaid .label text,
+[data-md-color-scheme="default"] .mermaid .label tspan,
+[data-md-color-scheme="default"] .mermaid .label foreignObject div,
+[data-md-color-scheme="default"] .mermaid .label foreignObject span { color: #111827 !important; fill: #111827 !important; opacity: 1 !important; }
+
+/* Ensure node label text is dark in light mode */
+[data-md-color-scheme="default"] .mermaid .node text,
+[data-md-color-scheme="default"] .mermaid .node tspan,
+[data-md-color-scheme="default"] .mermaid text.nodeLabel,
+[data-md-color-scheme="default"] .mermaid .nodeLabel { fill: #111827 !important; opacity: 1 !important; }
+
+[data-md-color-scheme="slate"] .mermaid .label,
+[data-md-color-scheme="slate"] .mermaid .label text,
+[data-md-color-scheme="slate"] .mermaid .label tspan,
+[data-md-color-scheme="slate"] .mermaid .label foreignObject div,
+[data-md-color-scheme="slate"] .mermaid .label foreignObject span { color: #e5e7eb !important; fill: #e5e7eb !important; opacity: 1 !important; }
+
+/* Ensure node label text is light in dark mode */
+[data-md-color-scheme="slate"] .mermaid .node text,
+[data-md-color-scheme="slate"] .mermaid .node tspan,
+[data-md-color-scheme="slate"] .mermaid text.nodeLabel,
+[data-md-color-scheme="slate"] .mermaid .nodeLabel { fill: #e5e7eb !important; opacity: 1 !important; }
+
+/* For good/bad nodes override text color as needed for contrast */
+[data-md-color-scheme="default"] .mermaid .node.good text,
+[data-md-color-scheme="default"] .mermaid .node.good tspan,
+[data-md-color-scheme="default"] .mermaid g.good text,
+[data-md-color-scheme="default"] .mermaid g.good tspan { fill: #ffffff !important; }
+[data-md-color-scheme="default"] .mermaid .node.bad text,
+[data-md-color-scheme="default"] .mermaid .node.bad tspan,
+[data-md-color-scheme="default"] .mermaid g.bad text,
+[data-md-color-scheme="default"] .mermaid g.bad tspan { fill: #ffffff !important; }
+[data-md-color-scheme="slate"] .mermaid .node.good text,
+[data-md-color-scheme="slate"] .mermaid .node.good tspan,
+[data-md-color-scheme="slate"] .mermaid g.good text,
+[data-md-color-scheme="slate"] .mermaid g.good tspan { fill: #e5fff4 !important; }
+[data-md-color-scheme="slate"] .mermaid .node.bad text,
+[data-md-color-scheme="slate"] .mermaid .node.bad tspan,
+[data-md-color-scheme="slate"] .mermaid g.bad text,
+[data-md-color-scheme="slate"] .mermaid g.bad tspan { fill: #ffecec !important; }
+
+/* Class hookups: apply also when Mermaid emits classes on <g> without .node */
+[data-md-color-scheme="default"] .mermaid g.title rect,
+[data-md-color-scheme="default"] .mermaid g.title polygon,
+[data-md-color-scheme="default"] .mermaid g.title path { fill: #f3f4f6 !important; stroke: #94a3b8 !important; }
+[data-md-color-scheme="default"] .mermaid g.decision rect,
+[data-md-color-scheme="default"] .mermaid g.decision polygon,
+[data-md-color-scheme="default"] .mermaid g.decision path { fill: #e5e7eb !important; stroke: #6b7280 !important; }
+[data-md-color-scheme="default"] .mermaid g.good rect,
+[data-md-color-scheme="default"] .mermaid g.good polygon,
+[data-md-color-scheme="default"] .mermaid g.good path { fill: #10b981 !important; stroke: #065f46 !important; }
+[data-md-color-scheme="default"] .mermaid g.bad rect,
+[data-md-color-scheme="default"] .mermaid g.bad polygon,
+[data-md-color-scheme="default"] .mermaid g.bad path { fill: #ef4444 !important; stroke: #7f1d1d !important; }
+
+[data-md-color-scheme="slate"] .mermaid g.title rect,
+[data-md-color-scheme="slate"] .mermaid g.title polygon,
+[data-md-color-scheme="slate"] .mermaid g.title path { fill: #334155 !important; stroke: #94a3b8 !important; }
+[data-md-color-scheme="slate"] .mermaid g.decision rect,
+[data-md-color-scheme="slate"] .mermaid g.decision polygon,
+[data-md-color-scheme="slate"] .mermaid g.decision path { fill: #374151 !important; stroke: #9ca3af !important; }
+[data-md-color-scheme="slate"] .mermaid g.good rect,
+[data-md-color-scheme="slate"] .mermaid g.good polygon,
+[data-md-color-scheme="slate"] .mermaid g.good path { fill: #065f46 !important; stroke: #10b981 !important; }
+[data-md-color-scheme="slate"] .mermaid g.bad rect,
+[data-md-color-scheme="slate"] .mermaid g.bad polygon,
+[data-md-color-scheme="slate"] .mermaid g.bad path { fill: #7f1d1d !important; stroke: #f43f5e !important; }
