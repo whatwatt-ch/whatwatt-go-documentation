@@ -70,7 +70,6 @@ Power the device via USB-C during configuration.
 Set up all required device parameters while connected to the network:
 
 - Meter communication parameters
-- Time synchronization
 - Any other application-specific settings
 
 ### 4. Enable SD Recorder Mode
@@ -90,7 +89,7 @@ curl -i -X PUT \
 |-----------|-------|-------------|
 | `recorder_mode` | `true` | Enable standalone SD recorder mode |
 | `frequency` | `15` | Report logging interval in seconds (1-1440) |
-| `enable` | `true` | Enable SD card logging service |
+| `enable` | `true` | Enable SD card service |
 
 !!! tip "Test First"
     Start with a shorter frequency (e.g., 15 seconds) to verify proper operation before deploying for longer periods.
@@ -100,9 +99,11 @@ curl -i -X PUT \
 If the device was connected via Wi-Fi, clear the Wi-Fi configuration to ensure it doesn't attempt reconnection:
 
 **Via WebUI:**
+
 - Navigate to **Reset WiFi Settings**
 
 **Via REST API:**
+
 ```bash
 curl -i -X DELETE http://192.168.99.114/api/v1/wifi/sta/settings
 ```
@@ -159,11 +160,13 @@ To remove the SD card without waiting for device shutdown:
 
 After removing the card, to remount it:
 
-**Option 1: Automatic remount**
+#### Option 1: Automatic remount
+
 1. Insert the SD card back into the slot
 2. Wait for automatic detection and mounting
 
-**Option 2: Manual remount trigger**
+#### Option 2: Manual remount trigger
+
 1. Insert the SD card
 2. Press and hold the button for 3-6 seconds
 3. Device will attempt to mount the card immediately
@@ -217,12 +220,14 @@ curl -i -X PUT \
 **Problem**: Solid red LED after connecting to meter
 
 **Possible causes:**
+
 - Meter interface not properly connected
 - Incorrect meter communication settings
 - Incompatible meter type
 - Damaged meter interface cable
 
 **Solutions:**
+
 1. Verify physical connections
 2. Test with USB-C power and network to check meter settings
 3. Review meter communication configuration
@@ -233,12 +238,14 @@ curl -i -X PUT \
 **Problem**: Blinking LED pattern
 
 **Possible causes:**
+
 - SD card not properly inserted
 - SD card not formatted as FAT32
 - Corrupted or defective SD card
 - SD card capacity issues
 
 **Solutions:**
+
 1. Reinsert SD card ensuring proper seating
 2. Format card as FAT32 (backup data first)
 3. Try a different SD card
@@ -246,30 +253,25 @@ curl -i -X PUT \
 
 ### No Data on SD Card
 
-**Problem**: LED shows green but CSV files are missing or empty
-
 **Possible causes:**
+
 - SD card write errors
 - Insufficient free space
 - Incorrect frequency configuration
-- Meter not providing valid data
 
 **Solutions:**
+
 1. Check SD card free space
 2. Verify `frequency` setting is reasonable (15-60 seconds recommended)
 3. Test device in normal mode to verify meter communication
 4. Format SD card and retry with shorter test duration
 
-### Button Doesn't Respond
-
-**Problem**: Pressing button for 3-6 seconds doesn't trigger unmount
-
 **Possible causes:**
+
 - Button held for incorrect duration (too short or too long)
-- Device in error state
-- Hardware button issue
 
 **Solutions:**
+
 1. Ensure 3-6 second press duration (count slowly: "one thousand one, one thousand two...")
 2. Verify LED responds to button press with blinking pattern
 3. If no response, disconnect power completely and reconnect
