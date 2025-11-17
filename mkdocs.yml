@@ -162,6 +162,7 @@ nav:
       - Delete: 50-settings/sdcard/delete.md
       - CSV format: 50-settings/sdcard/csv-format.md
       - Configuration: 50-settings/sdcard/configuration.md
+      - SD Recorder Mode: 50-settings/sdcard/recorder-mode.md
       - Troubleshooting: 50-settings/sdcard/troubleshooting.md
       - Usage examples: 50-settings/sdcard/usage-examples.md
     - Secure MQTT:

@@ -157,6 +157,7 @@ flowchart TD
 | `services.meter_proxy`                    | boolean  | false               |                                 | Enable meter proxy service |
 | `services.sd.enable`                      | boolean  | false               |                                 | Store periodic reports to SD card |
 | `services.sd.frequency`                   | uint     | 15                  | 1..1440 (seconds)               | SD write cadence |
+| `services.sd.recorder_mode`               | boolean  | false               |                                 | Standalone SD recorder mode (FW 2.0.1+) |
 | `services.modbus.enable`                  | boolean  | false               |                                 | Modbus TCP server |
 | `services.modbus.port`                    | uint     | 502                 | 1..65535                        | Modbus TCP port |
 | `services.berry.auto_run`                 | boolean  | false               |                                 | Auto-run Berry script on boot |
