@@ -21,7 +21,7 @@ Common issues and their resolutions.
 - **Purpose**: SD card HTTP interface troubleshooting guide for resolving common file operation issues and error conditions
 - **When to use**: Debugging SD card access problems, resolving mount issues, fixing file operation errors
 - **Prerequisites**: Basic HTTP status code knowledge, SD card hardware concepts, file system troubleshooting experience
-- **Related to**: SD card operations (listing.md, download.md, delete.md), system configuration, hardware diagnostics
+- **Related to**: SD card operations ([Listing](listing.md), [Download](download.md), [Delete](delete.md)), system configuration, hardware diagnostics
 - **Validates against**: HTTP error response patterns, SD card mount behavior, file system operation requirements
 
 ## Key Facts

@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Wi-Fi network discovery API endpoint for scanning nearby wireless networks with detailed signal and security information
 - **When to use**: Before configuring Wi-Fi settings, troubleshooting connectivity, site surveys, selecting optimal networks
 - **Prerequisites**: Device with Wi-Fi capability, understanding of Wi-Fi standards and security modes
-- **Related to**: Wi-Fi setup (wifi-setup.md), WPS pairing (wps.md), network configuration settings
+- **Related to**: [Wi-Fi setup](wifi-setup.md), [WPS pairing](wps.md), network configuration settings
 - **Validates against**: IEEE 802.11 standards, WPA/WPA2/WPA3 security modes, regulatory domain compliance
 
 ## Key Facts
@@ -111,7 +111,7 @@ The endpoint returns an array of detected Wi-Fi networks with detailed informati
 [
   {
     "ssid": "HomeNetwork",
-    "bssid": "AA:BB:CC:DD:EE:FF",
+    "bssid": "AABBCCDDEEFF",
     "channel": 6,
     "ht": "40+",
     "rssi": -45,
@@ -125,7 +125,7 @@ The endpoint returns an array of detected Wi-Fi networks with detailed informati
   },
   {
     "ssid": "GuestWiFi",
-    "bssid": "11:22:33:44:55:66",
+    "bssid": "112233445566",
     "channel": 11,
     "ht": "20",
     "rssi": -67,

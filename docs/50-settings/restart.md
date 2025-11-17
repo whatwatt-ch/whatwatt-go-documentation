@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Remote device reboot API endpoint for troubleshooting and maintenance operations via REST API
 - **When to use**: Troubleshooting connectivity issues, recovery from unresponsive state, testing system reliability
 - **Prerequisites**: Administrative access, understanding that reboot interrupts data collection, rare necessity in normal operation
-- **Related to**: System information (system-info.md), firmware updates (firmware-update.md), factory reset (factory-reset.md)
+- **Related to**: [System information](../10-general/system-info.md), [Firmware updates](firmware-update.md), [Factory reset](factory-reset.md)
 - **Validates against**: Device uptime capabilities (months of operation), 30-60 second reboot cycle timing
 
 ## Key Facts

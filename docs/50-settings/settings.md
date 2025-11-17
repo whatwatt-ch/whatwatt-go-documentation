@@ -156,7 +156,7 @@ flowchart TD
 | `services.log`                            | boolean  | false               |                                 | Enable internal log service |
 | `services.meter_proxy`                    | boolean  | false               |                                 | Enable meter proxy service |
 | `services.sd.enable`                      | boolean  | false               |                                 | Store periodic reports to SD card |
-| `services.sd.frequency`                   | uint     | 15                  | 1..1440 (minutes)               | SD write cadence |
+| `services.sd.frequency`                   | uint     | 15                  | 1..1440 (seconds)               | SD write cadence |
 | `services.modbus.enable`                  | boolean  | false               |                                 | Modbus TCP server |
 | `services.modbus.port`                    | uint     | 502                 | 1..65535                        | Modbus TCP port |
 | `services.berry.auto_run`                 | boolean  | false               |                                 | Auto-run Berry script on boot |
@@ -220,7 +220,7 @@ Example response (abridged):
 }
 ```
 
-### Configure SD card logging
+### Configure SD card reports logging
 
 ```json
 {

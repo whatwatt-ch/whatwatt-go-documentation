@@ -4,6 +4,7 @@ mkdocs-material>=9.5
 mkdocs-macros-plugin>=1.0
 mkdocs-htmlproofer-plugin>=1.0
 pymdown-extensions>=10.0
+mkdocs-print-site-plugin>=2.6.0
 
 # OpenAPI validation and processing
 prance>=25.4.0
@@ -17,3 +18,4 @@ requests>=2.32.0
 
 # Git hooks
 pre-commit>=3.8.0
+playwright

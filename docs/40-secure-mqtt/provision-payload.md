@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Guide for configuring whatwatt Go device with MQTT TLS settings via REST API using JSON payload with embedded certificates
 - **When to use**: When deploying secure MQTT configuration to whatwatt Go devices, setting up TLS client authentication, configuring device connectivity
 - **Prerequisites**: Generated certificates (CA, client cert, client key), device IP address, understanding of JSON format and REST API
-- **Related to**: Certificate generation (tls-ca-ecc.md), MQTT setup (index.md), TLS configuration (tls-conf.md)
+- **Related to**: [Certificate generation](tls-ca-ecc.md), [MQTT setup](index.md), [TLS configuration](tls-conf.md)
 - **Validates against**: whatwatt Go REST API v1, 8kB payload limit, PEM certificate format requirements
 
 ## Key Facts

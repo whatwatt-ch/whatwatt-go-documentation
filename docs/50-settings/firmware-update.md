@@ -22,7 +22,7 @@ last_verified: '2025-10-07'
 
 ## Key Facts
 
-- **Endpoint**: `/update` (HTTP POST for firmware upload)
+- **Endpoint**: `/load` (HTTP POST for firmware upload)
 - **Methods**: POST (multipart/form-data), GET (update status)
 - **Authentication**: Admin credentials required for firmware modifications
 - **Response format**: JSON status with progress indicators and error messages
@@ -122,6 +122,5 @@ HTTP/1.1 503 Service Unavailable
 
 1. **Backup Settings**: Save current device configuration before updating
 2. **Stable Power**: Ensure reliable power supply during update
-3. **Network Stability**: Use wired connection if possible
-4. **Verify Version**: Check current firmware version before and after update
-5. **Test Functionality**: Verify device operation after successful update
+3. **Verify Version**: Check current firmware version before and after update
+4. **Test Functionality**: Verify device operation after successful update

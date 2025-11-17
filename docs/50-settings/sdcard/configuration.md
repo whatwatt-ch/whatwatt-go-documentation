@@ -19,7 +19,7 @@ last_verified: '2025-10-07'
 - **Purpose**: SD card logging service configuration for automated report saving with customizable frequency settings
 - **When to use**: Enabling local data storage, configuring backup logging, setting up offline data collection
 - **Prerequisites**: SD card inserted and formatted, understanding of services configuration, CSV format knowledge
-- **Related to**: Services configuration (services.md), SD card usage (usage-examples.md), file listing (listing.md)
+- **Related to**: Services configuration, [SD card usage](usage-examples.md), [File listing](listing.md)
 - **Validates against**: SD card availability, frequency range constraints (1-1440 seconds), filesystem write capabilities
 
 ## Key Facts

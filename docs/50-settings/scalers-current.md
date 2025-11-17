@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: API for reading current scaler values applied to DLMS meter registers using OBIS codes for data scaling and unit conversion
 - **When to use**: Understanding meter data scaling, troubleshooting value discrepancies, verifying COSEM Class 3 object scaling
 - **Prerequisites**: DLMS meter communication, OBIS code knowledge, understanding of COSEM Class 3 objects and power-of-ten scaling
-- **Related to**: Custom scalers (scalers-custom.md), meter communication (meter-comm.md), data reporting endpoints
+- **Related to**: [Custom scalers](scalers-custom.md), [Meter communication](meter-comm.md), data reporting endpoints
 - **Validates against**: DLMS/COSEM standards, OBIS code specifications, meter scaling behavior in COSEM Class 3
 
 ## Key Facts

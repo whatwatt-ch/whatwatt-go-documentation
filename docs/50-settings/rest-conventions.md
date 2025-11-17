@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: REST API conventions and best practices for whatwatt Go device configuration including HTTP methods, status codes, and security
 - **When to use**: Before implementing REST API integrations, troubleshooting API calls, understanding authentication requirements
 - **Prerequisites**: HTTP/REST API knowledge, JSON format understanding, basic web development concepts
-- **Related to**: Authentication (digest-cheatsheet.md), HTTP basics (http-basics.md), device settings endpoints
+- **Related to**: [Authentication](../90-appendix/digest-cheatsheet.md), [HTTP basics](../90-appendix/http-basics.md), device settings endpoints
 - **Validates against**: HTTP standards, JSON specifications, Digest authentication RFC, CORS policy implementation
 
 ## Key Facts

@@ -18,7 +18,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Actions API definition for configuring automated HTTP/Modbus request sequences with constants, timeouts, and asynchronous execution
 - **When to use**: Automating device interactions, triggering external systems, implementing complex workflows, integrating with third-party services
 - **Prerequisites**: HTTP/REST API knowledge, optional Modbus understanding, firmware 1.6.1+, action design planning
-- **Related to**: Action execution (execution.md), action status monitoring (status.md), REST conventions (rest-conventions.md)
+- **Related to**: [Action execution](execution.md), [Action status monitoring](status.md), [REST conventions](../rest-conventions.md)
 - **Validates against**: Action definition schema, HTTP/Modbus protocol requirements, timeout constraints, payload size limits
 
 ## Key Facts

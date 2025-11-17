@@ -20,7 +20,7 @@ This section provides practical examples of working with the SD card endpoint.
 - **Purpose**: Practical SD card HTTP interface examples with ready-to-run scripts for common file management operations
 - **When to use**: Learning SD card API usage, implementing file management automation, building data retrieval workflows
 - **Prerequisites**: Basic cURL knowledge, understanding of HTTP responses, SD card with sample data available
-- **Related to**: API documentation (listing.md, download.md, delete.md), automation scripting, data processing workflows
+- **Related to**: API documentation ([Listing](listing.md), [Download](download.md), [Delete](delete.md)), automation scripting, data processing workflows
 - **Validates against**: Real SD card operations, HTTP response patterns, practical integration scenarios
 
 ## Key Facts

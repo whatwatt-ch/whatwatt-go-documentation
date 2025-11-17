@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Ethernet network configuration API for managing wired connectivity including DHCP and static IP settings
 - **When to use**: Setting up wired network connectivity, configuring static IP addresses, troubleshooting network issues, deployment planning
 - **Prerequisites**: Basic networking knowledge (IP addresses, subnet masks, gateways), understanding of DHCP vs static IP concepts
-- **Related to**: Wi-Fi setup (wifi-setup.md), network discovery (discovery.md), device settings configuration
+- **Related to**: [Wi-Fi setup](wifi-setup.md), [Network discovery](../10-general/discovery.md), device settings configuration
 - **Validates against**: IPv4 network configuration standards, DHCP client behavior, static IP validation requirements
 
 ## Key Facts

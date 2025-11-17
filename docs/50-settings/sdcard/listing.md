@@ -20,7 +20,7 @@ List directories to discover files available on the SD card.
 - **Purpose**: SD card directory listing API for discovering files and folders available on mounted storage
 - **When to use**: Browsing SD card contents, finding CSV reports, checking file availability before download operations
 - **Prerequisites**: SD card mounted and accessible, understanding of directory path structures, JSON response parsing
-- **Related to**: File download (download.md), file deletion (delete.md), SD card configuration (configuration.md)
+- **Related to**: [File download](download.md), [File deletion](delete.md), [SD card configuration](configuration.md)
 - **Validates against**: SD card filesystem structure, directory traversal patterns, file type identification
 
 ## Key Facts

@@ -50,7 +50,7 @@ authentication: required when device password is set
 - **Typical response time**: <100ms
 - **Rate limits**: None (but avoid excessive polling)
 - **Error codes**: 401 (auth required), 404 (not found), 500 (internal error)
-- **Data freshness**: Reflects latest meter reading (usually within 20 seconds)
+- **Data freshness**: Reflects latest meter reading (usually within 10 seconds)
 
 ## Endpoint Details
 
@@ -430,7 +430,6 @@ def get_live_power(device_ip, password=None):
         power_data = {
             "import_kw": data["report"]["instantaneous_power"]["active"]["positive"]["total"],
             "export_kw": data["report"]["instantaneous_power"]["active"]["negative"]["total"],
-            "voltage_l1": data["report"]["voltage"]["l1"],
             "timestamp": data["report"]["date_time_utc"]
         }
         return power_data, None

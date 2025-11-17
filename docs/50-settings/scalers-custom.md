@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Custom scaler configuration API for overriding DLMS meter scaling factors using OBIS codes with wildcard support
 - **When to use**: Normalizing units across different meters, correcting meter scaling issues, standardizing data for analysis
 - **Prerequisites**: DLMS meter setup, OBIS code understanding, knowledge of COSEM Class 3 objects and meter data units
-- **Related to**: Current scalers (scalers-current.md), meter communication (meter-comm.md), device settings configuration
+- **Related to**: [Current scalers](scalers-current.md), [Meter communication](meter-comm.md), device settings configuration
 - **Validates against**: COSEM Class 3 object requirements, OBIS code validation, scaler range limits (-6 to +6)
 
 ## Key Facts

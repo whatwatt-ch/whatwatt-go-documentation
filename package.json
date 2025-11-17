@@ -13,6 +13,7 @@
     "build": "mkdocs build --clean",
     "build:prod": "python build_production.py",
     "serve": "mkdocs serve -a 127.0.0.1:8000",
+    "export:pdf": "scripts/export_pdf.py -o whatwatt-go-documentation.pdf",
     "lint:fix": "markdownlint-cli2-fix **/*.md --ignore node_modules --ignore dist",
     "vale:sync": "vale sync",
     "deploy:prep": "mkdocs build --strict --clean --site-dir dist && echo 'Ready for deployment: ./dist/'"

@@ -18,7 +18,7 @@ last_verified: '2025-10-07'
 - **Purpose**: JSON flattening script using jq for converting nested API responses into readable tabular format with type information
 - **When to use**: Debugging API responses, analyzing complex JSON structures, data exploration, converting hierarchical data for processing
 - **Prerequisites**: jq command-line tool installed, bash shell access, basic JSON and command-line knowledge
-- **Related to**: REST API usage (rest-conventions.md), cURL commands (curl-options.md), JSON data analysis
+- **Related to**: [REST API usage](../50-settings/rest-conventions.md), [cURL commands](curl-options.md), JSON data analysis
 - **Validates against**: Real whatwatt Go API responses, jq syntax compatibility, cross-platform shell usage
 
 ## Key Facts

@@ -18,7 +18,7 @@ last_verified: '2025-10-07'
 - **Purpose**: API endpoint for executing predefined actions asynchronously with status tracking and error handling
 - **When to use**: Triggering automated sequences, initiating HTTP/Modbus operations, running scheduled tasks programmatically
 - **Prerequisites**: Actions defined via actions API, understanding of asynchronous execution, status monitoring concepts
-- **Related to**: Actions definition (index.md), status monitoring (status.md), REST API conventions
+- **Related to**: [Actions definition](index.md), [Status monitoring](status.md), [REST API conventions](../rest-conventions.md)
 - **Validates against**: Action ID existence, execution state management, concurrent request limits (20 max)
 
 ## Key Facts

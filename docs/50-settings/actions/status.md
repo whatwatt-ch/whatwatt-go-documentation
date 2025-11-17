@@ -20,7 +20,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Action execution status monitoring API for tracking progress and results of asynchronous HTTP/Modbus requests
 - **When to use**: Monitoring action execution progress, checking completion status, debugging failed requests, automated status polling
 - **Prerequisites**: Active action executions with status IDs, understanding of HTTP/Modbus status codes, asynchronous execution concepts
-- **Related to**: Action execution (execution.md), action definition (index.md), asynchronous monitoring patterns
+- **Related to**: [Action execution](execution.md), [Action definition](index.md), asynchronous monitoring patterns
 - **Validates against**: HTTP status code standards, Modbus protocol status codes, execution timing measurements
 
 ## Key Facts

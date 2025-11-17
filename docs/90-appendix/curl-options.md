@@ -37,7 +37,7 @@ real_device_tested: true
 - **Purpose**: Comprehensive cURL command-line tool reference for HTTP API interactions including common options and practical examples
 - **When to use**: Testing API endpoints, scripting automation, troubleshooting HTTP requests, learning command-line API interaction
 - **Prerequisites**: Command-line familiarity, basic HTTP knowledge, cURL installation, understanding of HTTP methods
-- **Related to**: HTTP basics (http-basics.md), REST conventions (rest-conventions.md), authentication methods
+- **Related to**: [HTTP basics](http-basics.md), [REST conventions](../50-settings/rest-conventions.md), authentication methods
 - **Validates against**: Real whatwatt Go device API endpoints, cross-platform compatibility (Linux/Windows/PowerShell)
 
 ## Key Facts

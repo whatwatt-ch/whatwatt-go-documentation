@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Guide for installing TLS certificates to Mosquitto MQTT broker with proper file permissions and ownership for secure communication
 - **When to use**: After generating certificates, before configuring TLS listeners, when setting up production secure MQTT
 - **Prerequisites**: Generated certificates (ca.crt, server.crt, server.key), Mosquitto installed, sudo access, understanding of Linux file permissions
-- **Related to**: Certificate generation (tls-ca-ecc.md), TLS configuration (tls-conf.md), security hardening (hardening.md)
+- **Related to**: [Certificate generation](tls-ca-ecc.md), [TLS configuration](tls-conf.md), [Security hardening](hardening.md)
 - **Validates against**: Mosquitto service requirements, Linux permission system, TLS certificate chain validation
 
 ## Key Facts

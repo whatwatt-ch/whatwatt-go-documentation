@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Automated Python script for configuring whatwatt Go devices with MQTT TLS settings via REST API with parameterized options
 - **When to use**: Bulk device provisioning, automated deployment workflows, consistent configuration across multiple devices
 - **Prerequisites**: Python 3 with requests library, generated certificates available, whatwatt Go devices accessible via network
-- **Related to**: Manual provisioning (provision-payload.md), certificate generation (tls-ca-ecc.md), MQTT setup verification
+- **Related to**: [Manual provisioning](provision-payload.md), [Certificate generation](tls-ca-ecc.md), MQTT setup verification
 - **Validates against**: whatwatt Go REST API /api/v1/mqtt/settings endpoint, certificate file format requirements
 
 ## Key Facts

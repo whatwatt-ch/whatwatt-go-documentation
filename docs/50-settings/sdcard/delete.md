@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: SD card file and directory deletion API with recursive directory removal capabilities
 - **When to use**: Cleaning up log files, removing old data, managing SD card storage space, maintenance operations
 - **Prerequisites**: SD card mounted and accessible, understanding of recursive deletion risks, proper file path knowledge
-- **Related to**: SD card listing (listing.md), file download (download.md), SD card configuration (configuration.md)
+- **Related to**: [SD card listing](listing.md), [File download](download.md), [SD card configuration](configuration.md)
 - **Validates against**: SD card filesystem structure, path validation, directory traversal safety
 
 ## Key Facts

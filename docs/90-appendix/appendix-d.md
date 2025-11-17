@@ -18,7 +18,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Comprehensive OBIS code reference for DLMS/COSEM smart meter data identification including energy, power, voltage, and current measurements
 - **When to use**: Configuring meter scalers, interpreting meter data, setting up MQTT templates, troubleshooting DLMS communication
 - **Prerequisites**: Understanding of DLMS/COSEM protocol, smart meter concepts, electrical measurement terminology
-- **Related to**: Meter scalers (scalers-current.md, scalers-custom.md), meter communication (meter-comm.md), MQTT templates
+- **Related to**: [Current scalers](../50-settings/scalers-current.md), [Custom scalers](../50-settings/scalers-custom.md), [Meter communication](../50-settings/meter-comm.md), MQTT templates
 - **Validates against**: DLMS/COSEM standard specifications, IEC 62056 series, smart meter manufacturer implementations
 
 ## Key Facts

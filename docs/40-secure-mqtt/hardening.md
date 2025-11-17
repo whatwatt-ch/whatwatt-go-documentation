@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Production security hardening guide for MQTT broker deployments with certificate management, network security, and monitoring best practices
 - **When to use**: When deploying secure MQTT in production environments, implementing security policies, preparing for compliance audits
 - **Prerequisites**: Functional secure MQTT setup, understanding of PKI, network security concepts, Linux system administration
-- **Related to**: Certificate deployment (deploy-certs.md), TLS configuration (tls-conf.md), certificate generation (tls-ca-ecc.md)
+- **Related to**: [Certificate deployment](deploy-certs.md), [TLS configuration](tls-conf.md), [Certificate generation](tls-ca-ecc.md)
 - **Validates against**: Security best practices, compliance requirements, production network constraints
 
 ## Key Facts
@@ -205,7 +205,7 @@ log_timestamp true
 
 ### Log Rotation
 
-```bash
+```conf
 # /etc/logrotate.d/mosquitto
 /var/log/mosquitto/*.log {
     weekly

@@ -18,7 +18,7 @@ last_verified: '2025-10-07'
 - **Purpose**: SD card file download API for retrieving CSV reports and other files with appropriate MIME type handling
 - **When to use**: Downloading meter data CSV files, retrieving stored reports, backing up configuration files
 - **Prerequisites**: SD card with files available, knowledge of target filenames, HTTP download mechanisms
-- **Related to**: File listing (listing.md), CSV format specification (csv-format.md), data logging configuration
+- **Related to**: [File listing](listing.md), [CSV format specification](csv-format.md), data logging configuration
 - **Validates against**: File existence on SD card, MIME type detection by extension, HTTP content delivery standards
 
 ## Key Facts

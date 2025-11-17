@@ -37,7 +37,7 @@ real_device_tested: false
 - **Purpose**: Comparison guide for choosing between REST API and MQTT integration methods based on use case requirements and architectural needs
 - **When to use**: Architecture planning phase, integration design decisions, protocol selection for smart meter projects, technical evaluation
 - **Prerequisites**: Basic understanding of HTTP/REST concepts, MQTT publish-subscribe messaging, integration patterns, network protocols
-- **Related to**: First request (first-request.md), MQTT overview (30-mqtt/index.md), REST polling (20-rest/polling.md), streaming (20-rest/streaming.md)
+- **Related to**: [First request](first-request.md), [MQTT overview](../30-mqtt/index.md), [REST polling](../20-rest/polling.md), [Streaming](../20-rest/streaming.md)
 - **Validates against**: whatwatt Go dual-protocol support, real-world integration patterns, performance characteristics
 
 ## Key Facts

@@ -17,7 +17,7 @@ last_verified: '2025-10-07'
 - **Purpose**: Command-line testing guide for secure MQTT broker using mosquitto_sub with TLS client certificate authentication
 - **When to use**: Testing secure MQTT setup before device configuration, troubleshooting connection issues, verifying certificate authentication
 - **Prerequisites**: Mosquitto client tools installed, generated certificates available, running secure MQTT broker
-- **Related to**: MQTT broker setup (index.md), certificate deployment (deploy-certs.md), device provisioning (provision-payload.md)
+- **Related to**: [MQTT broker setup](index.md), [Certificate deployment](deploy-certs.md), [Device provisioning](provision-payload.md)
 - **Validates against**: Mosquitto broker TLS configuration, client certificate authentication, topic subscription functionality
 
 ## Key Facts

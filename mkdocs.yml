@@ -64,6 +64,10 @@ plugins:
       ignore_urls:
         - "javascript:void(0)"
         - "https://github.com/whatwatt-ch"
+  - print-site:
+      add_to_navigation: false
+      print_page_title: "whatwatt Go · Documentation"
+      include_css: true
 
 extra:
   homepage: https://whatwatt.ch

@@ -49,7 +49,7 @@ authentication: required when device password is set
 - **Event name**: `live` with JSON payload
 - **Connection limit**: Single client only (new connection closes previous)
 - **Auto-reconnect**: Browser EventSource handles reconnection automatically
-- **Data frequency**: Matches meter report interval (~20 seconds typical)
+- **Data frequency**: Matches meter report interval (~10 seconds typical)
 
 ## Endpoint Details
 
