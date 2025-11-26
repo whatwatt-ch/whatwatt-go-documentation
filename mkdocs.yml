@@ -153,6 +153,7 @@ nav:
       - Reference (OpenAPI): 20-rest/reference/index.md
     - MQTT:
       - Overview: 30-mqtt/index.md
+      - Client Configuration: 30-mqtt/mqtt-client.md
       - Template: 30-mqtt/template.md
       - Local variables: 30-mqtt/local-reading.md
     - SD card:

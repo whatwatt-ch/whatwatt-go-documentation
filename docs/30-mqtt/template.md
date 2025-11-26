@@ -68,14 +68,16 @@ After variable substitution, the template generates a valid JSON message:
 
 ```json
 {
-  "sys_id": "A842E39F8124",
-  "meter_id": "636192",
-  "time": 1725281386,
-  "tariff": 0,
-  "power_in": 1.1,
-  "power_out": 0,
-  "energy_in": 123.4,
-  "energy_out": 0
+  "P_In": 0.014,
+  "P_Out": 0,
+  "E_In": 200.934,
+  "E_Out": 8.965,
+  "Meter": {
+    "DateTime": "2025-11-17T15:52:50Z"
+  },
+  "Sys": {
+    "Id": "ECC9FF5C7F14"
+  }
 }
 ```
 
@@ -96,6 +98,17 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | `2_8_1`            | double | kWh   | Negative active energy (A-) in tariff T1                    |
 | `2_8_2`            | double | kWh   | Negative active energy (A-) in tariff T2                    |
 
+### Max Demand Variables
+
+| Variable           | Type   | Unit  | Description                                                  |
+| ------------------ | ------ | ----- | ------------------------------------------------------------ |
+| `1_6_0`            | double | kW    | Positive active maximum demand (A+) total                   |
+| `1_6_1`            | double | kW    | Positive active maximum demand (A+) in tariff T1            |
+| `1_6_2`            | double | kW    | Positive active maximum demand (A+) in tariff T2            |
+| `2_6_0`            | double | kW    | Negative active maximum demand (A-) total                   |
+| `2_6_1`            | double | kW    | Negative active maximum demand (A-) in tariff T1            |
+| `2_6_2`            | double | kW    | Negative active maximum demand (A-) in tariff T2            |
+
 ### Power Variables
 
 | Variable           | Type   | Unit  | Description                                                  |
@@ -110,19 +123,38 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | `22_7_0`           | double | kW    | Negative active instantaneous power (A-) in phase L1        |
 | `42_7_0`           | double | kW    | Negative active instantaneous power (A-) in phase L2        |
 | `62_7_0`           | double | kW    | Negative active instantaneous power (A-) in phase L3        |
+| `9_7_0`            | double | kVA   | Apparent instantaneous power (S+)                           |
 
 ### Reactive Power & Energy
 
 | Variable           | Type   | Unit   | Description                                                 |
 | ------------------ | ------ | ------ | ----------------------------------------------------------- |
 | `3_7_0`            | double | kvar   | Positive reactive instantaneous power (Q+)                 |
+| `23_7_0`           | double | kvar   | Positive reactive instantaneous power (Q+) in phase L1     |
+| `43_7_0`           | double | kvar   | Positive reactive instantaneous power (Q+) in phase L2     |
+| `63_7_0`           | double | kvar   | Positive reactive instantaneous power (Q+) in phase L3     |
 | `4_7_0`            | double | kvar   | Negative reactive instantaneous power (Q-)                 |
+| `24_7_0`           | double | kvar   | Negative reactive instantaneous power (Q-) in phase L1     |
+| `44_7_0`           | double | kvar   | Negative reactive instantaneous power (Q-) in phase L2     |
+| `64_7_0`           | double | kvar   | Negative reactive instantaneous power (Q-) in phase L3     |
 | `3_8_0`            | double | kvarh  | Positive reactive energy (Q+) total                        |
+| `3_8_1`            | double | kvarh  | Positive reactive energy (Q+) in tariff T1                 |
+| `3_8_2`            | double | kvarh  | Positive reactive energy (Q+) in tariff T2                 |
 | `4_8_0`            | double | kvarh  | Negative reactive energy (Q-) total                        |
+| `4_8_1`            | double | kvarh  | Negative reactive energy (Q-) in tariff T1                 |
+| `4_8_2`            | double | kvarh  | Negative reactive energy (Q-) in tariff T2                 |
 | `5_8_0`            | double | kvarh  | Imported inductive reactive energy Q1 total                |
+| `5_8_1`            | double | kvarh  | Imported inductive reactive energy Q1 in tariff T1         |
+| `5_8_2`            | double | kvarh  | Imported inductive reactive energy Q1 in tariff T2         |
 | `6_8_0`            | double | kvarh  | Imported capacitive reactive energy Q2 total               |
+| `6_8_1`            | double | kvarh  | Imported capacitive reactive energy Q2 in tariff T1        |
+| `6_8_2`            | double | kvarh  | Imported capacitive reactive energy Q2 in tariff T2        |
 | `7_8_0`            | double | kvarh  | Exported inductive reactive energy Q3 total                |
+| `7_8_1`            | double | kvarh  | Exported inductive reactive energy Q3 in tariff T1         |
+| `7_8_2`            | double | kvarh  | Exported inductive reactive energy Q3 in tariff T2         |
 | `8_8_0`            | double | kvarh  | Exported capacitive reactive energy Q4 total               |
+| `8_8_1`            | double | kvarh  | Exported capacitive reactive energy Q4 in tariff T1        |
+| `8_8_2`            | double | kvarh  | Exported capacitive reactive energy Q4 in tariff T2        |
 
 ### Voltage & Current
 
@@ -143,10 +175,12 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | Variable           | Type   | Unit     | Description                                                 |
 | ------------------ | ------ | -------- | ----------------------------------------------------------- |
 | `timestamp`        | uint   |          | UTC UNIX timestamp                                          |
-| `tariff`           | uint   |          | Current tariff (1, 2)                                      |
+| `tariff`           | uint   |          | Current tariff (1,2); may be 0/absent if unknown           |
 | `conv_factor`      | double |          | Conversion coefficient for power/energy/current values     |
 | `13_7_0`           | double |          | Instantaneous power factor                                  |
-| `meter.date_time`  | string | ISO8601  | Report date time in local time                             |
+| `meter.date_time`  | string | ISO8601  | Report date time (local)                                   |
+| `meter.date_time_local` | string | ISO8601 | Report date time (local)                                   |
+| `meter.date_time_utc` | string | ISO8601  | Report date time (UTC)                                     |
 | `meter.id`         | string |          | Meter ID                                                    |
 | `meter.type`       | string |          | Meter type                                                  |
 | `meter.vendor`     | string |          | Meter vendor                                                |
@@ -159,6 +193,8 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | `sys.id`           | string |          | whatwatt Go system identifier                              |
 | `sys.firmware`     | string |          | Firmware version                                            |
 | `sys.date_time`    | string | ISO8601  | System local time                                           |
+| `sys.date_time_local` | string | ISO8601 | System local time (explicit local variant)                 |
+| `sys.date_time_utc` | string | ISO8601  | System time in UTC                                          |
 
 ### Network Interface Variables
 
@@ -167,10 +203,20 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | `wifi.mode`        | string |       | Wi-Fi operation mode (off, sta, ap, apsta, nan)            |
 | `wifi.sta.status`  | string |       | Connection status (disabled, disconnected, error, ok)      |
 | `wifi.sta.ssid`    | string |       | Name of connected Wi-Fi network                             |
+| `wifi.sta.bssid`   | string | MAC   | MAC address of AP                                          |
 | `wifi.sta.rssi`    | int    | dBm   | Wi-Fi received signal strength indication                   |
+| `wifi.sta.channel` | uint   |       | Wi‑Fi channel (1–13)                                       |
+| `wifi.sta.mac`     | string | MAC   | MAC address of Wi‑Fi interface                              |
 | `wifi.sta.ip`      | string | IPv4  | IPv4 address assigned to Wi-Fi interface                   |
+| `wifi.sta.mask`    | string | IPv4  | IPv4 netmask assigned to Wi‑Fi interface                    |
+| `wifi.sta.gw`      | string | IPv4  | IPv4 gateway address assigned to Wi‑Fi interface            |
+| `wifi.sta.dns`     | string | IPv4  | IPv4 DNS server assigned to Wi‑Fi interface                 |
 | `eth.state`        | string |       | Status of Ethernet (up, down)                              |
+| `eth.mac`          | string | MAC   | MAC address of Ethernet interface                           |
 | `eth.ip`           | string | IPv4  | IPv4 address assigned to Ethernet interface                |
+| `eth.mask`         | string | IPv4  | IPv4 netmask assigned to Ethernet interface                 |
+| `eth.gw`           | string | IPv4  | IPv4 gateway address assigned to Ethernet interface         |
+| `eth.dns`          | string | IPv4  | IPv4 DNS server assigned to Ethernet interface              |
 
 ### Hardware Variables
 
@@ -180,3 +226,27 @@ The first column Name usually refers to short OBIS form part C.D.E. Keep in mind
 | `plug.voltage.usb`    | double | V     | USB voltage                                              |
 | `plug.voltage.p1`     | double | V     | P1 voltage                                               |
 | `plug.voltage.mbus`   | double | V     | M-Bus voltage                                            |
+
+### Volume Array Variables
+
+When multi-volume (multi-bus) data is available, indexed volume entries are exposed using zero-based sequential indices assigned at report generation time. Each entry corresponds to a physical bus channel and carries cumulative information.
+
+Variable name pattern: `vol[n].field` where `n` is the 0-based array index.
+
+| Variable            | Type   | Description                                                  |
+| ------------------- | ------ | ------------------------------------------------------------ |
+| `vol[n].bus`        | int    | Bus number (1-based as reported by meter)                    |
+| `vol[n].meter_id`   | string | Meter identifier for this bus (if available)                 |
+| `vol[n].date_time`  | string | ISO8601 timestamp (UTC) for the volume snapshot              |
+| `vol[n].cumulative` | double | Cumulative counter value (unit depends on meter context)     |
+
+Notes:
+
+- Volume entries appear only when the meter reports them; absent otherwise.
+- Index ordering matches bus enumeration order during report processing.
+- Cumulative unit is typically an energy counter (e.g., kWh) — consult meter specification.
+
+### Additional Notes
+
+- Date/time variants (`*_local`, `*_utc`) provide both localized and UTC forms to simplify template usage across systems with different time zone handling.
+- Treat missing or zero `tariff` as unknown/not yet determined.
