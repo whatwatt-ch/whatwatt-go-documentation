@@ -210,6 +210,8 @@ Example response (abridged):
 }
 ```
 
+--8<-- "_partials/update-methods.md"
+
 ### Enable Web UI protection
 
 ```json

@@ -141,6 +141,8 @@ curl -X PUT -H "Content-Type: application/json" \
 
 ### Disable Ethernet
 
+--8<-- "_partials/update-methods.md"
+
 ```bash
 curl -X PUT -H "Content-Type: application/json" \
      -d '{"enable": false}' \

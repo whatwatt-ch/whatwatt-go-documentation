@@ -66,85 +66,12 @@ The device can connect to an MQTT broker using the built‑in client. Both unenc
 - Set any certificate/key/password field to `null` to delete it.
 - Reporting period (default 30 s) stretches if meter reports less frequently; adjustable in **System > Interval to Systems**.
 
-## Template Description
+## Template & Variables
 
-Payload templates are text (commonly JSON) with embedded predefined variables using `${variable_name}` syntax.
+See `30-mqtt/template.md` for the full variable list, examples, and guidance on quoting and substitution.
 
-!!! warning "Unresolved Variables"
-    Unresolved variables remain literally as `${name}`. Shortly after power‑on some values may be `null` (numeric) or empty (text) until available.
-
-### Example Template (Not Yet Valid JSON)
-
-```text
-{
-  "P_In": ${1_7_0},
-  "P_Out": ${2_7_0},
-  "E_In": ${1_8_0},
-  "E_Out": ${2_8_0},
-  "Meter": {
-    "DateTime": "${meter.date_time}"
-  },
-  "Sys": {
-    "Id": "${sys.id}"
-  }
-}
-```
-
-!!! note "Validity"
-    JSON becomes valid only after substitution; quote text variables, do not quote numeric variables.
-
-### Example Generated JSON
-
-```json
-{
-  "P_In": 0.014,
-  "P_Out": 0,
-  "E_In": 200.934,
-  "E_Out": 8.965,
-  "Meter": {
-    "DateTime": "2025-11-17T15:52:50Z"
-  },
-  "Sys": {
-    "Id": "ECC9FF5C7F14"
-  }
-}
-```
-
-## Available Variables (Selection)
-
-| Name                | Type   | Unit   | Description |
-| ------------------- | ------ | ------ | ----------- |
-| `1_8_0`             | double | kWh    | Positive active energy total |
-| `2_8_0`             | double | kWh    | Negative active energy total |
-| `1_7_0`             | double | kW     | Positive active instantaneous power total |
-| `2_7_0`             | double | kW     | Negative active instantaneous power total |
-| `21_7_0`            | double | kW     | Positive active instantaneous power L1 |
-| `41_7_0`            | double | kW     | Positive active instantaneous power L2 |
-| `61_7_0`            | double | kW     | Positive active instantaneous power L3 |
-| `3_7_0`             | double | kvar   | Positive reactive instantaneous power total |
-| `4_7_0`             | double | kvar   | Negative reactive instantaneous power total |
-| `9_7_0`             | double | kVA    | Apparent instantaneous power total |
-| `31_7_0`            | double | A      | Instantaneous current L1 |
-| `51_7_0`            | double | A      | Instantaneous current L2 |
-| `71_7_0`            | double | A      | Instantaneous current L3 |
-| `meter.date_time`   | string | ISO8601| Report date/time (local) |
-| `meter.date_time_utc` | string | ISO8601| Report date/time (UTC) |
-| `sys.date_time`     | string | ISO8601| System date/time (local) |
-| `sys.date_time_utc` | string | ISO8601| System date/time (UTC) |
-| `tariff`            | uint   |        | Current tariff (may be absent or 0 if unknown) |
-| `timestamp`         | uint   |        | UNIX timestamp (UTC) |
-| `conv_factor`       | double |        | Multiplicative conversion factor |
-
-See the full MQTT Template page for the complete variable list.
-
-## Defensive Parsing Tips
-
-- Treat missing fields as unavailable; do not assume zero means present.
-- Always parse numbers with fallback (e.g. default to 0 only for calculations, not logic).
-- Consider logging unresolved variables during integration testing.
-
-## Next Steps
-
-- Secure connection setup: see Secure MQTT section.
-- Define custom topic naming: ensure uniqueness per device.
-- Use retained messages sparingly (device does not publish retained by default).
+> Tips
+>
+> - Treat missing fields as unavailable; don’t assume zero means present.
+> - Quote text variables, don’t quote numeric variables in templates.
+> - Shortly after power‑on some values may be `null` or empty until available.

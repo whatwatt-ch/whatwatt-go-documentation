@@ -81,7 +81,7 @@ Configure Wi-Fi connection settings for station mode (connecting to existing net
 | `.netmask`   | string  | 0.0.0.0      |        | Network mask (if static_ip enabled)                 |
 | `.gateway`   | string  | 0.0.0.0      |        | Gateway address (if static_ip enabled)              |
 | `.dns`       | string  | 0.0.0.0      |        | DNS server address (if static_ip enabled)           |
-| `.max_power` | float   | 17           | 0..21  | Wi-Fi transmission power in dBm (resolution: 0.5)   |
+| `.max_tx_power` | float   | 17           | 0..21  | Wi-Fi transmission power in dBm (resolution: 0.5)   |
 
 ## Example Request
 
@@ -153,7 +153,7 @@ Configure Wi-Fi connection settings for station mode (connecting to existing net
   "enable": true,
   "name": "MyWiFiNetwork",
   "password": "MySecurePassword123",
-  "max_power": 10
+  "max_tx_power": 10
 }
 ```
 
@@ -192,7 +192,7 @@ All of these must be set when `static_ip: true`:
 
 ## Power Considerations
 
-### Transmission Power (`max_power`)
+### Transmission Power (`max_tx_power`)
 
 - **Default**: 17 dBm (recommended for most situations)
 - **Low power**: Reduce to 10-15 dBm when powered via M-Bus only

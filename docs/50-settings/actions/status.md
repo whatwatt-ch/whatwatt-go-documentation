@@ -242,3 +242,8 @@ curl -s "http://192.168.1.100/api/v1/actions/status?id=$STATUS_IDS" | jq '
   Each request in an action generates a separate status entry. Use the set of returned IDs to track all requests.
 
 Use this endpoint in conjunction with [action execution](execution.md) to implement robust action monitoring and error handling.
+
+## Load and rate limiting
+
+- High request rates may be throttled; expect `429 TooManyRequests` on intensive polling.
+- Back off and aggregate IDs (e.g., `id=139,140,141`) to reduce load.
