@@ -183,6 +183,8 @@ mosquitto_pub
 mosquitto_sub
 sudo
 repo
+unmount
+Unmount
 
 # Network and crypto terms
 ACL
