@@ -68,10 +68,9 @@ The device can connect to an MQTT broker using the built‑in client. Both unenc
 
 ## Template & Variables
 
-See `30-mqtt/template.md` for the full variable list, examples, and guidance on quoting and substitution.
+See [MQTT Template](template.md) for the full variable list, examples, and guidance on quoting and substitution.
 
-> Tips
->
-> - Treat missing fields as unavailable; don’t assume zero means present.
-> - Quote text variables, don’t quote numeric variables in templates.
-> - Shortly after power‑on some values may be `null` or empty until available.
+!!! note "Tips"
+    - Treat missing fields as unavailable; don’t assume zero means present.
+    - Quote text variables, don’t quote numeric variables in templates.
+    - Shortly after power‑on some values may be `null` or empty until available.

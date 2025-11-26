@@ -63,14 +63,14 @@ The device can be connected to an MQTT broker using the built-in MQTT client. Th
 - Response content type: `application/json`
 - Full details and field reference: see MQTT Client page.
 
-See: `30-mqtt/mqtt-client.md` for complete configuration reference and examples.
+See: [MQTT Client](mqtt-client.md) for complete configuration reference and examples.
 
 --8<-- "../_partials/auth-note.md"
 
 ## Payload Templates
 
 - Templates define the payload content published to MQTT using predefined variables.
-- See: `30-mqtt/template.md` for the full variable list and examples.
+- See: [MQTT Template](template.md) for the full variable list and examples.
 
 ## Report Interval
 
