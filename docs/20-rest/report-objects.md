@@ -24,6 +24,7 @@ last_verified: '2025-10-07'
 
 - **Endpoint**: /api/v1/report/objects
 - **Methods**: GET only
+- **License**: Plus or higher required
 - **Authentication**: HTTP Authentication (when device protection enabled)
 - **Response format**: JSON with OBIS logical names and DLMS classes
 - **Data source**: Direct from meter COSEM interface (not processed by device)
@@ -41,6 +42,8 @@ This endpoint exposes raw DLMS/COSEM objects (OBIS codes) reported by the meter.
 | Response content type | application/json         |
 
 --8<-- "../_partials/auth-note.md"
+
+--8<-- "../_partials/license-plus-note.md"
 
 ## Example response (from device 192.168.99.114)
 

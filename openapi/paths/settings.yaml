@@ -19,8 +19,15 @@
                     name: ''
                     host_name: whatwatt_9F8124
                     protection: false
+                    power_save: false
+                    p1_wifi_boost: true
+                    use_dhcp_ntp_server: true
+                    custom_ntp_server: time.cloudflare.com
+                    use_custom_ntp_server: false
                   services:
                     report_interval: 30
+                    low_power_report: false
+                    log: false
       '401':
         $ref: '../components/responses/Unauthorized.yaml'
       '500':
@@ -42,9 +49,11 @@
               value:
                 system:
                   host_name: whatwatt_9F8124
-                  protection: true
+                  use_dhcp_ntp_server: false
+                  custom_ntp_server: time.cloudflare.com
+                  use_custom_ntp_server: true
                 services:
-                  report_interval: 15
+                  low_power_report: true
     responses:
       '200':
         description: Updated settings
@@ -58,9 +67,16 @@
                   system:
                     name: ''
                     host_name: whatwatt_9F8124
-                    protection: true
+                    protection: false
+                    power_save: false
+                    p1_wifi_boost: true
+                    use_dhcp_ntp_server: false
+                    custom_ntp_server: time.cloudflare.com
+                    use_custom_ntp_server: true
                   services:
-                    report_interval: 15
+                    report_interval: 30
+                    low_power_report: true
+                    log: false
       '400':
         $ref: '../components/responses/BadRequest.yaml'
       '401':
@@ -86,8 +102,14 @@
                   name: Plant A
                   host_name: whatwatt_9F8124
                   protection: false
+                  power_save: false
+                  p1_wifi_boost: true
+                  use_dhcp_ntp_server: false
+                  custom_ntp_server: pool.ntp.org
+                  use_custom_ntp_server: true
                 services:
                   report_interval: 30
+                  low_power_report: true
                   log: true
     responses:
       '200':
@@ -103,8 +125,14 @@
                     name: Plant A
                     host_name: whatwatt_9F8124
                     protection: false
+                    power_save: false
+                    p1_wifi_boost: true
+                    use_dhcp_ntp_server: false
+                    custom_ntp_server: pool.ntp.org
+                    use_custom_ntp_server: true
                   services:
                     report_interval: 30
+                    low_power_report: true
                     log: true
       '400':
         $ref: '../components/responses/BadRequest.yaml'

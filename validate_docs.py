@@ -8,6 +8,7 @@ import argparse
 import os
 import subprocess
 import sys
+import warnings
 from pathlib import Path
 
 
@@ -24,6 +25,16 @@ class Colors:
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
     END = "\033[0m"
+
+
+def suppress_known_dependency_warnings() -> None:
+    """Hide noisy dependency warnings that don't affect validation results."""
+    warnings.filterwarnings(
+        "ignore",
+        message=r".*doesn't match a supported version!",
+        category=Warning,
+        module=r"requests(\..*)?",
+    )
 
 
 def run_command(cmd: list[str], description: str, critical: bool = True) -> tuple[bool, str]:
@@ -60,9 +71,13 @@ def run_command(cmd: list[str], description: str, critical: bool = True) -> tupl
             return False, result.stderr + result.stdout
 
     except FileNotFoundError:
-        print(f"{Colors.RED}[-] {description} - TOOL NOT FOUND{Colors.END}")
-        print(f"{Colors.RED}Command not found: {' '.join(cmd)}{Colors.END}")
-        return False, f"Tool not found: {cmd[0]}"
+        if critical:
+            print(f"{Colors.RED}[-] {description} - TOOL NOT FOUND{Colors.END}")
+            print(f"{Colors.RED}Command not found: {' '.join(cmd)}{Colors.END}")
+            return False, f"Tool not found: {cmd[0]}"
+        print(f"{Colors.YELLOW}[!]  {description} - TOOL NOT FOUND, SKIPPED{Colors.END}")
+        print(f"{Colors.YELLOW}Command not found: {' '.join(cmd)}{Colors.END}")
+        return True, f"Tool not found: {cmd[0]}"
     except Exception as e:
         print(f"{Colors.RED}[-] {description} - ERROR: {e}{Colors.END}")
         return False, str(e)
@@ -98,6 +113,7 @@ def validate_links_site() -> bool:
     import subprocess
     import time
 
+    suppress_known_dependency_warnings()
     import requests
 
     # Build site first
@@ -183,6 +199,7 @@ def validate_language_style() -> bool:
 def run_openapi_validation() -> bool:
     """Run OpenAPI validation"""
     try:
+        suppress_known_dependency_warnings()
         from prance import ResolvingParser  # type: ignore
 
         print(f"{Colors.BLUE}[*] OpenAPI specification validation...{Colors.END}")

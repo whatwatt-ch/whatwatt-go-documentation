@@ -147,6 +147,7 @@ nav:
   - Data Access:
     - REST:
       - Conventions: 50-settings/rest-conventions.md
+      - License requirements: 20-rest/license-requirements.md
       - Polling: 20-rest/polling.md
       - Streaming: 20-rest/streaming.md
       - Report objects (COSEM): 20-rest/report-objects.md

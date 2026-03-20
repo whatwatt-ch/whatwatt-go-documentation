@@ -22,6 +22,7 @@ last_verified: '2025-10-07'
 
 ## Key Facts
 
+- **License**: Plus or higher required because Secure MQTT uses the built-in MQTT client
 - **Security level**: Mutual TLS authentication with ECDSA-P256 certificates
 - **Broker requirements**: Mosquitto 2.0.21+ with TLS support enabled
 - **Certificate types**: CA root, server certificate, client certificate for device
@@ -35,6 +36,10 @@ last_verified: '2025-10-07'
 
 This chapter shows how to connect a whatwatt Go device to a local Mosquitto 2.0.21 broker using ECDSA certificates, mutual-TLS, and IP addresses (no hostname validation). All certificates are stored in `/etc/mosquitto/certs/`. Optional production-grade notes are included at the end.
 
+!!! warning "Requires Plus license"
+    Secure MQTT requires an active Plus or higher license.
+    On `FREE` devices you can still configure certificates and MQTT settings, but the firmware does not activate the MQTT client.
+
 ## Prerequisites
 
 | Component     | Version / Notes                     |
@@ -42,7 +47,7 @@ This chapter shows how to connect a whatwatt Go device to a local Mosquitto 2.0.
 | Ubuntu/Debian | fresh install, sudo user            |
 | Mosquitto     | 2.0.21+ (apt repo)                  |
 | OpenSSL       | 3.x (included)                      |
-| whatwatt Go   | firmware ≥ 1.7.6, REST API enabled |
+| whatwatt Go   | firmware ≥ 1.7.6, REST API enabled, Plus or higher license |
 | Python        | ≥ 3.8 (for provisioning script)     |
 
 ## Overview

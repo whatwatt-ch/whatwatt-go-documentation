@@ -45,6 +45,7 @@ authentication: required when device password is set
 
 - **Endpoint**: `/api/v1/report`
 - **Method**: GET only
+- **License**: Plus or higher required
 - **Authentication**: Required when device Web UI password is set
 - **Response format**: JSON with OBIS-based field names
 - **Typical response time**: <100ms
@@ -62,6 +63,8 @@ Reading measurements from the meter is possible by calling the API `api/v1/repor
 | Response content type | application/json |
 
 --8<-- "../_partials/auth-note.md"
+
+--8<-- "../_partials/license-plus-note.md"
 
 ## Example response for Landis+Gyr LGZ (MBUS)
 

@@ -44,6 +44,7 @@ real_device_tested: false
 
 - **REST API**: HTTP-based request-response for on-demand reads, configuration, CRUD operations
 - **MQTT**: Lightweight publish-subscribe for streaming telemetry, real-time monitoring, event-driven automation
+- **License model**: Core REST configuration is broadly available, while MQTT publishing and selected advanced REST endpoints require Plus or higher
 - **Use cases**: REST for polling/configuration, MQTT for continuous data streams and low-latency applications
 - **Network efficiency**: MQTT optimized for bandwidth and reliability, REST better for simple integrations
 - **Integration complexity**: REST simpler to implement, MQTT requires broker infrastructure
@@ -58,6 +59,10 @@ The REST API provides a straightforward method for integrating the whatwatt Go d
 ## MQTT Client Connection
 
 MQTT (Message Queuing Telemetry Transport) is a lightweight, publish-subscribe messaging protocol. It is particularly beneficial for scenarios where bandwidth usage and network reliability are significant concerns. By connecting as an MQTT client, the whatwatt Go device can:
+
+!!! warning "License requirement"
+    Built-in MQTT publishing requires an active Plus or higher license.
+    On `FREE` devices you can still configure MQTT, but the firmware does not activate the publisher.
 
 - Efficiently handle high volumes of data transmission with minimal overhead
 - Ensure low latency, making it ideal for real-time monitoring and control applications

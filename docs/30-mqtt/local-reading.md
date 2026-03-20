@@ -45,6 +45,7 @@ authentication: required when device password is set
 
 - **Endpoint**: `/api/v1/variables`
 - **Method**: GET only
+- **License**: Plus or higher required
 - **Authentication**: Required when device Web UI password is set
 - **Response format**: JSON array of name-value objects
 - **Typical response time**: <100ms
@@ -61,6 +62,8 @@ You can read all available MQTT template variables locally via REST API to test 
 | Response content type | application/json   |
 
 --8<-- "../_partials/auth-note.md"
+
+--8<-- "../_partials/license-plus-note.md"
 
 ## Example Request
 

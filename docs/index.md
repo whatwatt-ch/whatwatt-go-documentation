@@ -25,6 +25,7 @@ last_verified: '2025-10-07'
 - **Device Type**: Swiss Smart Meter integration device with REST API and MQTT support
 - **Compatibility**: Universal support for all Swiss Smart Meter manufacturers (Ensor, Iskraemeco, Kamstrup, Landis+Gyr, etc.)
 - **Protocols**: REST API (HTTP/JSON), MQTT, Secure MQTT (TLS)
+- **License model**: Core configuration is available on all editions; selected data and automation integrations require Plus or higher
 - **Data Formats**: JSON responses, Server-Sent Events (SSE), CSV logging
 - **Authentication**: Optional HTTP authentication when device password is set (Digest auth from firmware 1.10.X, Basic auth in earlier versions)
 - **Network**: Wi-Fi and Ethernet connectivity, mDNS discovery support
@@ -55,18 +56,19 @@ Choose your integration method:
     Perfect for web applications and simple polling scenarios.
 
     ```bash
-    # Get current meter reading
-    curl http://192.168.1.100/api/v1/report
-
-    # Get system information
+    # Check device availability and license type
     curl http://192.168.1.100/api/v1/system
     ```
 
-    **[→ REST API Guide](20-rest/polling.md)**
+    If `.device.license.type` is `PLUS` or higher, you can continue with meter polling endpoints such as `/api/v1/report`.
+
+    **[→ REST API Guide](00-intro/first-request.md)**
 
 === "MQTT"
 
     Ideal for real-time applications and IoT integration.
+
+  Requires an active Plus or higher license for the built-in MQTT publisher.
 
     ```bash
     # Subscribe on YOUR MQTT BROKER to the topic you configured in Device Settings → MQTT (publish.topic)
@@ -82,6 +84,8 @@ Choose your integration method:
 === "Secure MQTT"
 
     Enterprise-grade security with TLS encryption.
+
+  Requires an active Plus or higher license because it uses the same built-in MQTT publisher.
 
     ```bash
     # Connect to YOUR MQTT BROKER with TLS (mutual TLS optional)

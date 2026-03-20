@@ -7,7 +7,7 @@ Modern, comprehensive documentation for whatwatt Go devices built with **MkDocs 
 ### Prerequisites
 
 - Python 3.8+
-- Node.js 16+ (for validation tools)
+- Node.js 16+ (for markdownlint and broken-link-checker)
 - Git
 
 ### Installation
@@ -29,6 +29,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 npm install
 ```
+
+`requirements.txt` installs the Python-side validation dependencies,
+including `Prance` and the OpenAPI validation backend used by the validation
+script.
+Install `Vale` separately as a system CLI tool.
 
 ### Development
 
@@ -63,6 +68,14 @@ npm run build:prod
 
 # Deploy directory: ./dist/
 # Copy ./dist/ contents to your web server
+```
+
+Recommended direct invocation from the project virtual environment:
+
+```bash
+cd /home/sj/esp32-workspace/whatwatt/whatwatt-go-documentation
+source .venv/bin/activate
+python build_production.py
 ```
 
 The production build includes:

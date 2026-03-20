@@ -98,10 +98,10 @@ Here are some practical examples for interacting with whatwatt Go API:
 
 ```bash
 # Get device information with headers
-curl -i http://192.168.1.100/api/v1/info
+curl -i http://192.168.1.100/api/v1/system
 
-# Get meter report silently (for scripts)
-curl -s http://192.168.1.100/api/v1/report
+# Get device information silently (for scripts)
+curl -s http://192.168.1.100/api/v1/system
 
 # Update WiFi settings
 curl -X PUT -d '{"wifi": {"enable": true, "name": "MyNetwork"}}' \

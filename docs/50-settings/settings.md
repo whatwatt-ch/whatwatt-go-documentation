@@ -52,12 +52,17 @@ methods:
 - **Dynamic apply**: Changes take effect immediately without reboot
 - **Response format**: JSON with nested system and services objects
 - **Sections**: `system` (device identity, protection) and `services` (cloud/local integrations)
+- **License-dependent services**: Some services configured here remain inactive on `FREE`, including local Solar Manager report access, myStrom cloud, meter proxy, Modbus TCP, and Berry script execution
 - **No reboot needed**: Configuration changes apply dynamically
 - **Error codes**: 400 (invalid config), 401 (auth required)
 
 ## Endpoint Details
 
 This endpoint manages the device's basic system settings and enables/disables built-in services.
+
+!!! warning "License-dependent services"
+  Some service switches described on this page can be configured on all editions, but the firmware activates them only when the device has an active Plus or higher license.
+  This applies to the local Solar Manager report endpoint, myStrom cloud, meter proxy, Modbus TCP, and Berry script execution.
 
 | Endpoint              | `api/v1/settings` |
 | --------------------- | ----------------- |
@@ -75,19 +80,23 @@ This endpoint manages the device's basic system settings and enables/disables bu
 
 ### Fields: system
 
-| JSON path              | Type    | Default                 | Range/Rules                             | Notes |
-| ---------------------- | ------- | ----------------------- | --------------------------------------- | ----- |
-| `system.name`          | string  | ""                      | length 0..31                            | Friendly device name |
-| `system.host_name`     | string  | `whatwatt_XXXXXX`       | length 0..31; must be a valid hostname  | Used on network and for realm; write rejected if invalid |
-| `system.protection`    | boolean | false                   |                                         | When true and `password` set, HTTP auth is enforced |
-| `system.password`      | string  | ""                      | length 0..31                            | Write-only; hidden in GET responses |
-| `system.power_save`    | boolean | false                   |                                         | Global power save mode; see constraint below |
-| `system.p1_wifi_boost` | boolean | true                  |                                         | When true and P1 is connected, disables Wi‑Fi power save to boost throughput |
+| JSON path                      | Type    | Default              | Range/Rules                             | Notes |
+| ------------------------------ | ------- | -------------------- | --------------------------------------- | ----- |
+| `system.name`                  | string  | ""                   | length 0..31                            | Friendly device name. |
+| `system.host_name`             | string  | `whatwatt_XXXXXX`    | length 0..31; must be a valid hostname  | Used on network and for realm; write rejected if invalid. |
+| `system.protection`            | boolean | false                |                                         | When true and `password` set, HTTP auth is enforced. |
+| `system.password`              | string  | ""                   | length 0..31                            | Write-only; hidden in GET responses. |
+| `system.power_save`            | boolean | false                |                                         | Global power save mode; see constraint below. |
+| `system.p1_wifi_boost`         | boolean | true                 |                                         | When true and P1 is connected, disables Wi‑Fi power save to boost throughput. |
+| `system.use_dhcp_ntp_server`   | boolean | false                |                                         | Adds NTP server learned from DHCP to the time sync list. |
+| `system.custom_ntp_server`     | string  | ""                   | length 0..127                           | must be a valid hostname or IP. Optional custom NTP server used by low-power reporting. |
+| `system.use_custom_ntp_server` | boolean | false                |                                         | Enables `custom_ntp_server` when the value is non-empty and valid. |
 
 Constraints
 
 - Enabling `system.power_save` is rejected while the Ethernet link is UP (request returns 400).
 - `system.host_name` must be valid; invalid value causes 400.
+- `system.custom_ntp_server` must be a valid hostname or IP; invalid value is discarded and `system.use_custom_ntp_server` is cleared.
 
 ### Power Management Decision Trees
 
@@ -143,25 +152,31 @@ flowchart TD
 
 ### Fields: services
 
-| JSON path                                 | Type     | Default             | Range/Rules                     | Notes |
-| ----------------------------------------- | -------- | ------------------- | ------------------------------- | ----- |
-| `services.cloud.what_watt`                | boolean  | true                |                                 | whatwatt Cloud integration |
-| `services.cloud.solar_manager`            | boolean  | false               |                                 | Solar Manager cloud |
-| `services.cloud.mystrom`                  | boolean  | true                |                                 | myStrom cloud |
-| `services.cloud.stromkonto`               | boolean  | false               |                                 | Stromkonto cloud |
-| `services.local.solar_manager`            | boolean  | false               |                                 | Local Solar Manager API |
-| `services.broadcast`                      | boolean  | true                |                                 | mDNS broadcast (discovery) |
-| `services.other_energy_provider`          | boolean  | false               |                                 | Enable other energy provider features |
-| `services.report_interval`                | uint     | 30                  | 1..3600 (seconds)               | Cloud/custom reporting interval |
-| `services.log`                            | boolean  | false               |                                 | Enable internal log service |
-| `services.meter_proxy`                    | boolean  | false               |                                 | Enable meter proxy service |
-| `services.sd.enable`                      | boolean  | false               |                                 | Store periodic reports to SD card |
-| `services.sd.frequency`                   | uint     | 15                  | 1..1440 (seconds)               | SD write cadence |
-| `services.sd.recorder_mode`               | boolean  | false               |                                 | Standalone SD recorder mode (FW 2.0.1+) |
-| `services.modbus.enable`                  | boolean  | false               |                                 | Modbus TCP server |
-| `services.modbus.port`                    | uint     | 502                 | 1..65535                        | Modbus TCP port |
-| `services.berry.auto_run`                 | boolean  | false               |                                 | Auto-run Berry script on boot |
-| `services.berry.run_delay`                | uint     | 300                 | 60..86400 (seconds)             | Delay before auto-run |
+| JSON path                                 | Type     | Default             | Range/Rules                     | Notes                                     |
+| ----------------------------------------- | -------- | ------------------- | ------------------------------- | ----------------------------------------- |
+| `services.cloud.what_watt`                | boolean  | true                |                                 | whatwatt Cloud integration                |
+| `services.cloud.solar_manager`            | boolean  | false               |                                 | Solar Manager cloud                       |
+| `services.cloud.mystrom`                  | boolean  | true                |                                 | myStrom cloud; inactive on `FREE`         |
+| `services.cloud.stromkonto`               | boolean  | false               |                                 | Stromkonto cloud                          |
+| `services.local.solar_manager`            | boolean  | false               |                                 | Local Solar Manager API; report endpoint requires Plus or higher |
+| `services.broadcast`                      | boolean  | true                |                                 | mDNS broadcast (discovery)                |
+| `services.other_energy_provider`          | boolean  | false               |                                 | Enable other energy provider features     |
+| `services.report_interval`                | uint     | 30                  | 1..3600 (seconds)               | Cloud/custom reporting interval           |
+| `services.low_power_report`               | boolean  | false               |                                 | Uses the low-power reporting flow when a meter interface is configured. |
+| `services.log`                            | boolean  | false               |                                 | Enable internal log service               |
+| `services.meter_proxy`                    | boolean  | false               |                                 | Enable meter proxy service; inactive on `FREE` |
+| `services.sd.enable`                      | boolean  | false               |                                 | Store periodic reports to SD card         |
+| `services.sd.frequency`                   | uint     | 15                  | 1..1440 (seconds)               | SD write cadence                          |
+| `services.sd.recorder_mode`               | boolean  | false               |                                 | Standalone SD recorder mode (FW 2.0.1+)   |
+| `services.modbus.enable`                  | boolean  | false               |                                 | Modbus TCP server; inactive on `FREE`     |
+| `services.modbus.port`                    | uint     | 502                 | 1..65535                        | Modbus TCP port                           |
+| `services.berry.auto_run`                 | boolean  | false               |                                 | Auto-run Berry script on boot; execution requires Plus or higher |
+| `services.berry.run_delay`                | uint     | 300                 | 60..86400 (seconds)             | Delay before auto-run                     |
+
+Constraints
+
+- `services.low_power_report` affects startup only when `meter.if_type != auto`; without a configured meter interface it has no effect.
+- In low-power mode, NTP uses DHCP and custom server options from the `system` section.
 
 ## Examples
 
@@ -186,7 +201,10 @@ Example response (abridged):
     "host_name": "whatwatt_9F8124",
     "protection": false,
     "power_save": false,
-    "p1_wifi_boost": true
+    "p1_wifi_boost": true,
+    "use_dhcp_ntp_server": true,
+    "custom_ntp_server": "time.cloudflare.com",
+    "use_custom_ntp_server": false
   },
   "services": {
     "cloud": {
@@ -201,9 +219,10 @@ Example response (abridged):
     "broadcast": true,
     "other_energy_provider": false,
     "report_interval": 30,
+    "low_power_report": false,
     "log": false,
     "meter_proxy": false,
-    "sd": { "enable": false, "frequency": 15 },
+    "sd": { "enable": false, "frequency": 15, "recorder_mode": false },
     "modbus": { "enable": false, "port": 502 },
     "berry": { "auto_run": false, "run_delay": 300 }
   }
@@ -233,6 +252,23 @@ Example response (abridged):
 }
 ```
 
+### Configure NTP for low-power reporting
+
+```json
+{
+  "system": {
+    "use_dhcp_ntp_server": false,
+    "custom_ntp_server": "pool.ntp.org",
+    "use_custom_ntp_server": true
+  },
+  "services": {
+    "low_power_report": true
+  }
+}
+```
+
+This combination is useful when the device should wake, synchronize time, send a report, and return to low-power operation using a configured meter interface.
+
 ### Enable Modbus TCP
 
 ```json
@@ -258,6 +294,7 @@ Example response (abridged):
 - 400 Bad Request
   - Invalid `system.host_name`
   - Attempt to enable `system.power_save` while Ethernet link is active
+  - Invalid `system.custom_ntp_server`
   - Payload fails validation (types/ranges)
 
 ## See also

@@ -29,6 +29,7 @@ last_verified: '2025-10-08'
 - **Update frequency**: Configurable polling interval (recommended: 30-60 seconds)
 - **Data format**: JSON energy measurements parsed by Loxone
 - **Authentication**: Optional HTTP digest authentication support
+- **License**: Requires Plus or higher because the integration polls `/api/v1/report`
 - **Monitoring capabilities**: Real-time power, energy counters, voltage, current, frequency
 - **Automation potential**: Load shedding, solar optimization, peak demand management
 - **Visualization**: Built-in Loxone energy monitoring widgets
@@ -39,6 +40,8 @@ This guide shows how to integrate whatwatt Go energy monitoring into Loxone for 
 ## Overview
 
 The whatwatt Go device integrates seamlessly with Loxone home automation systems through the REST API. This enables real-time energy monitoring, automated load control, and intelligent energy management within your Loxone smart home.
+
+--8<-- "../_partials/license-plus-note.md"
 
 ## Prerequisites
 
@@ -84,6 +87,8 @@ curl http://DEVICE_IP/api/v1/system
 # Test energy data
 curl http://DEVICE_IP/api/v1/report
 ```
+
+The second request works only when the device license is Plus or higher.
 
 Expected response format:
 

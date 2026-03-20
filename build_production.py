@@ -11,16 +11,21 @@ import time
 from pathlib import Path
 
 
-def run_command(cmd, description):
+def run_command(cmd: list[str], description: str) -> bool:
     """Run command and return success status"""
     print(f"🔄 {description}...")
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
         print(f"✅ {description} - SUCCESS")
+        if result.stdout.strip():
+            print(result.stdout.strip())
         return True
     else:
         print(f"❌ {description} - FAILED")
-        print(f"Error: {result.stderr}")
+        if result.stderr.strip():
+            print(f"Error: {result.stderr.strip()}")
+        if result.stdout.strip():
+            print(result.stdout.strip())
         return False
 
 
@@ -31,20 +36,23 @@ def main():
     start_time = time.time()
 
     # 1. Clean previous builds
-    if not run_command("mkdocs build --clean", "Cleaning previous builds"):
+    if not run_command(["mkdocs", "build", "--clean"], "Cleaning previous builds"):
         return False
 
     # 2. Run pre-commit validation
     print("🔍 Running pre-commit validation...")
-    if not run_command("pre-commit run --all-files", "Pre-commit validation"):
+    if not run_command(["pre-commit", "run", "--all-files"], "Pre-commit validation"):
         print("⚠️  Pre-commit failed - continuing anyway")
 
     # 3. Build production site
-    if not run_command("mkdocs build --strict --clean --site-dir dist", "Building production site"):
+    if not run_command(
+        ["mkdocs", "build", "--strict", "--clean", "--site-dir", "dist"],
+        "Building production site",
+    ):
         return False
 
     # 4. Run comprehensive validation
-    if not run_command("python validate_docs.py", "Comprehensive validation"):
+    if not run_command([sys.executable, "validate_docs.py"], "Comprehensive validation"):
         print("⚠️  Validation warnings - review output")
 
     # 5. Optimize assets (if needed)

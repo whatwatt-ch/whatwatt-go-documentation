@@ -18,17 +18,18 @@ last_verified: '2025-10-07'
 - **When to use**: First-time device setup, connectivity testing, API proof-of-concept, new developer onboarding
 - **Prerequisites**: Device on local network, curl installed, basic command line knowledge
 - **Related to**: Device discovery, authentication setup, REST API polling, system information
-- **Validates against**: Live device responses via /api/v1/system and /api/v1/report endpoints
+- **Validates against**: Live device responses via `/api/v1/system` and, on licensed devices, `/api/v1/report`
 
 ## Key Facts
 
-- **Quick test endpoints**: /api/v1/system (device info), /api/v1/report (energy data)
+- **Quick test endpoints**: `/api/v1/system` for every device, `/api/v1/report` only with Plus or higher
 - **Methods**: GET requests only
 - **Authentication**: Optional (required only if device protection enabled)
 - **Response format**: JSON with device metadata and energy measurements
 - **Network discovery**: Use mDNS hostname whatwatt-XXXXXX.local or IP address
 - **No meter required**: System endpoint works without meter connection
 - **Meter required**: Report endpoint needs connected energy meter for meaningful data
+- **License requirement**: `/api/v1/report` requires Plus or higher
 - **Next steps**: Choose REST polling vs. MQTT streaming based on use case
 
 This page shows two minimal requests to verify connectivity and see live data, then points you to full guides.
@@ -47,12 +48,15 @@ curl http://whatwatt-XXXXXX.local/api/v1/system
 
 ## 2) Current report (meter)
 
+--8<-- "../_partials/license-plus-note.md"
+
 ```bash
 # Returns the latest parsed report from the meter
 curl http://whatwatt-XXXXXX.local/api/v1/report
 ```
 
 - You’ll see power, energy, and meter fields when a meter is connected
+- Use this request only after confirming the device license is Plus or higher
 - For polling details: see [REST → Polling](../20-rest/polling.md)
 - For live streaming: see [REST → Streaming](../20-rest/streaming.md)
 

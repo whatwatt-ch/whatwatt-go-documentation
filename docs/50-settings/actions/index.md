@@ -25,11 +25,14 @@ last_verified: '2025-10-07'
 
 - **Endpoint**: `/api/v1/actions` - Define, retrieve, and delete automated action sequences
 - **Methods**: GET (retrieve), POST (define), DELETE (remove) - JSON configuration format
+- **License**: Plus or higher required
 - **Components**: Constants for reuse, HTTP requests with headers/payloads, Modbus operations
 - **Constraints**: 15-char action IDs, 1023-char payloads, 4 HTTP headers max, 0.1-10s timeouts
 - **Execution**: Asynchronous processing with status monitoring and built-in error handling
 
 --8<-- "../../_partials/auth-note.md"
+
+--8<-- "../../_partials/license-plus-note.md"
 
 !!! info "Firmware Requirement"
     This API is available since firmware version 1.6.1

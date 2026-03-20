@@ -81,7 +81,7 @@ Each API method returns an HTTP status code indicating the result:
 | 202  | Accepted              | Request accepted for asynchronous processing (e.g., actions) |
 | 400  | Bad Request           | Invalid parameters or ranges in JSON object       |
 | 401  | Unauthorized          | Authentication required        |
-| 404  | Not Found             | Endpoint not found or blocked by CORS policy      |
+| 404  | Not Found             | Endpoint not found, blocked by CORS policy, or license-gated on `FREE` |
 | 500  | Internal Server Error | Internal device problem                            |
 | 503  | Service Unavailable   | Service temporarily unavailable                    |
 
@@ -117,6 +117,10 @@ See the authentication note above for detailed technical specifications and curl
 - Always check HTTP status codes
 - Parse error responses for details when available
 - Implement retry logic/backoff for transient errors (e.g., 503)
+
+!!! note "License-gated 404 responses"
+    Selected advanced endpoints intentionally return `404 License required` when the device license type is `FREE`.
+    See the license overview and REST license requirements pages before treating every `404` as a missing route.
 
 ### Best Practices
 

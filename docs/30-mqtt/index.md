@@ -44,6 +44,7 @@ real_device_tested: false
 ## Key Facts
 
 - **Configuration endpoint**: /api/v1/mqtt/settings (GET, POST, PUT)
+- **License**: Plus or higher required for built-in MQTT publishing, including TLS-secured MQTT
 - **Connection types**: Unencrypted TCP (mqtt://) and encrypted TLS (mqtts://)
 - **Authentication**: Username/password broker authentication supported
 - **Client requirements**: Unique client_id per broker, meter connection required for publishing
@@ -53,6 +54,10 @@ real_device_tested: false
 - **Publishing trigger**: Only publishes when meter is connected and providing data
 
 The device can be connected to an MQTT broker using the built-in MQTT client. The MQTT client supports both unencrypted and encrypted connections.
+
+!!! warning "Requires Plus license"
+    MQTT publishing requires an active Plus or higher license.
+    On `FREE` devices you can still store MQTT configuration via `/api/v1/mqtt/settings`, but the firmware does not connect or publish.
 
 !!! note
     whatwatt Go will only publish values if a meter is connected.

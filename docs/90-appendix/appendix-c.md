@@ -67,10 +67,10 @@ chmod +x format_json.sh
 
 ## Usage
 
-Thanks to this script, you can format API responses in a readable tabular format. For example, with the `/api/v1/report` endpoint:
+Thanks to this script, you can format API responses in a readable tabular format. For example, with the `/api/v1/system` endpoint:
 
 ```bash
-curl -s http://192.168.1.100/api/v1/report | ./format_json.sh
+curl -s http://192.168.1.100/api/v1/system | ./format_json.sh
 ```
 
 ## Example Output

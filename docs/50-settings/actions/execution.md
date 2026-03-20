@@ -25,11 +25,14 @@ last_verified: '2025-10-07'
 
 - **Endpoint**: `/api/v1/actions/call?id=<action_id>` - Execute action by ID
 - **Method**: POST - Returns 202 Accepted with status tracking information
+- **License**: Plus or higher required
 - **Execution**: Asynchronous with queued requests, supports concurrent actions
 - **Status tracking**: Location header or JSON response with status_ids for monitoring
 - **Limits**: 20 concurrent requests max, prevents duplicate execution of same action
 
 --8<-- "../../_partials/auth-note.md"
+
+--8<-- "../../_partials/license-plus-note.md"
 
 ## Endpoint Details
 

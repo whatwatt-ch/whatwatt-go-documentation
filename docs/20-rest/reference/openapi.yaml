@@ -5,7 +5,9 @@ info:
   description: 'Public HTTP API of the whatwatt Go device. Authentication may be required
     depending on device settings; when enabled, the device supports HTTP Basic or
     Digest authentication. All endpoints are local to the device and typically served
-    at http://whatwatt-XXXXXX.local.
+    at http://whatwatt-XXXXXX.local. Some advanced endpoints require an active Plus
+    or higher license; when the required license is missing, the device returns HTTP
+    404 for the gated route.
 
     '
   license:
@@ -168,8 +170,10 @@ paths:
       - Measurements
       summary: Read last measurement report
       description: Returns the latest measurement envelope including instantaneous
-        and aggregated values.
+        and aggregated values. Requires Plus or higher license. On devices without
+        the required license, this route returns HTTP 404.
       operationId: getReport
+      x-whatwatt-license: plus
       responses:
         '200':
           description: Measurement report envelope
@@ -272,6 +276,23 @@ paths:
               schema:
                 type: string
                 description: Digest challenge; may include stale=true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Short machine-readable error key
+                  message:
+                    type: string
+                    description: Human-readable description
+                  details:
+                    type: object
+                    additionalProperties: true
+                additionalProperties: true
+        '404':
+          description: Route unavailable or required license missing
           content:
             application/json:
               schema:
@@ -2047,8 +2068,9 @@ paths:
       - Actions
       summary: Read actions definition
       description: Returns the current actions definition used by the device to trigger
-        HTTP or Modbus requests.
+        HTTP or Modbus requests. Requires Plus or higher license.
       operationId: getActions
+      x-whatwatt-license: plus
       responses:
         '200':
           description: Current actions
@@ -2207,7 +2229,9 @@ paths:
       - Actions
       summary: Set actions definition
       description: Replaces the actions definition. Large definitions may be rejected.
+        Requires Plus or higher license.
       operationId: setActions
+      x-whatwatt-license: plus
       requestBody:
         required: true
         content:
@@ -2462,8 +2486,10 @@ paths:
       tags:
       - Actions
       summary: Delete actions definition
-      description: Deletes the current actions definition.
+      description: Deletes the current actions definition. Requires Plus or higher
+        license.
       operationId: deleteActions
+      x-whatwatt-license: plus
       responses:
         '204':
           description: Deleted
@@ -2512,7 +2538,9 @@ paths:
       - Actions
       summary: Execute an action asynchronously
       description: Queues execution of an action by ID. Returns status IDs to poll.
+        Requires Plus or higher license.
       operationId: callAction
+      x-whatwatt-license: plus
       parameters:
       - in: query
         name: id
@@ -2655,8 +2683,9 @@ paths:
       - Actions
       summary: Query status by ID(s)
       description: Retrieves execution status by status IDs. Code is HTTP status for
-        HTTP actions
+        HTTP actions. Requires Plus or higher license.
       operationId: getActionStatus
+      x-whatwatt-license: plus
       parameters:
       - in: query
         name: id

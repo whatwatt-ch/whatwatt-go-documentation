@@ -27,6 +27,7 @@ last_verified: '2025-10-07'
 
 - **Endpoint**: `/api/v1/actions/status?id=<status_id>[,<status_id>]` - Monitor execution progress by status ID
 - **Method**: GET with comma-separated status IDs - Query multiple executions simultaneously
+- **License**: Plus or higher required
 - **Status tracking**: HTTP codes (2xx success, 4xx/5xx errors), Modbus codes (1 success), -1 while running
 - **Execution details**: Action ID, status ID, result code, execution time in seconds
 - **Monitoring pattern**: Poll status endpoint until code ≠ -1 for completion detection
@@ -34,6 +35,8 @@ last_verified: '2025-10-07'
 ## Endpoint Details
 
 This endpoint retrieves execution status for specified request IDs. Use this to monitor the progress and results of action executions.
+
+--8<-- "../../_partials/license-plus-note.md"
 
 | Parameter | Value |
 |-----------|-------|

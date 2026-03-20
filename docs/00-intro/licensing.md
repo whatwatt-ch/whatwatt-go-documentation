@@ -13,37 +13,62 @@ last_verified: '2025-10-07'
 
 # License & editions
 
-This page clarifies how commercial editions relate to the device firmware behavior.
+This page explains how commercial licensing affects on-device REST API availability and selected runtime integration services.
 
 ## Document Context
 
-- **Purpose**: Clarifies licensing model and edition differences for whatwatt Go device, explaining how commercial editions relate to device firmware functionality
-- **When to use**: Before purchasing decisions, compliance reviews, procurement processes, or when planning commercial deployments
-- **Prerequisites**: Basic understanding of software licensing models, familiarity with whatwatt Go device capabilities
-- **Related to**: Device pricing, commercial terms, technical specifications, firmware features
-- **Validates against**: Current whatwatt Go firmware behavior across all commercial editions
+- **Purpose**: Explains which REST features and runtime integrations are available without an additional license and which require Plus or higher
+- **When to use**: Before integration planning, edition selection, procurement, or when troubleshooting `404 License required` or inactive integrations
+- **Prerequisites**: Basic understanding of whatwatt Go REST API
+- **Related to**: [REST API license requirements](../20-rest/license-requirements.md), [System Info](../10-general/system-info.md), [REST reference](../20-rest/reference/index.md), [MQTT Integration](../30-mqtt/index.md)
+- **Validates against**: Firmware route registration and runtime license-dependent service behavior
 
 ## Key Facts
 
-- **Licensing approach**: Feature-complete firmware across all editions
-- **API availability**: REST API, MQTT, Actions, SD card functions identical in all editions
-- **Feature gating**: No license checks or disabled features in device firmware
-- **Edition differences**: Commercial terms, support levels, external services only
-- **Technical functionality**: Same device behavior regardless of commercial edition
-- **Compliance**: Formal statements available via commercial terms documentation
-- **Audit scope**: HTTP/REST endpoints, MQTT client, Actions engine, Settings handlers
+- **Licensing approach**: Base firmware is available without Plus, but selected REST endpoint groups and runtime integrations are gated
+- **Required tier for advanced integrations**: Plus or higher
+- **Licensed REST endpoints**: Report, report objects, variables, actions
+- **Licensed runtime services**: Built-in MQTT publisher including TLS, myStrom cloud, meter proxy, Modbus TCP server, Berry script execution and auto-run
+- **Runtime behavior**: Unlicensed devices return `404 License required` for gated routes, while licensed runtime services remain stopped or inactive
+- **How to verify**: Check `.device.license.type` in `/api/v1/system`
 - **Pricing reference**: [https://whatwatt.ch/en/pricing](https://whatwatt.ch/en/pricing)
 
 ## Summary
 
-- From the device point of view, all editions (including Plus) expose the same on-device functionality.
-- The REST API, MQTT, Actions, SD card, and Settings work identically regardless of the commercial edition.
-- Differences between editions relate to commercial terms and external services (e.g., support, integrations, or cloud offerings), not to feature gating inside the device firmware.
+- Some REST features require Plus or higher.
+- Core configuration and administration endpoints remain available without Plus.
+- Advanced integration endpoints for reports, variables, and actions must be treated as licensed features.
+- MQTT publishing, Secure MQTT, Modbus TCP, meter proxy, myStrom cloud, and Berry script execution also require Plus or higher at runtime.
 
 For pricing and edition descriptions, see: [https://whatwatt.ch/en/pricing](https://whatwatt.ch/en/pricing)
 
-## Technical note (device firmware perspective)
+## REST Endpoints Requiring Plus Or Higher
 
-In the areas of the firmware that this documentation is based on and has audited (HTTP/REST endpoints, MQTT client, Actions engine, Settings handlers), there are no license checks or code paths that enable/disable features by edition. The device behaves the same functionally across editions.
+--8<-- "../_partials/license-plus-rest-endpoints.md"
 
-If you need a formal statement for compliance or procurement, please refer to the commercial terms at the link above.
+## Runtime Features Requiring Plus Or Higher
+
+- Built-in MQTT publishing over `mqtt://` and `mqtts://`
+- Secure MQTT setup described in the TLS chapters, because it uses the same built-in MQTT client
+- myStrom cloud integration
+- Meter proxy service
+- Modbus TCP server
+- Berry script execution and auto-run
+
+Configuration endpoints for these features can still be available on `FREE`, but the firmware keeps the services stopped until a Plus or higher license is active.
+
+## How To Check The Active License
+
+Check the license type in:
+
+- `GET /api/v1/system`: inspect `.device.license.type`
+
+If the reported type is `FREE`, the REST endpoint groups listed above are not available and the runtime features listed above remain inactive.
+
+## Firmware Behavior On Unlicensed Devices
+
+Without Plus or higher, the REST endpoints listed above are not available and return `404 License required`.
+
+For runtime integrations, the firmware accepts configuration but does not activate the licensed services until the device has Plus or higher.
+
+If you need a formal commercial statement for compliance or procurement, please refer to the pricing and commercial terms link above.

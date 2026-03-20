@@ -12,6 +12,10 @@ last_verified: '2025-11-26'
 
 The device can connect to an MQTT broker using the built‑in client. Both unencrypted (`mqtt://`) and TLS encrypted (`mqtts://`) connections are supported.
 
+!!! warning "Requires Plus license"
+  The built-in MQTT client requires an active Plus or higher license.
+  On `FREE` devices the `/api/v1/mqtt/settings` endpoint remains available for configuration, but the client stays stopped and no data is published.
+
 !!! note "Publish Condition"
     The device publishes measurement values only when a meter is connected.
 

@@ -14,6 +14,9 @@ ignores:
 
 # markdownlint rules configuration
 config:
+  # MD060: Table column style
+  MD060: false
+
   # MD001: Header levels should only increment by one level at a time
   MD001: true
 

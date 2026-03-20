@@ -23,6 +23,7 @@ last_verified: '2025-10-07'
 ## Key Facts
 
 - **Template syntax**: ${variable_name} for embedding predefined variables
+- **License**: MQTT publishing and `/api/v1/template/test` require Plus or higher
 - **Message format**: Text-based (typically JSON) with variable substitution
 - **Variable types**: Measurement variables (numeric) and system variables (text/numeric)
 - **Variable resolution**: Unresolved variables remain as literal ${name} strings
@@ -34,6 +35,9 @@ last_verified: '2025-10-07'
 ## Template Description
 
 The message published by the client is defined using a template. The message format can be anything but always text.
+
+!!! warning "Requires Plus license"
+  Using this template with the built-in MQTT publisher requires an active Plus or higher license.
 
 You can embed variables in the template, which can be both measurement and system variables. A variable in a template is embedded in a section starting with a dollar sign, followed by an opening curly brace, the variable name, and a closing curly brace: **`${variable_name}`**
 

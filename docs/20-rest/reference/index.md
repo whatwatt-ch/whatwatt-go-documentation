@@ -26,6 +26,7 @@ last_verified: '2025-10-07'
 - **Coverage**: All available REST API endpoints and methods
 - **Interactive features**: Request/response examples, parameter details, schema validation
 - **Authentication**: HTTP authentication requirements documented
+- **License requirements**: Advanced data and automation endpoints are marked when they require Plus or higher
 - **Response schemas**: Complete JSON response structures and data types
 - **Error codes**: HTTP status codes and error response formats
 - **Fallback access**: Raw YAML specification available for download
