@@ -114,6 +114,7 @@ This documentation covers everything you need to integrate with whatwatt Go:
 ### 📡 Integration Methods
 
 - **[REST API](20-rest/polling.md)** - HTTP-based data access
+- **[Modbus TCP](35-modbus/index.md)** - Register-based local data access
 - **[MQTT](30-mqtt/index.md)** - Real-time messaging protocol
 - **[Secure MQTT](40-secure-mqtt/index.md)** - TLS-encrypted communication
 

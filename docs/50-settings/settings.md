@@ -279,6 +279,9 @@ This combination is useful when the device should wake, synchronize time, send a
 }
 ```
 
+Use `services.modbus.enable` to turn the Modbus TCP server on or off and `services.modbus.port` to choose the listening port.
+The complete Modbus TCP service, register mapping, and `/api/v1/modbus` documentation is covered on the [Modbus TCP](../35-modbus/index.md) page.
+
 ## Method semantics
 
 - GET: returns current settings (with `system.password` hidden)
