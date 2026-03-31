@@ -18,7 +18,7 @@ last_verified: '2025-10-07'
 - **When to use**: Debugging meter communication, mapping custom scalers, understanding meter capabilities, developing OBIS code parsers
 - **Prerequisites**: Knowledge of DLMS/COSEM protocol, OBIS code structure, energy meter communication standards
 - **Related to**: Report polling endpoint, meter communication settings, OBIS reference documentation, custom scalers
-- **Validates against**: Live OBIS object lists from Swiss smart meters via 192.168.99.114
+- **Validates against**: Live OBIS object lists from connected smart meters via real device testing
 
 ## Key Facts
 

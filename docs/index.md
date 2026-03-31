@@ -18,25 +18,13 @@ last_verified: '2025-10-07'
 - **When to use**: Starting point for new users, overview of all available integration methods, reference for documentation structure
 - **Prerequisites**: Basic understanding of energy monitoring concepts; familiarity with REST APIs or MQTT helpful but not required
 - **Related to**: All documentation sections - serves as central navigation point to specific integration guides
-- **Validates against**: Real device examples from Swiss Smart Meter installations
+- **Validates against**: Real device examples from whatwatt Go installations
 
-## Key Facts
-
-- **Device Type**: Swiss Smart Meter integration device with REST API and MQTT support
-- **Compatibility**: Universal support for all Swiss Smart Meter manufacturers (Ensor, Iskraemeco, Kamstrup, Landis+Gyr, etc.)
-- **Protocols**: REST API (HTTP/JSON), MQTT, Secure MQTT (TLS)
-- **License model**: Core configuration is available on all editions; selected data and automation integrations require Plus or higher
-- **Data Formats**: JSON responses, Server-Sent Events (SSE), CSV logging
-- **Authentication**: Optional HTTP authentication when device password is set (Digest auth from firmware 1.10.X, Basic auth in earlier versions)
-- **Network**: Wi-Fi and Ethernet connectivity, mDNS discovery support
-- **Data Ownership**: Local device - your data stays under your control
-- **Real-time Capability**: Instant energy consumption monitoring and streaming
-
-Welcome to the comprehensive API documentation for **whatwatt Go** - the Swiss Smart Meter integration device.
+Welcome to the comprehensive API documentation for **whatwatt Go**.
 
 ## What is whatwatt Go?
 
-whatwatt Go is a cutting-edge device that connects to any Swiss Smart Meter, enabling real-time energy consumption monitoring and data access through REST API and MQTT protocols. Made for Switzerland and Europe, it empowers users to optimize their energy consumption through instant, real-time data access.
+whatwatt Go is a device that connects to compatible smart meters and exposes their data through its own REST API, MQTT integration, and local automation features. It is designed to give you real-time access to energy data.
 
 ## Key Features
 
@@ -135,7 +123,7 @@ This documentation covers everything you need to integrate with whatwatt Go:
 
 > The Energy Transition will only succeed if we can optimize our own energy consumption. This is only possible if we know our consumption in real time and can react accordingly.
 
-The Swiss Federal Regulation concerning electricity supply stipulates that Smart Meters must be equipped with an interface that allows retrieving measured data in real time. **whatwatt Go uses this interface to give you control over your energy data.**
+Smart meters can expose measured data in real time through their local communication interfaces. **whatwatt Go uses this interface to give you control over your energy data.**
 
 ## Data Ownership
 
