@@ -282,6 +282,20 @@ This combination is useful when the device should wake, synchronize time, send a
 Use `services.modbus.enable` to turn the Modbus TCP server on or off and `services.modbus.port` to choose the listening port.
 The complete Modbus TCP service, register mapping, and `/api/v1/modbus` documentation is covered on the [Modbus TCP](../35-modbus/index.md) page.
 
+### Configure Berry auto-run
+
+```json
+{
+  "services": {
+    "berry": { "auto_run": true, "run_delay": 300 }
+  }
+}
+```
+
+Use `services.berry.auto_run` to start the saved Berry script automatically after boot and `services.berry.run_delay` to delay execution until the device is ready.
+Berry script execution and auto-run require an active Plus or higher license at runtime.
+The complete Berry scripting, `/api/v1/berry`, and Berry editor documentation in the main Web UI is covered on the [Berry scripting](../55-berry/index.md) page.
+
 ## Method semantics
 
 - GET: returns current settings (with `system.password` hidden)

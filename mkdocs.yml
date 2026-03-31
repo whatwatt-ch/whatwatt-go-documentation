@@ -183,6 +183,7 @@ nav:
     - Meter comm: 50-settings/meter-comm.md
     - Scalers (current): 50-settings/scalers-current.md
     - Scalers (custom): 50-settings/scalers-custom.md
+    - Berry scripting: 55-berry/index.md
     - Actions:
       - Definition: 50-settings/actions/index.md
       - Execution: 50-settings/actions/execution.md

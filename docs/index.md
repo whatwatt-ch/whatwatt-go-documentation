@@ -122,6 +122,7 @@ This documentation covers everything you need to integrate with whatwatt Go:
 
 - **[Device Settings](50-settings/rest-conventions.md)** - Complete configuration reference
 - **[Wi-Fi Setup](50-settings/wifi-setup.md)** - Network configuration
+- **[Berry scripting](55-berry/index.md)** - Built-in automation scripts and device-side logic; requires Plus or higher at runtime
 - **[Actions](50-settings/actions/index.md)** - Automated HTTP/Modbus requests
 
 ### 📚 Reference
