@@ -16,7 +16,7 @@ Specifically, the document includes:
 
   - Detailed JSON-based structure for defining custom register configurations, including data types, scaling factors, and measurement identifiers such as energy, power, voltage, and current, accompanied by illustrative examples.
 
-  - Support for `word_order` per register set and enhanced `GET /api/v1/modbus` output modes available from FW 2.0.2.
+  - Support for `word_order` per register set, area-level `constants`, and enhanced `GET /api/v1/modbus` output modes available from FW 2.0.2.
 
 - **Default Register Configuration**:
 
@@ -24,9 +24,9 @@ Specifically, the document includes:
 
 - **Technical Specifications**:
 
-  - Supported Modbus functions, specifically the **Read Input Registers** function.
+  - Supported Modbus functions: **Read Input Registers** (function 04) and, from **FW 2.0.2**, **Read Holding Registers** (function 03).
 
-  - Compliance with Modbus TCP data transmission standards, including Big-Endian byte order and configurable word order (`msw`/`lsw`, from FW 2.0.2).
+  - Compliance with Modbus TCP data transmission standards, including Big-Endian byte order, configurable word order (`msw`/`lsw`), and area-level constants support from FW 2.0.2.
 
   - Comprehensive reference of OBIS identifiers with corresponding data types, units, and measurement details.
 
@@ -60,6 +60,8 @@ From **FW 2.0.2**, the `GET /api/v1/modbus` endpoint has two output modes:
 
 - `GET /api/v1/modbus?address_format=dec` and `GET /api/v1/modbus?address_format=hex` return a **detailed** configuration with calculated address metadata (`end_address`, area `size`, register `address`, register `size`).
 
+From **FW 2.0.2**, each register set may also define an optional `constants` object. Its properties define area-local constants that can be referenced from `registers[].id`. Numeric constants can be exported using numeric output types, and text constants use `type: "string"`.
+
 **JSON Configuration Format:** The configuration is defined as a JSON array of register set objects with the following structure for each element:
 
 | Field                 | Type   | Required | Range                            | Remarks                                                      |
@@ -67,9 +69,10 @@ From **FW 2.0.2**, the `GET /api/v1/modbus` endpoint has two output modes:
 | []                    | array  | yes      | 0..                              | Array containing objects that describe  register sets        |
 | [].start_address      | uint   | yes      | 0..9998                          | Starting address of the register set  (0-based addressing)   |
 | [].word_order         | string | no       | msw, lsw                         | Word order for values wider than one 16-bit register. Available from **FW 2.0.2**. Default is **msw**. |
+| [].constants          | object | no       | property map                     | Area-local constants available from **FW 2.0.2**. Each property value must be either a number or a string. |
 | [].registers[]        | array  | yes      | 0..                              | Array containing the definitions of  registers in the set    |
-| [].registers[].id     | string | yes      | see list of possible identifiers | Register identifier (measurement ID)                         |
-| [].registers[].type   | string | no       | double, float, long, int, short  | Data type for representing the register  value (applies only to numeric registers) the default is **double**. |
+| [].registers[].id     | string | yes      | see list of possible identifiers | Register identifier (measurement ID) or a constant name defined in `constants` for the same register set. |
+| [].registers[].type   | string | no       | double, float, long, int, short, string | Data type for representing the register value. For numeric registers the default is **double**. Text constants require **string**. |
 | [].registers[].scaler | int    | no       | -6..6                            | Scaling factor applied to the reported  value to derive the register value (power of 10; default 0). Applies only to  numeric registers. |
 
 **Example Custom Configuration:**
@@ -79,6 +82,10 @@ From **FW 2.0.2**, the `GET /api/v1/modbus` endpoint has two output modes:
   {
     "start_address": 0,
     "word_order": "lsw",
+    "constants": {
+      "SERIAL_LABEL": "WHATWATT",
+      "C_FLOAT": 12.34
+    },
     "registers": [
       {"id": "1.7.0", "type": "float", "scaler": 3},
       {"id": "21.7.0", "type": "float", "scaler": 3},
@@ -90,6 +97,8 @@ From **FW 2.0.2**, the `GET /api/v1/modbus` endpoint has two output modes:
       {"id": "32.7.0", "type": "float", "scaler": 0},
       {"id": "52.7.0", "type": "float", "scaler": 0},
       {"id": "72.7.0", "type": "float", "scaler": 0},
+      {"id": "C_FLOAT", "type": "float", "scaler": 1},
+      {"id": "SERIAL_LABEL", "type": "string"},
       {"id": "report.timestamp", "type": "int", "scaler": 0}
     ]
   },
@@ -112,7 +121,7 @@ From **FW 2.0.2**, the `GET /api/v1/modbus` endpoint has two output modes:
 ]
 ```
 
-**Explanation:** The above configuration defines three groups of registers at different base addresses. Registers starting at:
+**Explanation:** The above configuration defines three groups of registers at different base addresses. The first group also defines two local constants in the `constants` object and then exposes them as Modbus registers by referencing their names in `registers[].id`. Registers starting at:
 
 - **0** represent instantaneous measurement values,
 
@@ -205,6 +214,8 @@ From **FW 2.0.2**, the `GET /api/v1/modbus` endpoint has two output modes:
 
 *Note:* In the configuration, any register representing a timestamp should always use the `int` type.
 
+From **FW 2.0.2**, `registers[].id` may also refer to a constant name from the area-local `constants` object instead of a built-in identifier. Numeric constants can be mapped as `short`, `int`, `long`, `float`, or `double`. String constants must be mapped as `string`, and their reported `size` in detailed output equals the number of 16-bit Modbus registers occupied by the encoded text.
+
 ### Numeric Types and Their Lengths
 
 | Type   | Length (bytes) | Length (words) |
@@ -221,11 +232,11 @@ The configured Modbus slave address is not significant for the device; it will r
 
 ### Supported Functions
 
-Currently, the only supported function is **Read Input Registers**.
+The register map is read-only. It is available through **Read Input Registers** and, starting from **FW 2.0.2**, also through **Read Holding Registers**.
 
-**Address Range:** **30001 – 39999** (logical addressing) or **0 – 9998** (0-based addressing)
+**Address Range:** **30001 – 39999** for function **04**, **40001 – 49999** for function **03**, or **0 – 9998** in 0-based addressing
 **Access:** **Read-only**
-**Modbus Function Code:** **04 – Read Input Registers**
+**Modbus Function Codes:** **04 – Read Input Registers**, **03 – Read Holding Registers** (from **FW 2.0.2**)
 
 ### Endianness
 
@@ -442,6 +453,10 @@ curl -i -d @modbus.json http://<whatwattGoIP>/api/v1/modbus
   {
     "start_address": 0,
     "word_order": "lsw",
+    "constants": {
+      "SERIAL_LABEL": "WHATWATT",
+      "C_FLOAT": 12.34
+    },
     "registers": [
       {"id":"1.7.0","type":"float","scaler":3},
       {"id":"21.7.0","type":"float","scaler":3},
@@ -453,6 +468,8 @@ curl -i -d @modbus.json http://<whatwattGoIP>/api/v1/modbus
       {"id":"32.7.0","type":"float","scaler":0},
       {"id":"52.7.0","type":"float","scaler":0},
       {"id":"72.7.0","type":"float","scaler":0},
+      {"id":"C_FLOAT","type":"float","scaler":1},
+      {"id":"SERIAL_LABEL","type":"string"},
       {"id":"report.timestamp","type":"int","scaler":0}
     ]
   },
@@ -503,7 +520,7 @@ A 204 code should be returned.
 
 ## Default configuration
 
-The default Modbus configuration (register layout and data types) is similar to that of the Siemens PAC2200 power meter. Registers marked as padding always return a value of 0; they are included solely to maintain continuity within the register address space, which is useful when reading multiple registers at once. All registers are read-only and can only be accessed using the Read Input Registers function; writing is not supported.
+The default Modbus configuration (register layout and data types) is similar to that of the Siemens PAC2200 power meter. Registers marked as padding always return a value of 0; they are included solely to maintain continuity within the register address space, which is useful when reading multiple registers at once. All registers are read-only and can be accessed using the Read Input Registers function and, from **FW 2.0.2**, also the Read Holding Registers function; writing is not supported.
 
 Below is the default configuration table:
 
@@ -891,3 +908,106 @@ On older firmware, the plain `GET /api/v1/modbus` response used this detailed fo
 ```bash
 mbpoll -B -t 3:float -c21 -0 -r1 <whatwattGoIP>
 ```
+
+## Appendix A: SunSpec Example Configuration
+
+The repository contains a ready-to-use example Modbus configuration that exposes a SunSpec-compatible register map based on **Common Model 1** and **AC Meter Model 203**:
+
+- Download: [sunspec_model_1_203_modbus_service.json](examples/sunspec_model_1_203_modbus_service.json)
+
+This appendix describes the purpose of that file, its requirements, and its limitations.
+
+Preview:
+
+```json
+--8<-- "35-modbus/examples/sunspec_model_1_203_modbus_service.json"
+```
+
+### Firmware Requirements
+
+The example configuration depends on features added in **FW 2.0.2**:
+
+- area-level `constants`, used to publish SunSpec static metadata and placeholder values,
+- `string` register type for the `SunS` identifier and Common Model text fields,
+- detailed `GET /api/v1/modbus?address_format=dec|hex` output, useful when verifying the resulting register map,
+- support for Modbus function **03** in addition to function **04**, which is required by standard SunSpec clients during model discovery.
+
+### What the Example Implements
+
+The configuration defines a single register area starting at address `0` and contains:
+
+1. The `SunS` identifier.
+2. SunSpec **Model 1 (Common Model)**.
+3. SunSpec **Model 203 (Wye-Connect Three Phase Meter)**.
+4. The SunSpec end marker (`0xFFFF`, followed by length `0`).
+
+The configuration uses `word_order: "msw"`, which matches the SunSpec register layout used by common clients.
+
+### Use of Constants
+
+The example relies on the `constants` object to expose values that are required by SunSpec but are not dynamic measurements in the WhatWatt Go report model.
+
+Examples include:
+
+- static text fields from Model 1 such as manufacturer, model name, version, serial number,
+- model identifiers and model lengths,
+- SunSpec scale factors,
+- unimplemented values required by the SunSpec model layout,
+- the end-of-model marker.
+
+In the example configuration, these constants are referenced from `registers[].id` exactly like ordinary measurement identifiers.
+
+### Mapping Strategy for Model 203
+
+Where a matching WhatWatt Go measurement exists, the example maps it directly. For example:
+
+- `31.7.0`, `51.7.0`, `71.7.0` for phase currents,
+- `32.7.0`, `52.7.0`, `72.7.0` for phase-to-neutral voltages,
+- `power.active`, `power.active.l1`, `power.active.l2`, `power.active.l3` for active power,
+- `power.reactive`, `power.reactive.l1`, `power.reactive.l2`, `power.reactive.l3` for reactive power,
+- `9.7.0` for apparent power,
+- `13.7.0` for power factor,
+- `1.8.0`, `2.8.0`, `5.8.0`, `6.8.0`, `7.8.0`, `8.8.0` for selected energy counters.
+
+Fields that do not have a native WhatWatt Go equivalent are filled with constants, typically using SunSpec “not implemented” values such as:
+
+- `-32768` for `int16`/`sunssf`,
+- `0` for `acc32` and event bitfields where no dynamic event source is available.
+
+As a result, the example is suitable as a compatibility map for SunSpec clients, but it is not a complete semantic implementation of every optional measurement defined by Model 203.
+
+### Applying the Configuration
+
+To apply the example configuration:
+
+```bash
+curl -i -H 'Content-Type: application/json' \
+  --data-binary @sunspec_model_1_203_modbus_service.json \
+  http://<whatwattGoIP>/api/v1/modbus
+```
+
+To inspect the resulting calculated addresses and register sizes:
+
+```bash
+curl -s 'http://<whatwattGoIP>/api/v1/modbus?address_format=dec'
+```
+
+### Reading and Validation
+
+Standard SunSpec clients typically perform discovery using Modbus function **03**. From **FW 2.0.2**, the same register map can also be read through function **04**.
+
+Any SunSpec client that supports Modbus TCP discovery can be used to validate this configuration.
+
+#### Validation with pySunSpec2
+
+[`pySunSpec2`](https://github.com/sunspec/pysunspec2) is an external GitHub project that can scan SunSpec devices over Modbus TCP.
+
+Refer to that repository for installation details and the exact command line for your environment. After successful discovery, the SunSpec base address, Model 1, Model 203, and end marker should be visible through the whatwatt Go Modbus map.
+
+### Notes and Limitations
+
+- The SunSpec example is a **custom configuration**, not the default Modbus layout.
+- The example is intentionally focused on Models **1** and **203** only.
+- Some Model 203 fields are exported as “not implemented” placeholders because the underlying measurement is not currently available in the WhatWatt Go report model.
+- SunSpec discovery depends on the final `0xFFFF` end marker and its zero length field; both are required.
+- For interoperability with common SunSpec tooling, function **03** support is important even though the data is read-only.
