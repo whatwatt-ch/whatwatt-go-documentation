@@ -152,7 +152,9 @@ nav:
       - Streaming: 20-rest/streaming.md
       - Report objects (COSEM): 20-rest/report-objects.md
       - Reference (OpenAPI): 20-rest/reference/index.md
-    - Modbus TCP: 35-modbus/index.md
+    - Modbus TCP:
+      - Overview: 35-modbus/index.md
+      - Example configurations: 35-modbus/examples.md
     - MQTT:
       - Overview: 30-mqtt/index.md
       - Client Configuration: 30-mqtt/mqtt-client.md

@@ -1,0 +1,130 @@
+[
+	{
+		"start_address": 1,
+		"registers": [
+			{"type": "float", "scaler": 0, "id": "32.7.0"},
+			{"type": "float", "scaler": 0, "id": "52.7.0"},
+			{"type": "float", "scaler": 0, "id": "72.7.0"},
+
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+
+			{"type": "float", "scaler": 0, "id": "current.l1"},
+			{"type": "float", "scaler": 0, "id": "current.l2"},
+			{"type": "float", "scaler": 0, "id": "current.l3"},
+
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+
+			{"type": "float", "scaler": 3, "id": "power.active.l1"},
+			{"type": "float", "scaler": 3, "id": "power.active.l2"},
+			{"type": "float", "scaler": 3, "id": "power.active.l3"},
+
+			{"type": "float", "scaler": 3, "id": "power.reactive.l1"},
+			{"type": "float", "scaler": 3, "id": "power.reactive.l2"},
+			{"type": "float", "scaler": 3, "id": "power.reactive.l3"},
+
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"}
+		]
+	},
+	{
+		"start_address": 55,
+		"registers": [
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+
+			{"type": "float", "scaler": 3, "id": "9.7.0"},
+			{"type": "float", "scaler": 3, "id": "power.active"},
+			{"type": "float", "scaler": 3, "id": "power.reactive"},
+			{"type": "float", "scaler": 3, "id": "13.7.0"}
+		]
+	},
+	{
+		"start_address": 205,
+		"registers": [
+			{"type": "int", "scaler": 0, "id": "0"},
+			{"type": "int", "scaler": 0, "id": "0"},
+			{"type": "int", "scaler": 0, "id": "0"},
+			{"type": "int", "scaler": 0, "id": "96.14.0"},
+			{"type": "int", "scaler": 0, "id": "0"},
+			{"type": "int", "scaler": 0, "id": "0"},
+			{"type": "int", "scaler": 0, "id": "0"},
+			{"type": "int", "scaler": 0, "id": "0"}
+		]
+	},
+	{
+		"start_address": 501,
+		"registers": [
+			{"type": "float", "scaler": 3, "id": "1.7.0"},
+			{"type": "float", "scaler": 3, "id": "3.7.0"},
+			{"type": "float", "scaler": 3, "id": "2.7.0"},
+			{"type": "float", "scaler": 3, "id": "4.7.0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "float", "scaler": 0, "id": "0"},
+			{"type": "int",   "scaler": 0, "id": "0"},
+			{"type": "int",   "scaler": 0, "id": "0"}
+		]
+	},
+	{
+		"start_address": 549,
+		"registers": [
+			{"type": "float", "scaler": 3, "id": "1.8.0"},
+			{"type": "float", "scaler": 3, "id": "3.8.0"},
+			{"type": "float", "scaler": 3, "id": "2.8.0"},
+			{"type": "float", "scaler": 3, "id": "4.8.0"}
+		]
+	},
+	{
+		"start_address": 801,
+		"registers": [
+			{"type": "double", "scaler": 3, "id": "1.8.1"},
+			{"type": "double", "scaler": 3, "id": "1.8.2"},
+			{"type": "double", "scaler": 3, "id": "2.8.1"},
+			{"type": "double", "scaler": 3, "id": "2.8.2"},
+			{"type": "double", "scaler": 3, "id": "3.8.1"},
+			{"type": "double", "scaler": 3, "id": "3.8.2"},
+			{"type": "double", "scaler": 3, "id": "4.8.1"},
+			{"type": "double", "scaler": 3, "id": "4.8.2"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"},
+			{"type": "double", "scaler": 0, "id": "0"}
+		]
+	}
+]
