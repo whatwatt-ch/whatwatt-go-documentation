@@ -10,11 +10,13 @@ last_verified: '2025-11-26'
 
 # MQTT Client Configuration
 
-The device can connect to an MQTT broker using the built‑in client. Both unencrypted (`mqtt://`) and TLS encrypted (`mqtts://`) connections are supported.
+The device can connect to an MQTT broker using the built-in client. Both
+unencrypted (`mqtt://`) and TLS encrypted (`mqtts://`) connections are supported.
 
 !!! warning "Requires Plus license"
   The built-in MQTT client requires an active Plus or higher license.
-  On `FREE` devices the `/api/v1/mqtt/settings` endpoint remains available for configuration, but the client stays stopped and no data is published.
+  On `FREE` devices the `/api/v1/mqtt/settings` endpoint remains available for
+  configuration, but the client stays stopped and no data is published.
 
 !!! note "Publish Condition"
     The device publishes measurement values only when a meter is connected.
@@ -68,7 +70,8 @@ The device can connect to an MQTT broker using the built‑in client. Both unenc
 - POST full object to replace entire configuration.
 - PUT partial object to update specific fields (existing secret values retained).
 - Set any certificate/key/password field to `null` to delete it.
-- Reporting period (default 30 s) stretches if meter reports less frequently; adjustable in **System > Interval to Systems**.
+- Reporting period (default 30 s) stretches if meter reports less frequently;
+  adjustable in **MQTT > Publish Interval (seconds)**.
 
 ## Template & Variables
 
