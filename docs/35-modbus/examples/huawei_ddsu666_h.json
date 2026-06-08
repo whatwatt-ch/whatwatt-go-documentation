@@ -1,0 +1,36 @@
+[
+  {
+    "start_address": 37100,
+    "word_order": "msw",
+    "constants": {
+      "METER_STATUS_NORMAL": 1,
+      "GRID_FREQUENCY_50HZ": 50,
+      "METER_TYPE_SINGLE_PHASE": 0,
+      "METER_TYPE_CHECK_OK": 1
+    },
+    "registers": [
+      {"id": "METER_STATUS_NORMAL", "type": "short"},
+      {"id": "32.7.0", "type": "int", "scaler": 1},
+      {"id": "0", "type": "int"},
+      {"id": "0", "type": "int"},
+      {"id": "31.7.0", "type": "int", "scaler": 2},
+      {"id": "0", "type": "int"},
+      {"id": "0", "type": "int"},
+      {"id": "power.active", "type": "int", "scaler": 3},
+      {"id": "power.reactive", "type": "int", "scaler": 3},
+      {"id": "13.7.0", "type": "short", "scaler": 3},
+      {"id": "GRID_FREQUENCY_50HZ", "type": "short", "scaler": 2},
+      {"id": "2.8.0", "type": "int", "scaler": 2},
+      {"id": "1.8.0", "type": "int", "scaler": 2},
+      {"id": "3.8.0", "type": "int", "scaler": 2},
+      {"id": "METER_TYPE_SINGLE_PHASE", "type": "short"},
+      {"id": "0", "type": "int"},
+      {"id": "0", "type": "int"},
+      {"id": "0", "type": "int"},
+      {"id": "power.active.l1", "type": "int", "scaler": 3},
+      {"id": "0", "type": "int"},
+      {"id": "0", "type": "int"},
+      {"id": "METER_TYPE_CHECK_OK", "type": "short"}
+    ]
+  }
+]
