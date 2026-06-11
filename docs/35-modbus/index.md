@@ -67,7 +67,7 @@ From **FW 2.0.2**, each register set may also define an optional `constants` obj
 | Field                 | Type   | Required | Range                            | Remarks                                                      |
 | --------------------- | ------ | -------- | -------------------------------- | ------------------------------------------------------------ |
 | []                    | array  | yes      | 0..                              | Array containing objects that describe  register sets        |
-| [].start_address      | uint   | yes      | 0..9998                          | Starting address of the register set  (0-based addressing)   |
+| [].start_address      | uint   | yes      | 0..65535                         | Starting address of the register set (0-based addressing). The configured area must still fit in the 16-bit Modbus register space. |
 | [].word_order         | string | no       | msw, lsw                         | Word order for values wider than one 16-bit register. Available from **FW 2.0.2**. Default is **msw**. |
 | [].constants          | object | no       | property map                     | Area-local constants available from **FW 2.0.2**. Each property value must be either a number or a string. |
 | [].registers[]        | array  | yes      | 0..                              | Array containing the definitions of  registers in the set    |
@@ -234,7 +234,7 @@ The configured Modbus slave address is not significant for the device; it will r
 
 The register map is read-only. It is available through **Read Input Registers** and, starting from **FW 2.0.2**, also through **Read Holding Registers**.
 
-**Address Range:** **30001 – 39999** for function **04**, **40001 – 49999** for function **03**, or **0 – 9998** in 0-based addressing
+**Address Range:** **0 – 65535** in native 0-based Modbus addressing. Some clients display equivalent addresses as **30001 + offset** (function **04**) or **40001 + offset** (function **03**).  
 **Access:** **Read-only**
 **Modbus Function Codes:** **04 – Read Input Registers**, **03 – Read Holding Registers** (from **FW 2.0.2**)
 
