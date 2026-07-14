@@ -212,6 +212,8 @@ Omnia
 Flexy
 Elster
 Kaifa
+Echelon
+Nimbus
 
 # Modbus and protocol terms
 msw

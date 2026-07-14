@@ -301,16 +301,24 @@ The following examples are included in the published compatibility documentation
 | -------------- | -------------------------------- | --------------------------------------------- |
 | Ensor          | eRS301, eRS801                   | P1, RJ12                                      |
 | Iskraemeco     | AM550 with supported CII module  | P1, RJ12                                      |
-| Kamstrup       | Omnipower, Omnia                 | P1 or TTL/HAN, depending on meter and adapter |
+| Iskraemeco     | IE.5                             | P1, RJ12                                      |
+| Kamstrup       | Omnipower                        | TTL/KMP, requires whatwatt adapter            |
+| Kamstrup       | Omnia                            | P1, RJ12                                      |
 | Landis+Gyr     | E360                             | P1, RJ12                                      |
-| Landis+Gyr     | E450 S4/S5, E570                 | M-Bus, RJ12                                   |
+| Landis+Gyr     | E450, E570                       | M-Bus, RJ12                                   |
 | Meter+Control  | Flexy                            | P1, RJ12                                      |
-| NES            | 83335-3, generation 5            | P1, RJ12                                      |
-| NES            | 83332-3 and 83334-3              | pMEP, installation-dependent                  |
+| Echelon / NES  | 83335-3, generation 5            | P1, RJ12                                      |
+| Echelon / NES  | 83334-3, generation 4            | pMEP, installation-dependent                  |
+| Echelon / NES  | 83332-3, generation 3            | pMEP, installation-dependent                  |
 | Sagemcom       | S211, T211                       | P1, RJ12                                      |
 | Sagemcom       | S210, T210-D                     | M-Bus, RJ12                                   |
+| Sagemcom       | T310                             | P1, RJ12                                      |
+| Sagemcom       | XT211                            | P1, RJ12                                      |
 | Semax / Elster | AS3000 with supported CII module | P1, RJ12                                      |
+| Semax / Elster | AS3500                           | P1, RJ12                                      |
 | Kaifa          | MA309M                           | M-Bus, RJ12                                   |
+| Siemens        | TD-351X                          | M-Bus, RJ12                                   |
+| smart-me       | Nimbus                           | P1, RJ12                                      |
 
 Some installations require:
 
