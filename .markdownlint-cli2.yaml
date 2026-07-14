@@ -116,9 +116,10 @@ config:
     level: 1
     front_matter_title: "^\\s*title\\s*[:=]"
 
-  # MD046: Code block style (consistent)
-  MD046:
-    style: "fenced"
+  # MD046: Code block style — disabled because MkDocs Material content tabs
+  # require indented code blocks inside `=== "Tab"` sections, which conflicts
+  # with the "fenced" style requirement.
+  MD046: false
 
   # MD047: Files should end with a single newline character
   MD047: true

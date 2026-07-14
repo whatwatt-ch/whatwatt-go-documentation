@@ -10,124 +10,220 @@ device_compatibility:
 last_verified: '2025-10-07'
 ---
 
-# whatwatt Go API Documentation
+# whatwatt Go
 
-## Document Context
+**Your smart meter speaks. Listen locally.**
 
-- **Purpose**: Comprehensive introduction and navigation hub for whatwatt Go API documentation and integration guides
-- **When to use**: Starting point for new users, overview of all available integration methods, reference for documentation structure
-- **Prerequisites**: Basic understanding of energy monitoring concepts; familiarity with REST APIs or MQTT helpful but not required
-- **Related to**: All documentation sections - serves as central navigation point to specific integration guides
-- **Validates against**: Real device examples from whatwatt Go installations
+whatwatt Go is a compact device that connects directly to your smart meter's local interface and exposes real-time energy data through protocols you already use — REST, MQTT, and Modbus TCP. No cloud, no subscription, no data leaving your network unless you say so.
 
-Welcome to the comprehensive API documentation for **whatwatt Go**.
+## Why whatwatt Go?
 
-## What is whatwatt Go?
+| | Without whatwatt Go | With whatwatt Go |
+|---|---|---|
+| **Data access** | Vendor portal, utility API, or manual meter reading | Local REST, MQTT, and Modbus TCP — instantly |
+| **Real-time** | Delayed or batch data from cloud | Sub-second updates via SSE streaming and MQTT |
+| **Privacy** | Data sent to third-party servers | Data stays on your network, under your control |
+| **Integration** | Vendor-locked ecosystems | Any system that speaks HTTP, MQTT, or Modbus |
+| **Automation** | Depends on cloud availability | Local Berry scripting engine runs on-device |
 
-whatwatt Go is a device that connects to compatible smart meters and exposes their data through its own REST API, MQTT integration, and local automation features. It is designed to give you real-time access to energy data.
+## How it works
 
-## Key Features
+```mermaid
+graph LR
+    SM["🔌 Smart Meter"] -->|P1 / optical / RS485| WW["⚡ whatwatt Go"]
+    WW -->|REST API| REST["🌐 Web App\nDashboard"]
+    WW -->|MQTT| MQTT["📡 MQTT Broker\n→ Home Assistant\n→ Node-RED\n→ Grafana"]
+    WW -->|Modbus TCP| MB["🏭 SCADA\n→ EVCC\n→ Inverters"]
+    WW -->|Berry| BERRY["⚙️ On-device\nAutomation"]
+    style WW fill:#3b82f6,color:#fff,stroke:none
+    style SM fill:#64748b,color:#fff,stroke:none
+    style REST fill:#10b981,color:#fff,stroke:none
+    style MQTT fill:#f59e0b,color:#fff,stroke:none
+    style MB fill:#8b5cf6,color:#fff,stroke:none
+    style BERRY fill:#ef4444,color:#fff,stroke:none
+```
 
-- 🔌 **Universal Compatibility**: Works with all current Smart Meters from major manufacturers (Ensor, Iskraemeco, Kamstrup, Landis+Gyr, Sagemcom, Semax, NES, and Meter+Control)
-- ⚡ **Real-Time Data**: Instant access to energy consumption data
-- 🌐 **Multiple Protocols**: REST API and MQTT support
-- 🔐 **Secure Communication**: TLS/SSL encryption support
-- 📊 **Rich Data Format**: JSON responses with detailed meter information
-- 🏠 **Local Control**: Your data stays with you - no cloud dependency
+whatwatt Go reads measurement data from the smart meter through its native local interface (P1, optical, or RS485), processes it, and re-exposes it through standard protocols on your local network. The device acts as a protocol bridge and data aggregator — your smart meter only speaks one protocol, but whatwatt Go gives you four ways to consume the data.
 
 ## Quick Start
 
-Choose your integration method:
+Pick the protocol that fits your system. All examples assume the device is reachable at `192.168.1.100` — replace with your device's IP (discoverable via mDNS as `whatwatt-go.local`).
 
 === "REST API"
 
-    Perfect for web applications and simple polling scenarios.
+    Simplest way to get started — one HTTP request returns full meter data as JSON.
 
     ```bash
     # Check device availability and license type
     curl http://192.168.1.100/api/v1/system
+
+    # Get the latest meter report (requires Plus or higher license)
+    curl http://192.168.1.100/api/v1/report
     ```
 
-    If `.device.license.type` is `PLUS` or higher, you can continue with meter polling endpoints such as `/api/v1/report`.
+    If `.device.license.type` is `PLUS` or higher, you can poll meter data, stream live updates via SSE, and configure the device — all through HTTP.
 
-    **[→ REST API Guide](00-intro/first-request.md)**
+    **[→ REST API Guide](00-intro/first-request.md)** · **[→ Streaming](20-rest/streaming.md)**
 
 === "MQTT"
 
-    Ideal for real-time applications and IoT integration.
-
-  Requires an active Plus or higher license for the built-in MQTT publisher.
+    Push-based real-time data — the device publishes to your broker, you subscribe.
 
     ```bash
-    # Subscribe on YOUR MQTT BROKER to the topic you configured in Device Settings → MQTT (publish.topic)
-    # Example: broker on localhost, topic prefix 'lab/energy/'
+    # Subscribe on YOUR MQTT BROKER to the topic you configured
+    # in Device Settings → MQTT (publish.topic)
     mosquitto_sub -h 127.0.0.1 -t "lab/energy/#" -v
-
-    # If your broker requires username/password authentication
-    # mosquitto_sub -h 127.0.0.1 -u USER -P PASS -t "lab/energy/#" -v
     ```
+
+    Requires an active Plus or higher license for the built-in MQTT publisher.
 
     **[→ MQTT Guide](30-mqtt/index.md)**
 
-=== "Secure MQTT"
+=== "Modbus TCP"
 
-    Enterprise-grade security with TLS encryption.
-
-  Requires an active Plus or higher license because it uses the same built-in MQTT publisher.
+    Register-level access for SCADA, EV chargers, and industrial systems.
 
     ```bash
-    # Connect to YOUR MQTT BROKER with TLS (mutual TLS optional)
-    mosquitto_sub -h 127.0.0.1 -p 8883 -v \
-      --cafile ca.crt --cert client.crt --key client.key \
-      -t "lab/energy/#"
+    # Read the first 10 float registers (default Siemens PAC2200 layout)
+    mbpoll -B -t 3:float -c10 -0 -r1 192.168.1.100
     ```
 
-    **[→ Secure MQTT Setup](40-secure-mqtt/index.md)**
+    The device ships with a default register map and supports custom layouts with configurable data types, scaling, and word order. Ready-to-load templates are available for Siemens, Carlo Gavazzi, Huawei, Fronius, Herholdt, SunSpec, and Janitza.
 
-## Documentation Structure
+    **[→ Modbus TCP Guide](35-modbus/index.md)** · **[→ Templates](35-modbus/examples.md)**
 
-This documentation covers everything you need to integrate with whatwatt Go:
+=== "Berry Scripting"
 
-### 🚀 Getting Started
+    On-device automation — write scripts that react to meter data in real time.
 
-- **[Overview](00-intro/overview.md)** - Introduction to whatwatt Go
-- **[REST vs MQTT](00-intro/rest-vs-mqtt.md)** - Choose the right integration method
+    ```berry
+    # Example: publish a warning when power exceeds 5 kW
+    import meter
 
-### 🔧 Device Information
+    func on_report(report)
+        if report.instantaneous_power.active.positive.total > 5000
+            log("High power consumption detected!")
+        end
+    end
+    ```
 
-- **[Power & Wi-Fi Requirements](10-general/power-and-wifi.md)** - Setup requirements
-- **[Device Discovery](10-general/discovery.md)** - Find your device on the network
-- **[System Information](10-general/system-info.md)** - Device status and configuration
+    Requires an active Plus or higher license at runtime.
 
-### 📡 Integration Methods
+    **[→ Berry Scripting Guide](55-berry/index.md)**
 
-- **[REST API](20-rest/polling.md)** - HTTP-based data access
-- **[Modbus TCP](35-modbus/index.md)** - Register-based local data access
-- **[MQTT](30-mqtt/index.md)** - Real-time messaging protocol
-- **[Secure MQTT](40-secure-mqtt/index.md)** - TLS-encrypted communication
+## Choose Your Path
 
-### ⚙️ Configuration
+Not sure where to start? This decision tree helps you pick the right integration method:
 
-- **[Device Settings](50-settings/rest-conventions.md)** - Complete configuration reference
-- **[Wi-Fi Setup](50-settings/wifi-setup.md)** - Network configuration
-- **[Berry scripting](55-berry/index.md)** - Built-in automation scripts and device-side logic; requires Plus or higher at runtime
-- **[Actions](50-settings/actions/index.md)** - Automated HTTP/Modbus requests
+```mermaid
+flowchart TD
+    Start["I want to integrate<br/>whatwatt Go"] --> Q1{"Real-time stream<br/>or on-demand reads?"}
+    Q1 -->|"On-demand"| REST["REST API<br/>poll /api/v1/report"]
+    Q1 -->|"Real-time stream"| Q2{"Is there an<br/>MQTT broker available?"}
+    Q2 -->|"Yes"| MQTT["MQTT<br/>subscribe to topics"]
+    Q2 -->|"No"| SSE["REST SSE Streaming<br/>GET /api/v1/stream"]
+    REST --> Q3{"Need register-level<br/>Modbus access?"}
+    Q3 -->|"Yes"| MB["Modbus TCP<br/>read input registers"]
+    Q3 -->|"No"| Done1["✅ Done"]
+    MQTT --> Q4{"Want on-device<br/>automation logic?"}
+    SSE --> Q4
+    Q4 -->|"Yes"| BERRY["Berry Scripting<br/>react to meter data"]
+    Q4 -->|"No"| Done2["✅ Done"]
+    MB --> Done1
+    BERRY --> Done2
 
-### 📚 Reference
+    style Start fill:#3b82f6,color:#fff,stroke:none
+    style REST fill:#10b981,color:#fff,stroke:none
+    style MQTT fill:#f59e0b,color:#fff,stroke:none
+    style MB fill:#8b5cf6,color:#fff,stroke:none
+    style BERRY fill:#ef4444,color:#fff,stroke:none
+    style SSE fill:#10b981,color:#fff,stroke:none
+```
 
-- **[HTTP Basics](90-appendix/http-basics.md)** - Understanding HTTP methods and responses
-- **[curl Examples](90-appendix/curl-options.md)** - Command-line usage examples
-- **[OBIS Codes](90-appendix/appendix-d.md)** - Energy measurement standards
+## Documentation Map
 
-## Energy Transition
+### Getting Started
+
+| Page | What you'll learn |
+|------|-------------------|
+| [Overview](00-intro/overview.md) | Device capabilities, supported protocols, and firmware compatibility |
+| [REST vs MQTT](00-intro/rest-vs-mqtt.md) | Side-by-side comparison to help you choose the right protocol |
+| [First Request](00-intro/first-request.md) | Your first REST API call — step by step |
+| [Power & Wi-Fi](10-general/power-and-wifi.md) | Hardware setup and network requirements |
+| [Device Discovery](10-general/discovery.md) | Find the device on your network via mDNS |
+| [System Info](10-general/system-info.md) | Check device status, firmware, and license |
+
+### Integration Methods
+
+| Page | Protocol | Best for |
+|------|----------|----------|
+| [REST Polling](20-rest/polling.md) | HTTP | Web apps, dashboards, simple integrations |
+| [REST Streaming](20-rest/streaming.md) | SSE | Live data without MQTT broker |
+| [Modbus TCP](35-modbus/index.md) | Modbus | SCADA, EV chargers, inverters, industrial |
+| [MQTT](30-mqtt/index.md) | MQTT 3.1.1 | Home Assistant, Node-RED, IoT platforms |
+| [Secure MQTT](40-secure-mqtt/index.md) | MQTT/TLS | Production deployments with encryption |
+
+### Configuration & Automation
+
+| Page | What you'll learn |
+|------|-------------------|
+| [Device Settings](50-settings/rest-conventions.md) | Complete configuration reference via REST API |
+| [Wi-Fi Setup](50-settings/wifi-setup.md) | Network configuration and troubleshooting |
+| [Berry Scripting](55-berry/index.md) | On-device automation with Berry language |
+| [Actions](50-settings/actions/index.md) | Automated HTTP/Modbus requests triggered by meter data |
+| [SD Card Logging](50-settings/sdcard/index.md) | CSV data logging to SD card |
+
+### Reference
+
+| Page | What you'll find |
+|------|------------------|
+| [HTTP Basics](90-appendix/http-basics.md) | HTTP methods, status codes, and content types |
+| [curl Examples](90-appendix/curl-options.md) | Command-line usage patterns |
+| [OBIS Codes](90-appendix/appendix-d.md) | Energy measurement identifiers explained |
+| [Report Objects](20-rest/report-objects.md) | Full JSON response structure with field descriptions |
+| [License Requirements](20-rest/license-requirements.md) | Which features require which license tier |
+
+### System Integrations
+
+| Page | System |
+|------|--------|
+| [Loxone](60-integrations/loxone.md) | Loxone home automation integration |
+
+## Supported Smart Meters
+
+whatwatt Go works with smart meters from all major manufacturers:
+
+| Manufacturer | Protocol | Regions |
+|---|---|---|
+| Ensor | P1 (Dutch DSMR) | NL, BE |
+| Iskraemeco | P1 / optical | EU |
+| Kamstrup | optical (KMP) | EU, Nordics |
+| Landis+Gyr | P1 / optical | EU, CH |
+| Sagemcom | P1 (French/Italian) | FR, IT |
+| Semax | optical | EU |
+| NES | P1 | NL |
+| Meter+Control | optical | EU |
+
+## License Tiers
+
+| Feature | Free | Plus | Pro |
+|---|:---:|:---:|:---:|
+| REST API — system info & configuration | :material-check: | :material-check: | :material-check: |
+| REST API — meter report polling | :material-close: | :material-check: | :material-check: |
+| SSE streaming | :material-close: | :material-check: | :material-check: |
+| MQTT publisher | :material-close: | :material-check: | :material-check: |
+| Modbus TCP slave | :material-close: | :material-check: | :material-check: |
+| Berry scripting | :material-close: | :material-check: | :material-check: |
+| Actions (HTTP/Modbus automation) | :material-close: | :material-check: | :material-check: |
+| SD card CSV logging | :material-close: | :material-check: | :material-check: |
+
+Check your license with `curl http://<device-ip>/api/v1/system` — look for `.device.license.type`.
+
+## Privacy by Design
 
 > The Energy Transition will only succeed if we can optimize our own energy consumption. This is only possible if we know our consumption in real time and can react accordingly.
 
-Smart meters can expose measured data in real time through their local communication interfaces. **whatwatt Go uses this interface to give you control over your energy data.**
-
-## Data Ownership
-
-**Who owns your energy consumption data?** The consumption data collected from your household belongs to **you**. You decide with whom you would like to share this data. whatwatt Go ensures your data stays local and under your control.
+**Who owns your energy consumption data?** You do. The consumption data collected from your household belongs to you. You decide with whom you share it. whatwatt Go ensures your data stays local and under your control — there is no cloud dependency, no telemetry, no phone-home. The device works fully offline on your local network.
 
 ---
 
