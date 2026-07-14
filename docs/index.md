@@ -7,34 +7,38 @@ difficulty: beginner
 device_compatibility:
 - WW_Go_1.2
 - all
-last_verified: '2025-10-07'
+last_verified: '2026-07-14'
 ---
 
 # whatwatt Go
 
-**Your smart meter speaks. Listen locally.**
+**Read smart-meter data locally and integrate it with your own systems.**
 
-whatwatt Go is a compact device that connects directly to your smart meter's local interface and exposes real-time energy data through protocols you already use — REST, MQTT, and Modbus TCP. Your data stays on your local network by default, with optional cloud connectivity and license-based feature upgrades when you need them.
+whatwatt Go is a compact smart-meter interface device. It reads measurement data from a compatible electricity meter and makes the processed data available through local integration interfaces such as REST, MQTT and Modbus TCP.
 
-## Why whatwatt Go?
+Firmware 2.0.0 also introduces the Berry scripting environment for running custom integration logic directly on the device.
 
-| | Without whatwatt Go | With whatwatt Go |
-|---|---|---|
-| **Data access** | Vendor portal, utility API, or manual meter reading | Local REST, MQTT, and Modbus TCP — instantly |
-| **Real-time** | Delayed or batch data from cloud | Sub-second updates via SSE streaming and MQTT |
-| **Privacy** | Data sent to third-party servers | Data stays on your network, under your control |
-| **Integration** | Vendor-locked ecosystems | Any system that speaks HTTP, MQTT, or Modbus |
-| **Automation** | Depends on cloud availability | Local Berry scripting engine runs on-device |
+## Why use whatwatt Go?
+
+|                       | Without a local meter interface                                    | With whatwatt Go                                                              |
+| --------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| **Data access**       | Often limited to the meter display, utility portal or provider API | Local access through supported device interfaces                              |
+| **Update interval**   | May be delayed or aggregated by an external service                | Determined primarily by the meter, protocol and configured reporting interval |
+| **Local integration** | May require a vendor-specific ecosystem                            | REST, MQTT and Modbus TCP interfaces                                          |
+| **Data processing**   | Usually performed by an external service                           | Measurements are parsed and normalised by the device                          |
+| **Automation**        | Usually implemented in another controller or cloud service         | Actions and, in firmware 2.0.0, Berry scripts can run on the device           |
 
 ## How it works
 
 ```mermaid
 graph LR
-    SM["🔌 Smart Meter"] -->|P1 / M-Bus / optical| WW["⚡ whatwatt Go"]
-    WW -->|REST API| REST["🌐 Web App\nDashboard"]
-    WW -->|MQTT| MQTT["📡 MQTT Broker\n→ Home Assistant\n→ Node-RED\n→ Grafana"]
-    WW -->|Modbus TCP| MB["🏭 SCADA\n→ EVCC\n→ Inverters"]
-    WW -->|Berry| BERRY["⚙️ On-device\nAutomation"]
+    SM["🔌 Compatible smart meter"] -->|P1 / M-Bus / TTL / pMEP| WW["⚡ whatwatt Go"]
+
+    WW -->|REST API| REST["🌐 Applications\nDashboards\nCustom software"]
+    WW -->|MQTT client| MQTT["📡 MQTT broker\nHome automation\nIoT platforms"]
+    WW -->|Modbus TCP slave| MB["🏭 SCADA\nEnergy management\nIndustrial controllers"]
+    WW -->|Berry scripts| BERRY["⚙️ On-device\nintegration logic"]
+
     style WW fill:#3b82f6,color:#fff,stroke:none
     style SM fill:#64748b,color:#fff,stroke:none
     style REST fill:#10b981,color:#fff,stroke:none
@@ -43,94 +47,157 @@ graph LR
     style BERRY fill:#ef4444,color:#fff,stroke:none
 ```
 
-whatwatt Go reads measurement data from the smart meter through its native local interface (P1, M-Bus, TTL, MEP, or optical), processes it, and re-exposes it through standard protocols on your local network. The device acts as a protocol bridge and data aggregator — your smart meter only speaks one protocol, but whatwatt Go gives you four ways to consume the data.
+whatwatt Go connects to a supported customer interface of the smart meter. Depending on the meter and installation, this can be:
+
+- P1,
+- M-Bus,
+- UART/TTL, including supported Kamstrup HAN configurations,
+- pMEP.
+
+The device identifies and parses supported meter protocols, converts the received values into a common internal representation and exposes the available measurements through configured integration services.
+
+The exact set of values and their update interval depend on the connected meter, its configuration and the protocol used.
 
 ## Quick Start
 
-Pick the protocol that fits your system. All examples assume the device is reachable at `192.168.1.100` — replace with your device's IP (discoverable via mDNS as `whatwatt-go.local`).
+The examples below assume that the device is available at `192.168.1.100`.
+
+A device can also be discovered through mDNS. Its hostname follows this pattern:
+
+```text
+whatwatt-XXXXXX.local
+```
+
+`XXXXXX` represents the last six hexadecimal characters of the device identifier.
+
+When WebUI password protection is enabled, API requests require HTTP authentication. Using `--anyauth` allows `curl` to negotiate the authentication method supported by the installed firmware.
 
 === "REST API"
 
-    Simplest way to get started — one HTTP request returns full meter data as JSON.
+    Use the REST API for on-demand measurements, status information and device configuration.
 
     ```bash
-    # Check device availability and license type
+    # Read device, network and meter status
     curl http://192.168.1.100/api/v1/system
 
-    # Get the latest meter report (requires Plus or higher license)
+    # Read the latest available meter report
     curl http://192.168.1.100/api/v1/report
     ```
 
-    If `.device.license.type` is `PLUS` or higher, you can poll meter data, stream live updates via SSE, and configure the device — all through HTTP.
+    With password protection enabled:
 
-    **[→ REST API Guide](00-intro/first-request.md)** · **[→ Streaming](20-rest/streaming.md)**
+    ```bash
+    curl --anyauth -u ":PASSWORD" \
+      http://192.168.1.100/api/v1/system
+    ```
+
+    `/api/v1/system` can be used even when no valid meter report is currently available. The contents of `/api/v1/report` depend on the values supplied by the connected meter.
+
+    **[→ First REST Request](00-intro/first-request.md)** ·
+    **[→ REST Polling](20-rest/polling.md)** ·
+    **[→ REST Streaming](20-rest/streaming.md)**
 
 === "MQTT"
 
-    Push-based real-time data — the device publishes to your broker, you subscribe.
+    whatwatt Go operates as an MQTT client and publishes data to a broker configured by the user.
 
     ```bash
-    # Subscribe on YOUR MQTT BROKER to the topic you configured
-    # in Device Settings → MQTT (publish.topic)
-    mosquitto_sub -h 127.0.0.1 -t "lab/energy/#" -v
+    # Run this command on a system that can access your MQTT broker.
+    # Replace the broker address and topic with your own configuration.
+    mosquitto_sub \
+      -h 192.168.1.20 \
+      -t "lab/energy/#" \
+      -v
     ```
 
-    Requires an active Plus or higher license for the built-in MQTT publisher.
+    MQTT requires:
 
-    **[→ MQTT Guide](30-mqtt/index.md)**
+    - an MQTT broker reachable from whatwatt Go,
+    - a configured broker address and port,
+    - a configured publication topic,
+    - optional credentials or TLS certificates when required by the broker.
+
+    The MQTT payload can be adapted using the device's payload-template configuration.
+
+    **[→ MQTT Guide](30-mqtt/index.md)** ·
+    **[→ Secure MQTT](40-secure-mqtt/index.md)**
 
 === "Modbus TCP"
 
-    Register-level access for SCADA, EV chargers, and industrial systems.
+    Modbus TCP provides read-only register access for compatible industrial and energy-management systems.
+
+    Enable the Modbus TCP slave service before attempting to read registers. The default TCP port is `502`, unless another port has been configured.
 
     ```bash
-    # Read the first 10 float registers (default Siemens PAC2200 layout)
-    mbpoll -B -t 3:float -c10 -0 -r1 192.168.1.100
+    # Example: read ten 32-bit floating-point values from input registers.
+    # The correct start address and count depend on the active register map.
+    mbpoll -B -t 3:float -c 10 -0 -r 0 192.168.1.100
     ```
 
-    The device ships with a default register map and supports custom layouts with configurable data types, scaling, and word order. Ready-to-load templates are available for Siemens, Carlo Gavazzi, Huawei, Fronius, Herholdt, SunSpec, and Janitza.
+    The Modbus implementation:
 
-    **[→ Modbus TCP Guide](35-modbus/index.md)** · **[→ Templates](35-modbus/examples.md)**
+    - operates as a Modbus TCP slave,
+    - supports function code `04` — Read Input Registers,
+    - uses read-only input registers,
+    - supports a default register map,
+    - supports custom register maps,
+    - supports configurable numeric types and scalers,
+    - uses big-endian byte and word order.
+
+    The active register map should always be checked before configuring a Modbus client.
+
+    **[→ Modbus TCP Guide](35-modbus/index.md)** ·
+    **[→ Modbus Examples](35-modbus/examples.md)**
 
 === "Berry Scripting"
 
-    On-device automation — write scripts that react to meter data in real time.
+    Firmware 2.0.0 includes a Berry scripting engine for implementing integration logic directly on the device.
+
+    Scripts can react to meter reports, execute periodic functions, make HTTP or HTTPS requests, perform Modbus TCP transactions and call selected local APIs.
 
     ```berry
-    # Example: publish a warning when power exceeds 5 kW
-    import meter
+    import ww
 
-    func on_report(report)
-        if report.instantaneous_power.active.positive.total > 5000
-            log("High power consumption detected!")
+    def on_report(report)
+        if report and report.energy
+            if report.energy.active and report.energy.active.positive
+                var total_energy = report.energy.active.positive.total
+                print("Imported active energy:", total_energy)
+            end
         end
     end
+
+    ww.onreport("on_report")
     ```
 
-    Requires an active Plus or higher license at runtime.
+    The structure of a report passed to a script depends on the measurements available from the connected meter.
+
+    An external USB-C power supply is recommended for continuous script execution, particularly when several communication services are enabled.
 
     **[→ Berry Scripting Guide](55-berry/index.md)**
 
-## Choose Your Path
-
-Not sure where to start? This decision tree helps you pick the right integration method:
+## Choose an Integration Method
 
 ```mermaid
 flowchart TD
-    Start["I want to integrate<br/>whatwatt Go"] --> Q1{"Real-time stream<br/>or on-demand reads?"}
-    Q1 -->|"On-demand"| REST["REST API<br/>poll /api/v1/report"]
-    Q1 -->|"Real-time stream"| Q2{"Is there an<br/>MQTT broker available?"}
-    Q2 -->|"Yes"| MQTT["MQTT<br/>subscribe to topics"]
-    Q2 -->|"No"| SSE["REST SSE Streaming<br/>GET /api/v1/stream"]
-    REST --> Q3{"Need register-level<br/>Modbus access?"}
-    Q3 -->|"Yes"| MB["Modbus TCP<br/>read input registers"]
-    Q3 -->|"No"| Done1["✅ Done"]
-    MQTT --> Q4{"Want on-device<br/>automation logic?"}
-    SSE --> Q4
-    Q4 -->|"Yes"| BERRY["Berry Scripting<br/>react to meter data"]
-    Q4 -->|"No"| Done2["✅ Done"]
-    MB --> Done1
-    BERRY --> Done2
+    Start["Integrate whatwatt Go"] --> Q1{"How should data be obtained?"}
+
+    Q1 -->|"On demand"| REST["REST API polling"]
+    Q1 -->|"Continuous updates"| Q2{"Is an MQTT broker available?"}
+    Q1 -->|"Industrial registers"| MB["Modbus TCP slave"]
+
+    Q2 -->|"Yes"| MQTT["MQTT publication"]
+    Q2 -->|"No"| SSE["REST streaming"]
+
+    REST --> Q3{"Is custom logic required<br/>on the device?"}
+    MQTT --> Q3
+    SSE --> Q3
+
+    Q3 -->|"Yes"| BERRY["Berry scripting<br/>or Actions"]
+    Q3 -->|"No"| DONE["Integration complete"]
+
+    MB --> DONE
+    BERRY --> DONE
 
     style Start fill:#3b82f6,color:#fff,stroke:none
     style REST fill:#10b981,color:#fff,stroke:none
@@ -140,90 +207,169 @@ flowchart TD
     style SSE fill:#10b981,color:#fff,stroke:none
 ```
 
+### REST API
+
+Choose REST when an application needs:
+
+- the latest available report on demand,
+- device status or diagnostics,
+- configuration access,
+- a straightforward HTTP/JSON integration.
+
+### MQTT
+
+Choose MQTT when:
+
+- an MQTT broker is already available,
+- measurements should be published automatically,
+- several consumers need to receive the same data,
+- event-driven processing is preferred.
+
+### Modbus TCP
+
+Choose Modbus TCP when integrating with:
+
+- SCADA systems,
+- energy-management controllers,
+- charging or photovoltaic equipment that can read Modbus TCP input registers,
+- industrial software based on register maps.
+
+Compatibility with a particular third-party product depends on its ability to use the configured function code, register addresses, data types, scaling and byte order.
+
+### Berry and Actions
+
+Choose on-device automation when logic should execute directly on whatwatt Go.
+
+Berry is intended for programmable integrations. Actions provide configured HTTP or Modbus operations without requiring a complete custom firmware build.
+
 ## Documentation Map
 
 ### Getting Started
 
-| Page | What you'll learn |
-|------|-------------------|
-| [Overview](00-intro/overview.md) | Device capabilities, supported protocols, and firmware compatibility |
-| [REST vs MQTT](00-intro/rest-vs-mqtt.md) | Side-by-side comparison to help you choose the right protocol |
-| [First Request](00-intro/first-request.md) | Your first REST API call — step by step |
-| [Power & Wi-Fi](10-general/power-and-wifi.md) | Hardware setup and network requirements |
-| [Device Discovery](10-general/discovery.md) | Find the device on your network via mDNS |
-| [System Info](10-general/system-info.md) | Check device status, firmware, and license |
+| Page                                          | Description                                           |
+| --------------------------------------------- | ----------------------------------------------------- |
+| [Overview](00-intro/overview.md)              | Device capabilities and available integration methods |
+| [REST vs MQTT](00-intro/rest-vs-mqtt.md)      | Comparison of REST and MQTT integration models        |
+| [First Request](00-intro/first-request.md)    | Initial REST API connectivity test                    |
+| [Power & Wi-Fi](10-general/power-and-wifi.md) | Power-budget and network considerations               |
+| [Device Discovery](10-general/discovery.md)   | mDNS and DNS-SD discovery                             |
+| [System Info](10-general/system-info.md)      | Device, network, meter and service status             |
 
 ### Integration Methods
 
-| Page | Protocol | Best for |
-|------|----------|----------|
-| [REST Polling](20-rest/polling.md) | HTTP | Web apps, dashboards, simple integrations |
-| [REST Streaming](20-rest/streaming.md) | SSE | Live data without MQTT broker |
-| [Modbus TCP](35-modbus/index.md) | Modbus | SCADA, EV chargers, inverters, industrial |
-| [MQTT](30-mqtt/index.md) | MQTT 3.1.1 | Home Assistant, Node-RED, IoT platforms |
-| [Secure MQTT](40-secure-mqtt/index.md) | MQTT/TLS | Production deployments with encryption |
+| Page                                   | Protocol      | Typical use                                |
+| -------------------------------------- | ------------- | ------------------------------------------ |
+| [REST Polling](20-rest/polling.md)     | HTTP/JSON     | On-demand reads and dashboards             |
+| [REST Streaming](20-rest/streaming.md) | SSE           | Continuous HTTP-based updates              |
+| [MQTT](30-mqtt/index.md)               | MQTT          | Broker-based telemetry                     |
+| [Secure MQTT](40-secure-mqtt/index.md) | MQTT over TLS | Encrypted broker communication             |
+| [Modbus TCP](35-modbus/index.md)       | Modbus TCP    | Industrial and register-based integrations |
 
-### Configuration & Automation
+### Configuration and Automation
 
-| Page | What you'll learn |
-|------|-------------------|
-| [Device Settings](50-settings/rest-conventions.md) | Complete configuration reference via REST API |
-| [Wi-Fi Setup](50-settings/wifi-setup.md) | Network configuration and troubleshooting |
-| [Berry Scripting](55-berry/index.md) | On-device automation with Berry language |
-| [Actions](50-settings/actions/index.md) | Automated HTTP/Modbus requests triggered by meter data |
-| [SD Card Logging](50-settings/sdcard/index.md) | CSV data logging to SD card |
+| Page                                                | Description                                  |
+| --------------------------------------------------- | -------------------------------------------- |
+| [REST Conventions](50-settings/rest-conventions.md) | Common rules used by configuration endpoints |
+| [Wi-Fi Setup](50-settings/wifi-setup.md)            | Wi-Fi client configuration                   |
+| [Berry Scripting](55-berry/index.md)                | Programmable on-device integration logic     |
+| [Actions](50-settings/actions/index.md)             | Configured HTTP and Modbus operations        |
+| [SD Card Logging](50-settings/sdcard/index.md)      | Local CSV report storage                     |
 
 ### Reference
 
-| Page | What you'll find |
-|------|------------------|
-| [HTTP Basics](90-appendix/http-basics.md) | HTTP methods, status codes, and content types |
-| [curl Examples](90-appendix/curl-options.md) | Command-line usage patterns |
-| [OBIS Codes](90-appendix/appendix-d.md) | Energy measurement identifiers explained |
-| [Report Objects](20-rest/report-objects.md) | Full JSON response structure with field descriptions |
-| [License Requirements](20-rest/license-requirements.md) | Which features require which license tier |
+| Page                                                          | Description                                      |
+| ------------------------------------------------------------- | ------------------------------------------------ |
+| [HTTP Basics](90-appendix/http-basics.md)                     | HTTP methods, response codes and content types   |
+| [curl Examples](90-appendix/curl-options.md)                  | Command-line request examples                    |
+| [OBIS Codes](90-appendix/appendix-d.md)                       | Common measurement identifiers                   |
+| [Report Objects](20-rest/report-objects.md)                   | JSON report structure and field descriptions     |
+| [Availability and Licensing](20-rest/license-requirements.md) | Firmware, edition and service availability notes |
 
 ### System Integrations
 
-| Page | System |
-|------|--------|
-| [Loxone](60-integrations/loxone.md) | Loxone home automation integration |
+| Page                                | System                      |
+| ----------------------------------- | --------------------------- |
+| [Loxone](60-integrations/loxone.md) | Loxone integration guidance |
 
 ## Supported Smart Meters
 
-whatwatt Go works with smart meters from all major manufacturers:
+whatwatt Go supports several customer-interface and protocol combinations. Compatibility should be determined from the meter model, installed communication module, enabled customer port and meter configuration.
 
-| Manufacturer | Protocol | Regions |
-|---|---|---|
-| Ensor | P1 (Dutch DSMR) | NL, BE |
-| Iskraemeco | P1 / optical | EU |
-| Kamstrup | optical (KMP) | EU, Nordics |
-| Landis+Gyr | P1 / optical | EU, CH |
-| Sagemcom | P1 (French/Italian) | FR, IT |
-| Semax | optical | EU |
-| NES | P1 | NL |
-| Meter+Control | optical | EU |
+The following examples are included in the published compatibility documentation:
 
-## License Tiers
+| Manufacturer   | Example models or series         | Interface or setup                            |
+| -------------- | -------------------------------- | --------------------------------------------- |
+| Ensor          | eRS301, eRS801                   | P1, RJ12                                      |
+| Iskraemeco     | AM550 with supported CII module  | P1, RJ12                                      |
+| Kamstrup       | Omnipower, Omnia                 | P1 or TTL/HAN, depending on meter and adapter |
+| Landis+Gyr     | E360                             | P1, RJ12                                      |
+| Landis+Gyr     | E450 S4/S5, E570                 | M-Bus, RJ12                                   |
+| Meter+Control  | Flexy                            | P1, RJ12                                      |
+| NES            | 83335-3, generation 5            | P1, RJ12                                      |
+| NES            | 83332-3 and 83334-3              | pMEP, installation-dependent                  |
+| Sagemcom       | S211, T211                       | P1, RJ12                                      |
+| Sagemcom       | S210, T210-D                     | M-Bus, RJ12                                   |
+| Semax / Elster | AS3000 with supported CII module | P1, RJ12                                      |
+| Kaifa          | MA309M                           | M-Bus, RJ12                                   |
 
-| Feature | Free | Plus | Pro |
-|---|:---:|:---:|:---:|
-| REST API — system info & configuration | :material-check: | :material-check: | :material-check: |
-| REST API — meter report polling | :material-close: | :material-check: | :material-check: |
-| SSE streaming | :material-close: | :material-check: | :material-check: |
-| MQTT publisher | :material-close: | :material-check: | :material-check: |
-| Modbus TCP slave | :material-close: | :material-check: | :material-check: |
-| Berry scripting | :material-close: | :material-check: | :material-check: |
-| Actions (HTTP/Modbus automation) | :material-close: | :material-check: | :material-check: |
-| SD card CSV logging | :material-close: | :material-check: | :material-check: |
+Some installations require:
 
-Check your license with `curl http://<device-ip>/api/v1/system` — look for `.device.license.type`.
+- activation of the customer interface by the utility,
+- meter encryption or authentication keys,
+- an adapter or communication module,
+- external USB-C power,
+- specific firmware support.
 
-## Privacy by Design
+A standard interface alone does not guarantee that every meter variant or configuration is supported. Consult the current compatibility list or whatwatt support when a meter is not explicitly listed.
 
-> The Energy Transition will only succeed if we can optimize our own energy consumption. This is only possible if we know our consumption in real time and can react accordingly.
+## Firmware and Service Availability
 
-**Who owns your energy consumption data?** You do. The consumption data collected from your household belongs to you. You decide with whom you share it. whatwatt Go keeps your data on your local network by default — all integration protocols (REST, MQTT, Modbus, Berry) work without any cloud connection. Optional cloud services and license-based features are available when you choose to enable them.
+Available functions depend on:
+
+- the installed firmware version,
+- device configuration,
+- hardware revision,
+- enabled services,
+- applicable commercial edition or service terms.
+
+For example:
+
+- Modbus TCP slave support was introduced in firmware 1.2.20,
+- Berry scripting is a firmware 2.0.0 feature,
+- the device reports its firmware version through `/api/v1/system`,
+- newer firmware can expose license information such as `.device.license.type` and `.device.license.activation_date`.
+
+Do not infer feature availability solely from the presence of a license field. Verify the installed firmware, service configuration and current product terms.
+
+```bash
+curl http://192.168.1.100/api/v1/system
+```
+
+With authentication enabled:
+
+```bash
+curl --anyauth -u ":PASSWORD" \
+  http://192.168.1.100/api/v1/system
+```
+
+## Local Operation and Data Control
+
+whatwatt Go supports local data access through REST, MQTT, Modbus TCP, SD-card logging and on-device automation.
+
+REST and Modbus clients can communicate with the device directly over the local network. For MQTT, measurement data is sent to the broker configured by the user; that broker may be local or remote.
+
+The device can also use optional cloud and third-party integrations when they are enabled. Therefore, whether measurement data remains entirely within the local network depends on the selected configuration.
+
+To maintain local-only operation:
+
+- use a broker hosted inside the local network,
+- disable unnecessary cloud integrations,
+- restrict outbound network access where appropriate,
+- protect the WebUI and API,
+- use TLS where supported and required,
+- review all enabled services before deployment.
+
+The user determines which configured systems receive the available meter data.
 
 ---
 
@@ -237,6 +383,6 @@ Check your license with `curl http://<device-ip>/api/v1/system` — look for `.d
 </div>
 
 !!! info "Need Help?"
-    - 📧 **Support**: Visit [whatwatt.ch/en/contact](https://whatwatt.ch/en/contact)
-    - 📖 **FAQ**: Check [whatwatt.ch/en/faq-and-support](https://whatwatt.ch/en/faq-and-support)
-    - 🛒 **Purchase**: Available at [whatwatt.ch/en/shop](https://whatwatt.ch/en/shop)
+    - 📧 **Support:** [whatwatt.ch/en/contact](https://whatwatt.ch/en/contact)
+    - 📖 **FAQ:** [whatwatt.ch/en/faq-and-support](https://whatwatt.ch/en/faq-and-support)
+    - 🛒 **Shop:** [whatwatt.ch/en/shop](https://whatwatt.ch/en/shop)

@@ -207,6 +207,11 @@ Herholdt
 Herholdt's
 Gavazzi
 Janitza
+Omnipower
+Omnia
+Flexy
+Elster
+Kaifa
 
 # Modbus and protocol terms
 msw
