@@ -53,7 +53,7 @@ All example JSON files live in the local `examples` directory next to this page.
   mainly by the meter type flag and zero-filled phase B/C registers.
 - `huawei_smartlogger_external_meter.json` and `huawei_emma_external_meter.json`
   model the higher-level register spaces exported by Huawei SmartLogger and EMMA
-  integrations, not the raw RS485 meter wire image.
+  integrations, not the raw meter wire image.
 - `fronius_smart_meter_63a.json` follows the Fronius Smart Meter IP emulator style
   used by Fronius inverter probing. It starts with a Fronius-specific SunSpec-like
   block at `40000` and exposes several extra zero-valued probe registers.

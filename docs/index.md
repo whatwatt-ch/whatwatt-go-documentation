@@ -30,7 +30,7 @@ whatwatt Go is a compact device that connects directly to your smart meter's loc
 
 ```mermaid
 graph LR
-    SM["🔌 Smart Meter"] -->|P1 / optical / RS485| WW["⚡ whatwatt Go"]
+    SM["🔌 Smart Meter"] -->|P1 / M-Bus / optical| WW["⚡ whatwatt Go"]
     WW -->|REST API| REST["🌐 Web App\nDashboard"]
     WW -->|MQTT| MQTT["📡 MQTT Broker\n→ Home Assistant\n→ Node-RED\n→ Grafana"]
     WW -->|Modbus TCP| MB["🏭 SCADA\n→ EVCC\n→ Inverters"]
@@ -43,7 +43,7 @@ graph LR
     style BERRY fill:#ef4444,color:#fff,stroke:none
 ```
 
-whatwatt Go reads measurement data from the smart meter through its native local interface (P1, optical, or RS485), processes it, and re-exposes it through standard protocols on your local network. The device acts as a protocol bridge and data aggregator — your smart meter only speaks one protocol, but whatwatt Go gives you four ways to consume the data.
+whatwatt Go reads measurement data from the smart meter through its native local interface (P1, M-Bus, TTL, MEP, or optical), processes it, and re-exposes it through standard protocols on your local network. The device acts as a protocol bridge and data aggregator — your smart meter only speaks one protocol, but whatwatt Go gives you four ways to consume the data.
 
 ## Quick Start
 
