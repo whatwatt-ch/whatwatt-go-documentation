@@ -1,0 +1,106 @@
+[
+	{
+		"start_address": 753,
+		"word_order": "msw",
+		"registers": [
+			{"id": "0", "type": "float"},
+			{"id": "0", "type": "float"}
+		]
+	},
+	{
+		"start_address": 911,
+		"word_order": "msw",
+		"registers": [
+			{"id": "0", "type": "float"}
+		]
+	},
+	{
+		"start_address": 10176,
+		"word_order": "msw",
+		"registers": [
+			{"id": "C_SERNR", "type": "int"},
+			{"id": "C_PRODNR", "type": "int"},
+			{"id": "C_MBUSADDR", "type": "int"},
+			{"id": "0", "type": "int"},
+			{"id": "0", "type": "int"},
+			{"id": "0", "type": "int"},
+			{"id": "0", "type": "int"},
+			{"id": "net.ip", "type": "int"}
+		],
+		"constants": {
+			"C_SERNR": 70170104,
+			"C_PRODNR": 5216000,
+			"C_MBUSADDR": 1
+		}
+	},
+	{
+		"start_address": 19000,
+		"word_order": "msw",
+		"registers": [
+			{"id": "32.7.0", "type": "float"},
+			{"id": "52.7.0", "type": "float"},
+			{"id": "72.7.0", "type": "float"},
+			{"type": "float"},
+			{"type": "float"},
+			{"type": "float"},
+			{"id": "31.7.0", "type": "float"},
+			{"id": "51.7.0", "type": "float"},
+			{"id": "71.7.0", "type": "float"},
+			{"id": "11.7.0", "type": "float"},
+			{"id": "power.active.l1", "type": "float", "scaler": 3},
+			{"id": "power.active.l2", "type": "float", "scaler": 3},
+			{"id": "power.active.l3", "type": "float", "scaler": 3},
+			{"id": "power.active", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "9.7.0", "type": "float", "scaler": 3},
+			{"id": "power.reactive.l1", "type": "float", "scaler": 3},
+			{"id": "power.reactive.l2", "type": "float", "scaler": 3},
+			{"id": "power.reactive.l3", "type": "float", "scaler": 3},
+			{"id": "power.reactive", "type": "float", "scaler": 3},
+			{"type": "float"},
+			{"type": "float" },
+			{"type": "float"},
+			{"id": "GRID_FREQUENCY_50HZ", "type": "float"},
+			{"type": "float"},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "energy.active", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "1.8.1", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "2.8.0", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "energy.reactive", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "energy.reactive.inductive", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"id": "energy.reactive.capactive", "type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3},
+			{"type": "float", "scaler": 3}
+		],
+		"constants": {
+			"GRID_FREQUENCY_50HZ": 50
+		}
+	}
+]

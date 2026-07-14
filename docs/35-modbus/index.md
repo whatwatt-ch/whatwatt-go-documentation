@@ -17,6 +17,7 @@ Specifically, the document includes:
   - Detailed JSON-based structure for defining custom register configurations, including data types, scaling factors, and measurement identifiers such as energy, power, voltage, and current, accompanied by illustrative examples.
 
   - Support for `word_order` per register set, area-level `constants`, and enhanced `GET /api/v1/modbus` output modes available from FW 2.0.2.
+  - Additional register identifiers for net energy values, total current, and device IP address available from **FW 2.7.0**.
 
 - **Default Register Configuration**:
 
@@ -159,6 +160,10 @@ From **FW 2.0.2**, each register set may also define an optional `constants` obj
 | **8.8.0**             | number    | kvarh     | Reactive energy exported (capacitive), total         |
 | **8.8.1**             | number    | kvarh     | Reactive energy exported (capacitive), tariff T1     |
 | **8.8.2**             | number    | kvarh     | Reactive energy exported (capacitive), tariff T2     |
+| **energy.active**     | number    | kWh       | Net active energy (positive total − negative total). Available from **FW 2.7.0**. |
+| **energy.reactive**   | number    | kvarh     | Net reactive energy (positive total − negative total). Available from **FW 2.7.0**. |
+| **energy.reactive.inductive** | number | kvarh | Net reactive energy inductive (imported inductive − exported inductive). Available from **FW 2.7.0**. |
+| **energy.reactive.capactive** | number | kvarh | Net reactive energy capacitive (imported capacitive − exported capacitive). Available from **FW 2.7.0**. |
 | **1.6.0**             | number    | kW        | Max demand for positive active energy, total         |
 | **1.6.1**             | number    | kW        | Max demand for positive active energy, tariff T1     |
 | **1.6.2**             | number    | kW        | Max demand for positive active energy, tariff T2     |
@@ -190,9 +195,11 @@ From **FW 2.0.2**, each register set may also define an optional `constants` obj
 | **power.reactive.l2** | number    | var       | Signed instantaneous reactive power, line 2          |
 | **power.reactive.l3** | number    | var       | Signed instantaneous reactive power, line 3          |
 | **9.7.0**             | number    | VA        | Instantaneous apparent power, total                  |
+| **11.7.0**            | number    | A         | Total current (unsigned, sum of L1+L2+L3). Available from **FW 2.7.0**. |
 | **31.7.0**            | number    | A         | Current on line 1 (unsigned)                         |
 | **51.7.0**            | number    | A         | Current on line 2 (unsigned)                         |
 | **71.7.0**            | number    | A         | Current on line 3 (unsigned)                         |
+| **current**           | number    | A         | Signed total current (sum of signed L1+L2+L3). Available from **FW 2.7.0**. |
 | **current.l1**        | number    | A         | Signed current on line 1                             |
 | **current.l2**        | number    | A         | Signed current on line 2                             |
 | **current.l3**        | number    | A         | Signed current on line 3                             |
@@ -211,6 +218,7 @@ From **FW 2.0.2**, each register set may also define an optional `constants` obj
 | **sys.firmware**      | hex       |           | System firmware version, size 6B                     |
 | **sys.timestamp**     | number    | s         | System time expressed as UNIX timestamp              |
 | **sys.date_time**     | hex       |           | System time expressed in date & time format          |
+| **net.ip**             | hex       |           | Device IPv4 address, size 4B. Available from **FW 2.7.0**. |
 
 *Note:* In the configuration, any register representing a timestamp should always use the `int` type.
 
@@ -234,7 +242,7 @@ The configured Modbus slave address is not significant for the device; it will r
 
 The register map is read-only. It is available through **Read Input Registers** and, starting from **FW 2.0.2**, also through **Read Holding Registers**.
 
-**Address Range:** **0 – 65535** in native 0-based Modbus addressing. Some clients display equivalent addresses as **30001 + offset** (function **04**) or **40001 + offset** (function **03**).  
+**Address Range:** **0 – 65535** in native 0-based Modbus addressing. Some clients display equivalent addresses as **30001 + offset** (function **04**) or **40001 + offset** (function **03**).
 **Access:** **Read-only**
 **Modbus Function Codes:** **04 – Read Input Registers**, **03 – Read Holding Registers** (from **FW 2.0.2**)
 
@@ -913,4 +921,4 @@ mbpoll -B -t 3:float -c21 -0 -r1 <whatwattGoIP>
 
 Ready-to-load Modbus slave templates are documented on the [Example configurations](examples.md) page.
 
-That page covers the currently bundled layouts, compatibility notes, and implementation details for Siemens PAC2200, Carlo Gavazzi EM24_E1, and SunSpec meter profiles.
+That page covers the currently bundled layouts, compatibility notes, and implementation details for Siemens PAC2200, Carlo Gavazzi EM24_E1, Huawei, Fronius, Herholdt, SunSpec, and Janitza B604 meter profiles.

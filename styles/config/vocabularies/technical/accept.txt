@@ -199,6 +199,32 @@ Deci
 Deka
 Hecto
 
+# Vendor and product names
+Huawei
+Huawei's
+Fronius
+Herholdt
+Herholdt's
+Gavazzi
+Janitza
+
+# Modbus and protocol terms
+msw
+lsw
+mbpoll
+conv_factor
+Endianness
+VAh
+bitfields
+hardcoded
+
+# Berry language terms
+Monospace
+modreq
+func
+httpreq
+bool
+
 # Other technical terms
 bgn
 unicast

@@ -33,6 +33,14 @@ All example JSON files live in the local `examples` directory next to this page.
   factors.
 - [sunspec_model_1_213.json](examples/sunspec_model_1_213.json) - SunSpec Common
   Model 1 plus meter Model 213 using `float32` values.
+- [janitza_604.json](examples/janitza_604.json) - Janitza B604 series register
+  map at addresses `753`, `911`, `10176`, and `19000`. Uses `net.ip` for the IP
+  address register and named energy identifiers. Requires **FW 2.7.0** or newer.
+- [janitza_604_old.json](examples/janitza_604_old.json) - Janitza B604 series
+  register map for firmware versions **before FW 2.7.0**. Uses a hardcoded
+  `C_IP_ADDR` constant instead of `net.ip`, and unnamed padding registers instead
+  of `11.7.0`, `energy.active`, `energy.reactive`, `energy.reactive.inductive`,
+  and `energy.reactive.capactive`.
 
 ## Compatibility Notes
 
@@ -56,11 +64,26 @@ All example JSON files live in the local `examples` directory next to this page.
   templates that consume generic SunSpec meter models, including `sunspec-meter`,
   `keba-kecontact`, `kostal-ksem`, and device-specific templates that fall back to
   model `203` or `213`.
+- `janitza_604.json` targets the Janitza B604 series (e.g. UMG 604) register map
+  and uses identifiers introduced in **FW 2.7.0** (`net.ip`, `11.7.0`,
+  `energy.active`, `energy.reactive`, `energy.reactive.inductive`,
+  `energy.reactive.capactive`).
+- `janitza_604_old.json` is the legacy variant of the Janitza B604 template for
+  firmware versions **before FW 2.7.0**. It uses a hardcoded `C_IP_ADDR` constant
+  instead of `net.ip` and unnamed padding registers instead of the named energy
+  identifiers added in FW 2.7.0.
 
 ## Implementation Notes
 
 - The `carlo_gavazzi_em24_e1.json`, Huawei, Fronius, Herholdt, and SunSpec
   templates require **FW 2.0.2** or newer.
+- The `janitza_604.json` template requires **FW 2.7.0** or newer, because it uses
+  the `net.ip`, `11.7.0`, `energy.active`, `energy.reactive`,
+  `energy.reactive.inductive`, and `energy.reactive.capactive` identifiers
+  introduced in that version.
+- The `janitza_604_old.json` template is compatible with firmware versions
+  **before FW 2.7.0**. It uses a hardcoded `C_IP_ADDR` constant instead of `net.ip`
+  and unnamed padding registers instead of the named energy identifiers.
 - The EM24_E1 template follows the Carlo Gavazzi word order rule `LSW -> MSW` for
   32-bit values.
 - The Huawei direct meter templates fix frequency at `50.00 Hz` and leave
@@ -193,6 +216,58 @@ Preview:
 
 ```json
 --8<-- "35-modbus/examples/sunspec_model_1_203.json"
+```
+
+## Janitza B604 Notes
+
+The Janitza B604 templates emulate the register map of the Janitza B604 series
+(e.g. UMG 604). Both templates define four register areas:
+
+1. **Address 753** – two zero-filled `float` padding registers.
+2. **Address 911** – one zero-filled `float` padding register.
+3. **Address 10176** – device identification block with serial number, product
+   number, Modbus address, and IP address, all as `int` registers.
+4. **Address 19000** – main measurement block with voltages, currents, power
+   values, and energy counters, all as `float` with `msw` word order.
+
+### Key differences between the two templates
+
+| Feature | `janitza_604.json` (FW 2.7.0+) | `janitza_604_old.json` (before FW 2.7.0) |
+|---------|-------------------------------|------------------------------------------|
+| IP address register | `net.ip` (live device IP) | `C_IP_ADDR` constant (hardcoded value) |
+| Total current | `11.7.0` (unsigned sum) | unnamed padding register |
+| Net active energy | `energy.active` | unnamed padding register |
+| Net reactive energy | `energy.reactive` | unnamed padding register |
+| Reactive energy inductive | `energy.reactive.inductive` | unnamed padding register |
+| Reactive energy capacitive | `energy.reactive.capactive` | unnamed padding register |
+
+The `janitza_604.json` template uses the `net.ip` identifier (available from
+**FW 2.7.0**) to expose the live device IP address in the identification block at
+address `10176`. The legacy `janitza_604_old.json` template instead defines a
+`C_IP_ADDR` constant with a hardcoded IP value, because `net.ip` was not
+available before FW 2.7.0.
+
+Similarly, the `janitza_604.json` template uses named identifiers `11.7.0`,
+`energy.active`, `energy.reactive`, `energy.reactive.inductive`, and
+`energy.reactive.capactive` (all available from **FW 2.7.0**) for the
+corresponding measurement registers in the main block at address `19000`. The
+legacy template uses unnamed padding registers (`{"type": "float"}` without an
+`id`) in those positions, because the named identifiers were not available.
+
+Both templates define a `GRID_FREQUENCY_50HZ` constant set to `50` and expose it
+as a `float` register, because the internal report has no live frequency source
+for the Modbus slave.
+
+Preview (FW 2.7.0+):
+
+```json
+--8<-- "35-modbus/examples/janitza_604.json"
+```
+
+Preview (before FW 2.7.0):
+
+```json
+--8<-- "35-modbus/examples/janitza_604_old.json"
 ```
 
 ## Applying a Template
