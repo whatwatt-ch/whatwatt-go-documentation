@@ -14,7 +14,7 @@ last_verified: '2025-10-07'
 
 **Your smart meter speaks. Listen locally.**
 
-whatwatt Go is a compact device that connects directly to your smart meter's local interface and exposes real-time energy data through protocols you already use — REST, MQTT, and Modbus TCP. No cloud, no subscription, no data leaving your network unless you say so.
+whatwatt Go is a compact device that connects directly to your smart meter's local interface and exposes real-time energy data through protocols you already use — REST, MQTT, and Modbus TCP. Your data stays on your local network by default, with optional cloud connectivity and license-based feature upgrades when you need them.
 
 ## Why whatwatt Go?
 
@@ -223,7 +223,7 @@ Check your license with `curl http://<device-ip>/api/v1/system` — look for `.d
 
 > The Energy Transition will only succeed if we can optimize our own energy consumption. This is only possible if we know our consumption in real time and can react accordingly.
 
-**Who owns your energy consumption data?** You do. The consumption data collected from your household belongs to you. You decide with whom you share it. whatwatt Go ensures your data stays local and under your control — there is no cloud dependency, no telemetry, no phone-home. The device works fully offline on your local network.
+**Who owns your energy consumption data?** You do. The consumption data collected from your household belongs to you. You decide with whom you share it. whatwatt Go keeps your data on your local network by default — all integration protocols (REST, MQTT, Modbus, Berry) work without any cloud connection. Optional cloud services and license-based features are available when you choose to enable them.
 
 ---
 
