@@ -91,14 +91,16 @@ curl --digest -u ":<password>" http://whatwatt-ABCDEF.local/api/v1/system
 ### curl (PowerShell on Windows)
 
 > PowerShell parses quotes differently. Prefer double quotes outside and escape inner quotes, or use backticks.
+>
+> **Note:** In PowerShell, `curl` is a built-in alias for `Invoke-WebRequest`, not the real cURL binary. Always invoke the real executable by its full path: `C:\Windows\System32\curl.exe`.
 
 ```powershell
 # Basic GET
-curl --digest -u ":$env:WHATWATT_PASSWORD" "http://whatwatt-ABCDEF.local/api/v1/system"
+C:\Windows\System32\curl.exe --digest -u ":$env:WHATWATT_PASSWORD" "http://whatwatt-ABCDEF.local/api/v1/system"
 
 # PUT JSON with auth-int (curl auto-negotiates if offered)
 $body = '{"system": {"host_name": "whatwatt_ABCDEF"}}'
-curl --digest -u ":$env:WHATWATT_PASSWORD" `
+C:\Windows\System32\curl.exe --digest -u ":$env:WHATWATT_PASSWORD" `
   -H "Content-Type: application/json" `
   -X PUT --data "$body" `
   "http://whatwatt-ABCDEF.local/api/v1/settings"

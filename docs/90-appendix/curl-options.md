@@ -112,20 +112,22 @@ curl -X PUT -d '{"wifi": {"enable": true, "name": "MyNetwork"}}' \
 
 PowerShell interprets quotes differently from bash. Prefer double quotes for the URL and escape inner quotes. You can also use backticks for line continuation.
 
+> **Note:** In PowerShell, `curl` is a built-in alias for `Invoke-WebRequest`, not the real cURL binary. Always invoke the real executable by its full path: `C:\Windows\System32\curl.exe`.
+
 ```powershell
 # HTTP auth with password from environment variable
 $env:WHATWATT_PASSWORD = "changeme"
-curl --anyauth -u ":$env:WHATWATT_PASSWORD" "http://whatwatt-ABCDEF.local/api/v1/system"
+C:\Windows\System32\curl.exe --anyauth -u ":$env:WHATWATT_PASSWORD" "http://whatwatt-ABCDEF.local/api/v1/system"
 
 # PUT JSON (ensure JSON is a single line or properly escaped)
 $body = '{"system": {"host_name": "whatwatt_ABCDEF"}, "services": {"report_interval": 30}}'
-curl --anyauth -u ":$env:WHATWATT_PASSWORD" `
+C:\Windows\System32\curl.exe --anyauth -u ":$env:WHATWATT_PASSWORD" `
      -H "Content-Type: application/json" `
      -X PUT --data "$body" `
      "http://whatwatt-ABCDEF.local/api/v1/settings"
 
 # Streaming SSE (CTRL+C to stop)
-curl "http://whatwatt-ABCDEF.local/api/v1/live"
+C:\Windows\System32\curl.exe "http://whatwatt-ABCDEF.local/api/v1/live"
 ```
 
 Mastering the `curl` command and its options equips you with the ability to seamlessly communicate with web APIs, ensuring efficient and effective interactions with server resources.
