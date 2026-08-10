@@ -154,6 +154,7 @@
       {"id": "0", "type": "float", "scaler": 0},
       {"id": "0", "type": "float", "scaler": 0},
       {"id": "0", "type": "float", "scaler": 0},
+      {"id": "0", "type": "float", "scaler": 0},
       {"id": "C_FREQ_50", "type": "float", "scaler": 0},
       {"id": "power.active", "type": "float", "scaler": 3},
       {"id": "power.active.l1", "type": "float", "scaler": 3},
