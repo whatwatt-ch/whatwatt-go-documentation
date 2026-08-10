@@ -23,8 +23,9 @@ All example JSON files live in the local `examples` directory next to this page.
 - [huawei_emma_external_meter.json](examples/huawei_emma_external_meter.json) -
   Huawei EMMA external meter view at address `30500`.
 - [fronius_smart_meter_63a.json](examples/fronius_smart_meter_63a.json) - Fronius
-  Smart Meter 63A emulation using a Fronius-specific SunSpec-like layout at
-  address `40000` plus additional probe registers.
+  GEN24-compatible Modbus TCP emulation that identifies itself as a legacy
+  Smart Meter 63A, using a Fronius-specific SunSpec-like layout at address
+  `40000` plus additional probe registers.
 - [herholdt_m3pro.json](examples/herholdt_m3pro.json) - Herholdt M3PRO register
   map beginning at address `4100`, collapsed into one contiguous area for
   compatibility with the current parser.
@@ -142,6 +143,14 @@ The Fronius template is designed for clients that probe a Fronius Smart Meter
 63A-compatible endpoint. It uses a Fronius-specific SunSpec-like register layout
 and includes static identification fields, live power values, and zero-filled
 compatibility placeholders.
+
+The template exposes this register image over Modbus TCP, but the physical
+Fronius Smart Meter 63A-3 itself uses Modbus RTU over RS485. The `Smart Meter
+63A` identity is retained because it is part of the legacy register image used
+by the reference GEN24 emulator; it must not be interpreted as native TCP
+support in the physical 63A-3 meter. The Fronius-specific Common Model length
+of `65` is also retained for compatibility, while Meter Model `213` follows its
+124-register SunSpec field order.
 
 Preview:
 
