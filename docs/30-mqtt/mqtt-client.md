@@ -38,8 +38,8 @@ unencrypted (`mqtt://`) and TLS encrypted (`mqtts://`) connections are supported
 | `.password`          | string  | empty string | 0..127                                        | Not returned on GET; instead `password_len` shows length (0 = not set). |
 | `.client_id`         | string  | empty string | 0..63                                         | Must be unique per broker; duplicate IDs cause prior session disconnect. |
 | `.skip_cn_check`     | boolean | false        |                                               | Skips certificate Common Name validation. |
-| `.publish.topic`     | string  | empty string | 0..127                                        | Target topic for published messages. |
-| `.publish.template`  | string  | empty string | 0..1023                                       | Payload template (text; often JSON). |
+| `.publish.topic`     | string  | empty string | 0..127                                        | Target topic for published messages. Leading and trailing whitespace is stripped on save; embedded control characters (e.g. tab) must be avoided as they produce invalid MQTT topics. |
+| `.publish.template`  | string  | empty string | 0..1023                                       | Payload template (text; often JSON). Sent verbatim; may contain any characters including whitespace and tabs. |
 | `.broker.certificate`| string  | null         |                                               | Broker CA/server certificate in PEM (optional). |
 | `.client.certificate`| string  | null         |                                               | Client certificate in PEM (for mutual TLS; requires `.client.key`). |
 | `.client.key`        | string  | null         |                                               | Client private key (PEM). Not returned on GET; `key_len` reports length. |
@@ -81,3 +81,30 @@ See [MQTT Template](template.md) for the full variable list, examples, and guida
     - Treat missing fields as unavailable; don’t assume zero means present.
     - Quote text variables, don’t quote numeric variables in templates.
     - Shortly after power‑on some values may be `null` or empty until available.
+
+## Troubleshooting
+
+### `malformed packet` disconnect around the publish interval
+
+If the broker logs a `malformed packet` disconnect shortly after `CONNACK` —
+typically just before the first publish cycle (≈ 30 s after connect) — while
+other clients on the same broker work fine, the configured `.publish.topic`
+most likely contains an invalid character.
+
+**Cause:** MQTT forbids control characters (tab `\t`, newline `\n`, carriage
+return `\r`, NUL, …) inside topic names. A topic such as `"\tzevplus/..."`
+(left over from a copy‑paste typo) is sent to the broker and rejected as a
+malformed PUBLISH. Leading and trailing whitespace is stripped on save, but
+embedded control characters are not removed and must be avoided.
+
+**Fix:** Edit the MQTT settings and re-enter the topic as plain text without
+any leading/embedded whitespace, e.g. `zevplus/c0001/wwg/meter`, then save.
+
+**Verification:**
+
+- The broker log should show `Client <id> ... disconnected: malformed packet.`
+  within ~30 s of `Sending CONNACK`.
+- Re-open the settings and confirm `.publish.topic` no longer starts with a tab
+  or space.
+- Other clients (e.g. `mosquitto_sub -t '<topic>'`) must be able to receive the
+  published payload once the topic is clean.
