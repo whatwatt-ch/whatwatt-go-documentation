@@ -137,6 +137,7 @@ nav:
     - License & editions: 00-intro/licensing.md
   - Setup:
     - Power & Wi‑Fi: 10-general/power-and-wifi.md
+    - Firewall Settings: 10-general/firewall-settings.md
     - Wi‑Fi setup: 50-settings/wifi-setup.md
     - Scan Wi‑Fi: 50-settings/wifi-scan.md
     - WPS: 50-settings/wps.md

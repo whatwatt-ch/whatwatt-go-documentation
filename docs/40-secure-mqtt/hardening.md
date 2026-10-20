@@ -130,7 +130,12 @@ done
 
 ### Firewall Configuration
 
-Restrict broker access to trusted networks:
+!!! note "whatwatt cloud access"
+    For outbound connections from whatwatt Go, the mobile app, and the web cockpit,
+    see [Firewall Settings](../10-general/firewall-settings.md).
+    The rules below protect a self-hosted MQTT broker; they do not describe all cloud connectivity requirements.
+
+On your own broker, restrict inbound access to trusted networks:
 
 ```bash
 # UFW example - allow only from management network
